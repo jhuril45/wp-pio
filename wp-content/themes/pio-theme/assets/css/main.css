@@ -1,0 +1,122 @@
+.page-content{
+  height: 150px;
+  border-bottom: #dadfe2 solid 1px;
+}
+
+.page-contents{
+  /* height: 400px; */
+  border-radius: 10px;
+  /* filter: drop-shadow(0px 5px 2.5px rgba(0,0,0,0.31)); */
+  background-color: #ffffff;
+}
+
+.page-main-content{
+  border-radius: 10px;
+  filter: drop-shadow(0px 5px 2.5px rgba(0,0,0,0.31));
+  background-color: #e8eef3;
+}
+
+.page-clock{
+  height: 150px;
+  border-radius: 10px;
+  filter: drop-shadow(0px 5px 2.5px rgba(0,0,0,0.31));
+  background-color: #e8eef3;
+}
+
+.page-calendar{
+  height: 150px;
+  border-radius: 10px;
+  filter: drop-shadow(0px 5px 2.5px rgba(0,0,0,0.31));
+  background-color: #e8eef3;
+}
+
+.page-left-list{
+  height: 200px;
+  border-radius: 10px;
+  filter: drop-shadow(0px 5px 2.5px rgba(0,0,0,0.31));
+  background-color: #e8eef3;
+}
+
+.page-banner-section img{
+  object-fit: cover;
+  width: 100%;
+}
+
+.page-header{
+  background-color: #134b7c;
+}
+.page-header-title{
+  font-size: 21px;
+  line-height: 28px;
+  color: #f4f4f4;
+  text-align: left;
+}
+.site-page{
+  margin: 0 auto;
+  max-width: 1360px;
+}
+.header-title{
+  font-size: 25px;
+  line-height: 28px;
+  color: #ffffff;
+  text-align: left;
+}
+
+.header-logo{
+  height: 50px;
+  width: 50px;
+  object-fit: cover;
+}
+.site-main-links{
+  max-height: 56px;
+  background: #2268a5;
+}
+.site-main-links .site-main-link{
+  display: inline;
+  padding: 10px 50px 25px 50px;
+  color: white;
+  font-size: 21px;
+  line-height: 28px;
+  padding: 10px;
+  text-align: center;
+}
+
+.site-main-links .site-main-link:hover{
+  cursor: pointer;
+  background: white;
+  color: #2268a5;
+  background: linear-gradient(-135deg, transparent 15px, white 15px);
+}
+
+.site-main-links .site-main-link.active{
+  background: white;
+  color: #2268a5;
+  background: linear-gradient(-135deg, transparent 15px, white 15px);
+}
+
+.header-links li {
+  display: inline;
+  border-radius: 10px;
+  color: white;
+  font-size: 16px;
+  line-height: 28px;
+  padding: 10px;
+  text-align: center;
+}
+.header-links li:hover {
+  cursor: pointer;
+}
+.header-links li.active{
+  background-color: #092f50;
+}
+.main-header{
+  width: 100%;
+  /* max-width: 1500px; */
+  margin: 0 auto;
+  height: 79px;
+  filter: drop-shadow(0px 5px 2.5px rgba(0,0,0,0.31));
+  background-color: #0d406d;
+}
+body {
+  margin: 0;
+}
