@@ -24,14 +24,13 @@
 }
 
 .page-calendar{
-  height: 150px;
+  /* height: 150px; */
   border-radius: 10px;
   filter: drop-shadow(0px 5px 2.5px rgba(0,0,0,0.31));
   background-color: #e8eef3;
 }
 
 .page-left-list{
-  height: 200px;
   border-radius: 10px;
   filter: drop-shadow(0px 5px 2.5px rgba(0,0,0,0.31));
   background-color: #e8eef3;

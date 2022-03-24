@@ -43,8 +43,36 @@ add_theme_support( 'html5', array( 'navigation-widgets' ) );
 add_theme_support('custom-header');
 add_theme_support('menus');
 add_theme_support('widgets');
+add_theme_support( 'post-thumbnails' );
 
 add_theme_support( 'custom-logo', array(
   'height' => 50,
   'width'  => 50,
 ) );
+
+add_action('rest_api_init', 'register_rest_images' );
+
+function register_rest_images(){
+    register_rest_field( array('post'),
+        'fimg_url',
+        array(
+          'get_callback'    => 'get_rest_featured_image',
+          'update_callback' => null,
+          'schema'          => null,
+        )
+    );
+}
+
+function get_rest_featured_image( $object, $field_name, $request ) {
+    if( $object['featured_media'] ){
+        $img = wp_get_attachment_image_src( $object['featured_media'], 'app-thumb' );
+        return $img[0];
+    }
+    return false;
+}
+
+function custom_get_custom_logo(){
+  $logo = get_theme_mod( 'custom_logo' );
+  $image = wp_get_attachment_image_src( $logo , 'full' );
+  return $image[0];
+}

@@ -1,3 +1,4 @@
+const settings = {API_BASE_PATH: "/vue_wp/wp-json/"}
 new Vue({
   el: '#q-app',
   components:{
@@ -95,13 +96,41 @@ new Vue({
       ],
       page_menus: [],
       timer: '1',
+      date: '2022/03/23',
+      page_posts: [],
     }
+  },
+  created(){
+    document.getElementById("q-app").style.display = "block"
   },
   mounted(){
     this.initMenus()
-    
+    this.getEvents()
+    this.getPosts()
   },
   methods: {
+    redirectPage(url){
+      console.log(url)
+      window.location.href = url
+    },
+    getPosts(){
+      return new Promise((resolve, reject) => {
+        window.axios.get(settings.API_BASE_PATH+'wp/v2/posts?per_page=10')
+        .then((response) => {
+          let posts = response.data ? response.data : this.page_posts
+          posts = posts.map(x => {
+            console.log(x.excerpt.rendered)
+            x.excerpt.rendered = x.excerpt.rendered.replace('<p>','')
+            x.excerpt.rendered = x.excerpt.rendered.replace('</p>','')
+            x.excerpt.rendered = x.excerpt.rendered.replace('[&hellip;]','...')
+            return x
+          })
+          this.page_posts = posts
+          resolve()
+        })
+      })
+      
+    },
     async initMenus(){
       try{
         await this.getMenus()
@@ -111,9 +140,19 @@ new Vue({
         console.log(error)
       }
     },
+    getEvents(){
+      return new Promise((resolve, reject) => {
+        window.axios.get(settings.API_BASE_PATH+'tribe/events/v1/events')
+        .then((response) => {
+          console.log(response)
+          resolve()
+        })
+      })
+      
+    },
     getMenus(){
       return new Promise((resolve, reject) => {
-        window.axios.get('/vue_wp/wp-json/wp-api-menus/v2/menus')
+        window.axios.get(settings.API_BASE_PATH+'wp-api-menus/v2/menus')
         .then((response) => {
           this.menus = response.data ? response.data : this.menus
           resolve()
@@ -125,7 +164,7 @@ new Vue({
       return new Promise((resolve, reject) => {
         const index = this.menus.findIndex(x => x.slug == 'header-menu')
         if(index < 0) return
-        window.axios.get('/vue_wp/wp-json/wp-api-menus/v2/menus/'+this.menus[index].ID)
+        window.axios.get(settings.API_BASE_PATH+'wp-api-menus/v2/menus/'+this.menus[index].ID)
         .then((response) => {
           this.header_menus = response.data && response.data.items ? response.data.items : this.header_menus
           resolve()
@@ -138,7 +177,7 @@ new Vue({
         const index = this.menus.findIndex(x => x.slug == 'main-page-menu')
         console.log(index)
         if(index < 0) return
-        window.axios.get('/vue_wp/wp-json/wp-api-menus/v2/menus/'+this.menus[index].ID)
+        window.axios.get(settings.API_BASE_PATH+'wp-api-menus/v2/menus/'+this.menus[index].ID)
         .then((response) => {
           console.log(response.data)
           this.page_menus = response.data && response.data.items ? response.data.items : this.page_menus

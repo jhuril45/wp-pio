@@ -34,8 +34,6 @@ Vue.component('page-clock', {
   },
   mounted(){
     this.startTime()
-    
-  console.log();
   },
   methods:{
     startTime() {

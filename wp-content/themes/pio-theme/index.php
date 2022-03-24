@@ -22,9 +22,29 @@
         </div>
         <div class="full-width q-pa-lg">
           <div class="page-contents q-px-md">
-            <div class="page-content" v-for="i in 3" :key="i">
-
-            </div>
+            <q-list separator v-if="page_posts.length">
+              <q-item class="q-px-none" v-for="post in page_posts" :key="'post-'+post.slug">
+                <q-item-section avatar size="sm">
+                  <q-img
+                    cover
+                    height="80px"
+                    width="100px" 
+                    :src="post.fimg_url ? post.fimg_url : '<?php 
+                      echo custom_get_custom_logo()
+                    ?>'"/>
+                </q-item-section>
+                  
+                <q-item-section top>
+                  <q-item-label class="text-blue-10 text-h6">
+                    <span class="cursor-pointer" @click="redirectPage(post.link)">
+                      {{post.title.rendered}}
+                    </span>
+                  </q-item-label>
+                  <q-item-label lines="3" class="q-pt-sm" v-html="post.excerpt.rendered">
+                  </q-item-label>
+                </q-item-section>
+              </q-item>
+            </q-list>
           </div>
         </div>
       </div>
@@ -49,14 +69,31 @@
       </div>
     </div>
     <div class="col-3 q-px-md q-gutter-y-md">
-      <div class="page-clock q-py-sm">
+      <div class="full-width page-clock q-py-sm">
         <page-clock/>
       </div>
-      <div class="page-calendar">
-        
+      <div class="full-width row justify-center q-py-sm">
+        <q-date
+          flat
+          class="q-pa-none"
+          minimal
+          v-model="date" />
       </div>
-      <div class="page-left-list">
-
+      <div class="full-width page-left-list q-py-sm">
+      <q-list separator>
+        <q-item v-for="i in 3" :key="'left'+i">
+          <q-item-section side>
+            <q-icon
+              color="blue-10"
+              name="play_arrow" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label lines="1" class="cursor-pointer text-body-2">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates, atque laudantium repellat recusandae iste consectetur a nostrum veritatis minus assumenda fuga ab beatae cupiditate enim nemo, blanditiis vel, itaque vitae!
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+      </q-list>
       </div>
     </div>
   </div>

@@ -11,11 +11,12 @@
   </title>
 
   <!-- Template CSS -->
-  <?php wp_head(); ?>
+  <?php wp_head();$page = get_page_by_title('page-name'); $custom_logo_id = get_theme_mod( 'custom_logo' );
+    $custom_logo_URL = wp_get_attachment_image_src( $custom_logo_id , 'full' );?>
 </head>
 
 <body>
-  <div id="q-app" style="max-width: 1190px;margin: 0 auto">
+  <div id="q-app" style="display:none">
     <!--header-->
     <header class="main-header q-px-md">
       <div class="row items-center full-height q-gutter-x-sm">
