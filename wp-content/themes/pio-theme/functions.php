@@ -22,9 +22,11 @@ function add_script()
 {
   wp_register_script( 'vue-script', 'https://cdn.jsdelivr.net/npm/vue/dist/vue.js',array ( 'jquery' ), 1.1, true);
   wp_register_script('quasar-script', get_template_directory_uri() . '/assets/js/quasar.min.js',array ( 'jquery' ), 1.1, true);
+  wp_register_script('quasar-fontawesome', get_template_directory_uri() . '/assets/js/quasar-fontawesome5.min.js');
   
   wp_register_script('axios', get_template_directory_uri() . '/assets/js/axios.min.js');
   wp_enqueue_script( 'vue-script');
+  wp_enqueue_script( 'quasar-fontawesome');
   wp_enqueue_script( 'quasar-script');
   wp_enqueue_script( 'axios');
 

@@ -1,4 +1,5 @@
 const settings = {API_BASE_PATH: "/vue_wp/wp-json/"}
+// Quasar.iconSet.set(Quasar.iconSet.svgFontawesomeV5)
 new Vue({
   el: '#q-app',
   components:{
@@ -6,6 +7,13 @@ new Vue({
   },
   data: function () {
     return {
+      tab: 'description',
+      drawer_left: false,
+      page_dialog: {
+        open: false,
+        data: {},
+      },   
+      slide: 1,
       menus: [],
       header_menus: [
         {
@@ -98,6 +106,36 @@ new Vue({
       timer: '1',
       date: '2022/03/23',
       page_posts: [],
+      flip_cards: [
+        {
+          icon: 'agriculture',
+          class_front: 'bg-green-5 text-white',
+          class_back: 'bg-green-8 text-white',
+          title: 'Agriculture',
+          description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nec nisl tincidunt, condimentum nibh vitae, bibendum neque. Donec vitae hendrerit arcu. Donec enim lacus, elementum sed justo sed,'
+        },
+        {
+          icon: 'warning',
+          class_front: 'bg-light-blue-6 text-white',
+          class_back: 'bg-light-blue-8 text-white',
+          title: 'Disaster Risk Reduction',
+          description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nec nisl tincidunt, condimentum nibh vitae, bibendum neque. Donec vitae hendrerit arcu. Donec enim lacus, elementum sed justo sed,'
+        },
+        {
+          icon: 'school',
+          class_front: 'bg-purple-4 text-white',
+          class_back: 'bg-purple-7 text-white',
+          title: 'Education',
+          description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nec nisl tincidunt, condimentum nibh vitae, bibendum neque. Donec vitae hendrerit arcu. Donec enim lacus, elementum sed justo sed,'
+        },
+        {
+          icon: 'health_and_safety',
+          class_front: 'bg-light-green-6 text-white',
+          class_back: 'bg-light-green-8 text-white',
+          title: 'Health',
+          description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nec nisl tincidunt, condimentum nibh vitae, bibendum neque. Donec vitae hendrerit arcu. Donec enim lacus, elementum sed justo sed,'
+        },
+      ],
     }
   },
   created(){
@@ -109,6 +147,15 @@ new Vue({
     this.getPosts()
   },
   methods: {
+    flipCard(id,is_flipped=true){
+      const el = document.getElementById(id)
+      if(!el) return
+      if(is_flipped){
+        el.classList.add('flipped');
+      }else{
+        el.classList.remove('flipped');
+      }
+    },
     redirectPage(url){
       console.log(url)
       window.location.href = url
