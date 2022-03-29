@@ -96,7 +96,8 @@
 .header-links li {
   display: inline;
   border-radius: 10px;
-  color: white;
+  color: rgb(190, 190, 190);
+  font-weight: bold;
   font-size: 16px;
   line-height: 28px;
   padding: 10px;
@@ -106,6 +107,7 @@
   cursor: pointer;
 }
 .header-links li.active{
+  color: #ffffff;
   background-color: #092f50;
 }
 .main-header{

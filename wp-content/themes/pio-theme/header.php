@@ -41,13 +41,25 @@
     
     <q-layout view="lHh lpr lff" container style="height: 100vh" class="shadow-2">
       <q-header elevated reveal>
-        <q-toolbar class="q-py-md">
-          <q-btn flat round dense icon="menu" class="q-mr-sm" v-if="$q.screen.lt.sm" @click="drawer_left = !drawer_left"></q-btn>
+        <q-toolbar class="q-py-md bg-white">
+          <q-btn
+            flat
+            round
+            dense
+            icon="menu"
+            class="q-mr-sm"
+            v-if="$q.screen.lt.sm"
+            color="primary"
+            @click="drawer_left = !drawer_left"></q-btn>
           <div class="row items-center full-height q-gutter-x-sm">
             <div class="col-shrink">
-              <?php the_custom_logo();?>
+              <q-img
+                cover
+                height="50px"
+                width="150px"
+                src="<?php echo get_template_directory_uri().'/assets/images/ButuanOnDesign.png'; ?>" />
             </div>
-            <div class="col-shrink header-title">
+            <div class="col-shrink header-title" v-if="false">
               <?php bloginfo( 'name' ); ?>
             </div>
             <div class="col" v-if="$q.screen.gt.xs">
