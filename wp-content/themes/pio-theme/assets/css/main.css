@@ -104,11 +104,12 @@
   text-align: center;
 }
 .header-links li:hover {
+  color: #004a9e;
   cursor: pointer;
 }
 .header-links li.active{
-  color: #ffffff;
-  background-color: #092f50;
+  color: #004a9e;
+  /* background-color: #092f50; */
 }
 .main-header{
   width: 100%;
@@ -164,4 +165,12 @@ body {
 .flip-card-back {
   color: white;
   transform: rotateY(180deg);
+}
+
+.footer-link{
+  text-decoration: none;
+}
+
+.footer-link:hover{
+  text-decoration: underline;
 }

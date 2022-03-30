@@ -18,7 +18,7 @@
         PLANS AND PROGRAMS
       </div>
       <div
-        class="col-12 col-md-3 col-sm-6 q-pa-xs"
+        class="col-12 col-md-3 col-sm-6 q-pa-xs q-pt-md"
         v-for="(flip,index) in flip_cards"
         :key="'flip-card-'+index">
         <div class="flip-card">
@@ -48,6 +48,114 @@
               </div>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+    <div class="full-width">
+      <q-parallax>
+        <template v-slot:media>
+          <img src="https://cdn.quasar.dev/img/parallax2.jpg">
+        </template>
+
+        <template v-slot:content="scope">
+          <div
+            class="absolute items-start row q-px-lg"
+          >
+            <div class="col-12 col-md-6 rounded-borders q-pa-lg q-gutter-y-md" style="background: rgba(79, 195, 247, 0.8)">
+              <div class="text-h4 text-white text-start">DEPARTMENTS & OFFICES</div>
+              <div class="text-subtitle2 text-white text-start">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum sequi, similique maxime rerum soluta modi ut illum impedit minima ipsam fugit quis veritatis amet distinctio nulla vitae? Cum, dolor illo.
+              </div>
+              <div class="full-width">
+                <q-item>
+                  <q-item-section>
+                    <q-item-label>
+                      <a href="" class="text-white footer-link text-body1">
+                        Know Butuan City
+                      </a>
+                    </q-item-label>
+                    <q-item-label>
+                      <a href="" class="text-white footer-link text-body1">
+                        Departments
+                      </a>
+                    </q-item-label>
+                    <q-item-label>
+                      <a href="" class="text-white footer-link text-body1">
+                        Services
+                      </a>
+                    </q-item-label>
+                    <q-item-label>
+                      <a href="" class="text-white footer-link text-body1">
+                        Transparency
+                      </a>
+                    </q-item-label>
+                    <q-item-label>
+                      <a href="" class="text-white footer-link text-body1">
+                        News
+                      </a>
+                    </q-item-label>
+                    <q-item-label>
+                      <a href="" class="text-white footer-link text-body1">
+                        Contact Us
+                      </a>
+                    </q-item-label>
+                  </q-item-section>
+                </q-item>
+              </div>
+            </div>
+          </div>
+        </template>
+      </q-parallax>
+    </div>
+    <div class="full-width row justify-start q-my-xl" :class="$q.screen.lt.sm ? 'q-pa-md' : 'q-pa-xl'">
+      <div class="col-12 text-center q-my-md text-bold" :class="$q.screen.lt.sm ? 'text-h5' : 'text-h4'">
+        LATEST NEWS
+      </div>
+      <div class="col-12 row q-pt-md">
+        <div v-for="(post,index) in page_posts" :key="'news-card-'+index" class="q-py-xs col-6 col-md-3 q-px-md">
+          <q-card class="news-card">
+            <q-img
+              contain
+              height="200px"
+              :src="post.fimg_url ? post.fimg_url : '<?php 
+                echo custom_get_custom_logo()
+              ?>'"
+              basic
+            >
+              <div class="absolute-bottom text-caption text-start">
+                <q-item-label lines="3" class="q-px-none q-py-none">
+                  {{post.title.rendered}}
+                </q-item-label>
+              </div>
+            </q-img>
+          </q-card>
+        </div>
+      </div>
+    </div>
+    <div class="full-width row justify-start q-my-xl" :class="$q.screen.lt.sm ? 'q-pa-md' : 'q-pa-xl'">
+      <div class="col-12 text-center q-my-md text-bold" :class="$q.screen.lt.sm ? 'text-h5' : 'text-h4'">
+        QUICK LINKS
+      </div>
+      <div class="col-12 row q-pt-md">
+        <div class="q-py-xs col-6 col-md-3 q-px-md">
+          <q-card class="news-card" style="max-height:150px">
+            <q-img
+              contain
+              src="<?php echo get_template_directory_uri().'/assets/images/transparency-seal.jpg'; ?>"
+              basic
+            >
+            </q-img>
+          </q-card>
+        </div>
+        <div class="q-py-xs col-6 col-md-3 q-px-md">
+          <q-card class="news-card" style="max-height:150px">
+            <q-img
+              contain
+              src="<?php echo get_template_directory_uri().'/assets/images/bids-awards.jpg'; ?>"
+              basic
+            >
+            </q-img>
+          </q-card>
         </div>
       </div>
     </div>

@@ -1,12 +1,17 @@
-let template = '<div class="clock" v-if="clock.time">'
-template += '<p class="clock-title">PHILIPPINE STANDARD TIME</p>'
-template += '<p class="clock-time">{{clock.time}}</p>'
-template += '<p class="clock-date">{{clock.date}}</p>'
+let template = '<div class="" v-if="clock.time">'
+template += '<span class="">{{clock.time}} </span>'
+template += '<br v-if="is_break"/>'
+template += '<span class="">{{clock.date}}</span>'
 template += '</div>'
 Vue.component('page-clock', {
   template: template,
   props:{
-    
+    is_break: {
+      type: Boolean,
+      default() {
+        return false
+      }
+    },
   },
   data () {
     return {

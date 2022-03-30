@@ -17,31 +17,47 @@
 
 <body>
   <div id="q-app" style="display:none">
-    <!--header-->
-    <header class="main-header q-px-md" v-if="false">
-      <div class="row items-center full-height q-gutter-x-sm">
-        <div class="col-shrink">
-          <?php the_custom_logo();?>
-        </div>
-        <div class="col-shrink header-title">
-          <?php bloginfo( 'name' ); ?>
-        </div>
-        <div class="col">
-          <ul class="header-links">
-            <li
-              :class="link.object_slug == 'home' ? 'active' : ''"
-              v-for="(link,index) in header_menus"
-              :key="'header-menu-'+index" v-text="link.title">
-            </li>
-          </ul>
-        </div>
-      </div>
-    </header>
-    <!-- //header -->
-    
     <q-layout view="lHh lpr lff" container style="height: 100vh" class="shadow-2">
       <q-header elevated reveal>
-        <q-toolbar class="q-py-md bg-white">
+        <q-toolbar class="bg-primary text-white q-px-lg" v-if="$q.screen.gt.sm">
+          <q-toolbar-title class="text-body2 text-italic">
+            The Official Website of the City Government of Butuan
+          </q-toolbar-title>
+          <div class="q-px-sm text-white text-subtitle2">
+            <page-clock></page-clock>
+          </div>
+          <q-separator vertical inset color="white"></q-separator>
+          <div class="q-px-sm">
+            <a href="https://www.facebook.com/butuancitypioofficial" class="footer-link text-white">
+              <q-icon
+                name="fab fa-facebook-f"
+                color="white"
+                size="xs"></q-icon>
+                <span>Facebook</span>
+            </a>
+          </div>
+          <q-separator vertical inset color="white"></q-separator>
+          <div class="q-px-sm">
+            <a href="https://www.facebook.com/butuancitypioofficial" class="footer-link text-white">
+              <q-icon
+                name="fab fa-twitter"
+                color="white"
+                size="xs"></q-icon>
+                <span>Twitter</span>
+            </a>
+          </div>
+          <div class="q-px-sm">
+            <a href="https://www.facebook.com/butuancitypioofficial" class="footer-link text-white">
+              <q-icon
+                name="fas fa-phone"
+                color="white"
+                size="xs"></q-icon>
+                <span>Call Us</span>
+            </a>
+          </div>
+
+        </q-toolbar>
+        <q-toolbar class="q-py-md bg-white q-px-lg">
           <q-btn
             flat
             round
@@ -86,17 +102,36 @@
       >
         <q-scroll-area class="fit">
           <q-list>
-
+            <q-item clickable v-ripple>
+              <q-item-section class="row items-center">
+                <q-avatar>
+                  <img src="<?php echo get_template_directory_uri().'/assets/images/Butuan_Logo_Transparent.png'; ?>">
+                </q-avatar>
+              </q-item-section>
+            </q-item>
+            <q-item clickable v-ripple>
+              <q-item-section>
+                <q-item-label class="text-bold">
+                  City Government Butuan
+                </q-item-label>
+                <q-item-label>
+                <div class="text-dark text-caption">
+                  <page-clock :is_break="false"></page-clock>
+                </div>
+                </q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-separator></q-separator>
             <template v-for="(link, index) in header_menus">
               <q-item :key="index" clickable :active="link.object_slug == 'home'" v-ripple>
-                <q-item-section avatar>
-                  <q-icon :name="'home'" />
+                <q-item-section avatar v-if="false">
+                  <q-icon :name="'home'"></q-icon>
                 </q-item-section>
                 <q-item-section>
                   {{ link.title }}
                 </q-item-section>
               </q-item>
-              <q-separator :key="'sep' + index"/>
+              <q-separator :key="'sep' + index"></q-separator>
             </template>
 
           </q-list>
