@@ -174,3 +174,11 @@ body {
 .footer-link:hover{
   text-decoration: underline;
 }
+
+.entry-content p{
+  margin: 0 0 10px 0;
+}
+
+.page-card{
+  min-height: 60vh !important;
+}

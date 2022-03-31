@@ -57,7 +57,7 @@
           </div>
 
         </q-toolbar>
-        <q-toolbar class="q-py-md bg-white q-px-lg">
+        <q-toolbar class="q-py-sm bg-white q-px-lg">
           <q-btn
             flat
             round
@@ -69,11 +69,13 @@
             @click="drawer_left = !drawer_left"></q-btn>
           <div class="row items-center full-height q-gutter-x-sm">
             <div class="col-shrink">
-              <q-img
-                cover
-                height="50px"
-                width="150px"
-                src="<?php echo get_template_directory_uri().'/assets/images/ButuanOnDesign.png'; ?>" />
+              <a href="<?php echo get_home_url() ?>">
+                <q-img
+                  cover
+                  height="40px"
+                  width="150px"
+                  src="<?php echo get_template_directory_uri().'/assets/images/ButuanOnDesign.png'; ?>" />
+              </a>
             </div>
             <div class="col-shrink header-title" v-if="false">
               <?php bloginfo( 'name' ); ?>

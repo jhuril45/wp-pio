@@ -1,4 +1,6 @@
 <!-- footer -->
+</q-page>
+</q-page-container>
   <q-footer>
     <div class="row q-px-xl q-py-lg">
       <div class="col-6 col-md-3 q-px-lg">

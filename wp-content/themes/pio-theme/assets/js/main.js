@@ -136,6 +136,7 @@ new Vue({
           description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nec nisl tincidunt, condimentum nibh vitae, bibendum neque. Donec vitae hendrerit arcu. Donec enim lacus, elementum sed justo sed,'
         },
       ],
+      page_tab: 'mission_vision',
     }
   },
   created(){

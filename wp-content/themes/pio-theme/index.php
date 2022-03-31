@@ -114,6 +114,7 @@
       <div class="col-12 row q-pt-md">
         <div v-for="(post,index) in page_posts" :key="'news-card-'+index" class="q-py-xs col-6 col-md-3 q-px-md">
           <q-card class="news-card">
+            <a :href="post.link">
             <q-img
               contain
               height="200px"
@@ -128,6 +129,7 @@
                 </q-item-label>
               </div>
             </q-img>
+            </a>
           </q-card>
         </div>
       </div>
@@ -139,22 +141,26 @@
       <div class="col-12 row q-pt-md">
         <div class="q-py-xs col-6 col-md-3 q-px-md">
           <q-card class="news-card" style="max-height:150px">
-            <q-img
-              contain
-              src="<?php echo get_template_directory_uri().'/assets/images/transparency-seal.jpg'; ?>"
-              basic
-            >
-            </q-img>
+            <a href="">
+              <q-img
+                contain
+                src="<?php echo get_template_directory_uri().'/assets/images/transparency-seal.jpg'; ?>"
+                basic
+              >
+              </q-img>
+            </a>
           </q-card>
         </div>
         <div class="q-py-xs col-6 col-md-3 q-px-md">
           <q-card class="news-card" style="max-height:150px">
-            <q-img
-              contain
-              src="<?php echo get_template_directory_uri().'/assets/images/bids-awards.jpg'; ?>"
-              basic
-            >
-            </q-img>
+            <a href="">
+              <q-img
+                contain
+                src="<?php echo get_template_directory_uri().'/assets/images/bids-awards.jpg'; ?>"
+                basic
+              >
+              </q-img>
+            </a>
           </q-card>
         </div>
       </div>
@@ -190,104 +196,16 @@
 
             <q-tab-panel name="offices" class="q-pa-none">
               <q-list class="q-py-none" separator>
-                <q-item clickable v-ripple>
+                <q-item clickable v-ripple v-for="off in 4" :key="'office-'+off">
                   <q-item-section avatar top>
-                    <q-avatar icon="folder" color="primary" text-color="white"></q-avatar>
+                    <q-avatar>
+                      <img src="<?php echo get_template_directory_uri().'/assets/images/Butuan_Logo_Transparent.png'; ?>">
+                    </q-avatar>
                   </q-item-section>
 
                   <q-item-section>
-                    <q-item-label lines="1">Photos</q-item-label>
-                    <q-item-label caption>February 22nd, 2019</q-item-label>
-                  </q-item-section>
-
-                  <q-item-section side>
-                    <q-icon name="info" color="green"></q-icon>
-                  </q-item-section>
-                </q-item>
-
-                <q-item clickable v-ripple>
-                  <q-item-section avatar top>
-                    <q-avatar icon="folder" color="orange" text-color="white"></q-avatar>
-                  </q-item-section>
-
-                  <q-item-section>
-                    <q-item-label lines="1">Movies</q-item-label>
-                    <q-item-label caption>March 1st, 2019</q-item-label>
-                  </q-item-section>
-
-                  <q-item-section side>
-                    <q-icon name="info"></q-icon>
-                  </q-item-section>
-                </q-item>
-
-                <q-item clickable v-ripple>
-                  <q-item-section avatar top>
-                    <q-avatar icon="folder" color="teal" text-color="white"></q-avatar>
-                  </q-item-section>
-
-                  <q-item-section>
-                    <q-item-label lines="1">Photos</q-item-label>
-                    <q-item-label caption>January 15th, 2019</q-item-label>
-                  </q-item-section>
-
-                  <q-item-section side>
-                    <q-icon name="info"></q-icon>
-                  </q-item-section>
-                </q-item>
-
-                <q-item clickable v-ripple>
-                  <q-item-section avatar top>
-                    <q-avatar icon="folder" color="teal" text-color="white"></q-avatar>
-                  </q-item-section>
-
-                  <q-item-section>
-                    <q-item-label lines="1">Photos</q-item-label>
-                    <q-item-label caption>January 15th, 2019</q-item-label>
-                  </q-item-section>
-
-                  <q-item-section side>
-                    <q-icon name="info"></q-icon>
-                  </q-item-section>
-                </q-item>
-
-                <q-item clickable v-ripple>
-                  <q-item-section avatar top>
-                    <q-avatar icon="folder" color="teal" text-color="white"></q-avatar>
-                  </q-item-section>
-
-                  <q-item-section>
-                    <q-item-label lines="1">Photos</q-item-label>
-                    <q-item-label caption>January 15th, 2019</q-item-label>
-                  </q-item-section>
-
-                  <q-item-section side>
-                    <q-icon name="info"></q-icon>
-                  </q-item-section>
-                </q-item>
-
-                <q-item clickable v-ripple>
-                  <q-item-section avatar top>
-                    <q-avatar icon="folder" color="teal" text-color="white"></q-avatar>
-                  </q-item-section>
-
-                  <q-item-section>
-                    <q-item-label lines="1">Photos</q-item-label>
-                    <q-item-label caption>January 15th, 2019</q-item-label>
-                  </q-item-section>
-
-                  <q-item-section side>
-                    <q-icon name="info"></q-icon>
-                  </q-item-section>
-                </q-item>
-
-                <q-item clickable v-ripple>
-                  <q-item-section avatar top>
-                    <q-avatar icon="folder" color="teal" text-color="white"></q-avatar>
-                  </q-item-section>
-
-                  <q-item-section>
-                    <q-item-label lines="1">Photos</q-item-label>
-                    <q-item-label caption>January 15th, 2019</q-item-label>
+                    <q-item-label lines="1">Lorem ipsum</q-item-label>
+                    <q-item-label caption lines="1">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis, quis nam, odio commodi minus accusantium itaque, enim facere veniam suscipit eos voluptatem fugiat saepe. Itaque iste molestiae libero harum! Perspiciatis.</q-item-label>
                   </q-item-section>
 
                   <q-item-section side>
@@ -302,6 +220,4 @@
         </q-card-section>
       </q-card>
     </q-dialog>
-  </q-page>
-</q-page-container>
 <?php get_footer(); ?>
