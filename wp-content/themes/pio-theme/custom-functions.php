@@ -60,3 +60,18 @@ function get_posted_date() {
   echo '<span class="posted-on">' . $posted_on . '</span>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 }
+
+add_action('wp', 'redirect_private_page_to_login');
+
+function redirect_private_page_to_login(){
+
+    global $wp_query;
+
+    $queried_object = get_queried_object();
+
+    if ($queried_object->post_status == "private" && !is_user_logged_in()) {
+
+        wp_redirect(home_url('/login'));
+
+    } 
+}

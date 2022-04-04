@@ -1,23 +1,5 @@
-.clock-title{
-  font-size: 16px;
-  line-height: 28px;
-  color: #268be3;
-  font-weight: bold;
-  text-align: center;
-  margin-bottom: 15px;
+/* login page styles */
+.login-card{
+  
 }
-.clock-time{
-  font-size: 32px;
-  line-height: 28px;
-  color: #777e84;
-  font-weight: bold;
-  text-align: center;
-  margin-bottom: 10px;
-}
-.clock-date{
-  font-size: 21px;
-  line-height: 28px;
-  color: #777e84;
-  font-weight: bold;
-  text-align: center;
-}
+/* login page styles */

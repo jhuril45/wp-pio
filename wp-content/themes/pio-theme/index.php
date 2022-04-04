@@ -141,7 +141,7 @@
       <div class="col-12 row q-pt-md">
         <div class="q-py-xs col-6 col-md-3 q-px-md">
           <q-card class="news-card" style="max-height:150px">
-            <a href="">
+            <a href="<?php echo site_url()?>/transparency">
               <q-img
                 contain
                 src="<?php echo get_template_directory_uri().'/assets/images/transparency-seal.jpg'; ?>"

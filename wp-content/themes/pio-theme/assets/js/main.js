@@ -137,6 +137,10 @@ new Vue({
         },
       ],
       page_tab: 'mission_vision',
+      login_form: {
+        username: '',
+        password: '',
+      }
     }
   },
   created(){
@@ -148,6 +152,12 @@ new Vue({
     this.getPosts()
   },
   methods: {
+    onSubmit(){
+
+    },
+    onReset(){
+
+    },
     flipCard(id,is_flipped=true){
       const el = document.getElementById(id)
       if(!el) return
