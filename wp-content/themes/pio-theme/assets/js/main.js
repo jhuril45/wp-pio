@@ -3,7 +3,7 @@ const settings = {API_BASE_PATH: "/vue_wp/wp-json/"}
 new Vue({
   el: '#q-app',
   components:{
-    // clock
+    
   },
   data: function () {
     return {
@@ -140,7 +140,50 @@ new Vue({
       login_form: {
         username: '',
         password: '',
-      }
+      },
+      transparency_type: 'Anually',
+      transparency_year: 2022,
+      filter: '',
+      columns: [
+        {
+          name: 'name',
+          required: true,
+          label: '',
+          align: 'left',
+          field: row => row.name,
+          format: val => `${val}`,
+          sortable: true
+        },
+      ],
+      data: [
+        {
+          name: 'Supplemental Procurement Plan 2020 (Vol 2)',
+        },
+        {
+          name: 'Supplemental Procurement Plan 2020',
+        },
+        {
+          name: 'ANNUAL BUDGET',
+        },
+        {
+          name: 'Annual Procurement Plan 2020 (Covid-19 Operations)',
+        },
+        {
+          name: 'BAYANIHAN GRANT AS OF AUGUST 2020',
+        },
+        {
+          name: 'BAYANIHAN GRANT AS OF JULY 2020',
+        },
+        {
+          name: 'BAYANIHAN GRANT AS OF SEPTEMBER 2020',
+        },
+        {
+          name: 'BAYANIHAN GRANT AS OF OCTOBER 2020',
+        },
+        {
+          name: 'Status of Appropriation , Allotment and Obligations as of January 31, 2022',
+        },
+      ],
     }
   },
   created(){
@@ -148,7 +191,6 @@ new Vue({
   },
   mounted(){
     this.initMenus()
-    this.getEvents()
     this.getPosts()
   },
   methods: {
@@ -197,16 +239,6 @@ new Vue({
       }catch(error){
         console.log(error)
       }
-    },
-    getEvents(){
-      return new Promise((resolve, reject) => {
-        window.axios.get(settings.API_BASE_PATH+'tribe/events/v1/events')
-        .then((response) => {
-          console.log(response)
-          resolve()
-        })
-      })
-      
     },
     getMenus(){
       return new Promise((resolve, reject) => {

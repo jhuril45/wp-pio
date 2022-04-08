@@ -61,7 +61,7 @@ function get_posted_date() {
 
 }
 
-add_action('wp', 'redirect_private_page_to_login');
+// add_action('wp', 'redirect_private_page_to_login');
 
 function redirect_private_page_to_login(){
 
@@ -75,3 +75,27 @@ function redirect_private_page_to_login(){
 
     } 
 }
+
+function admin_default_page() {
+  $user = wp_get_current_user();
+  if($user->roles[0] != 'administrator'){
+    return home_url('/dashboard');
+  }else{
+    return home_url('/wp-admin');
+  }
+}
+
+function my_login_logo() { ?>
+  <style type="text/css">
+      #login h1 a, .login h1 a {
+        background-image: url(<?php echo get_template_directory_uri(); ?>/assets/images/Butuan_Logo_Transparent.png);
+        height:150px;
+        width:150px;
+        background-size: 150px 150px;
+        background-repeat: no-repeat;
+      }
+  </style>
+<?php }
+add_action( 'login_enqueue_scripts', 'my_login_logo' );
+
+// add_filter('login_redirect', 'admin_default_page');

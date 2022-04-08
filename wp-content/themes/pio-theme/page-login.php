@@ -18,13 +18,14 @@
 
         <q-card-section>
           <q-form
-            @submit="onSubmit"
-            @reset="onReset"
+            action="<?php echo esc_url( site_url( 'wp-login.php', 'login_post' ) ); ?>"
+            method="post"
             class="q-gutter-md"
             >
             <q-input
               outlined
               v-model="login_form.username"
+              for="user_login"
               label="Username"
               lazy-rules
               :rules="[ val => val && val.length > 0 || 'Please enter your username']"
@@ -33,12 +34,12 @@
             <q-input
               outlined
               type="password"
+              for="user_pass"
               v-model="login_form.password"
               label="Password"
               lazy-rules
               :rules="[
-                val => val !== null && val !== '' || 'Please type your age',
-                val => val > 0 && val < 100 || 'Please type a real age'
+                val => val !== null && val !== '' || 'Please enter your password',
               ]"
             ></q-input>
 
