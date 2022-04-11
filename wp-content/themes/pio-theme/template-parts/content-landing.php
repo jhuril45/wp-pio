@@ -137,7 +137,7 @@
           contain
           height="200px"
           :src="post.fimg_url ? post.fimg_url : '<?php 
-            echo custom_get_custom_logo()
+            echo get_template_directory_uri().'/assets/images/Butuan_Logo_Transparent.png';
           ?>'"
           basic
         >

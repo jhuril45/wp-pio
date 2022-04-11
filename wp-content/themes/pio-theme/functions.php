@@ -20,3 +20,4 @@ require get_template_directory() . '/load-styles.php';
  * Custom functions.
  */
 require get_template_directory() . '/custom-functions.php';
+require get_template_directory() . '/custom-rest.php';

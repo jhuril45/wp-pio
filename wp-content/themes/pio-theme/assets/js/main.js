@@ -229,7 +229,6 @@ new Vue({
           resolve()
         })
       })
-      
     },
     async initMenus(){
       try{
@@ -248,7 +247,6 @@ new Vue({
           resolve()
         })
       })
-      
     },
     async getHeaderMenus(){
       return new Promise((resolve, reject) => {
@@ -260,7 +258,6 @@ new Vue({
           resolve()
         })
       })
-      
     },
     async getPageMenus(){
       return new Promise((resolve, reject) => {

@@ -53,7 +53,34 @@ class Cgb_Carousel_Admin {
 		$this->version = $version;
     add_action('admin_menu', array( $this, 'addPluginAdminMenu' ), 9);   
     add_action('admin_init', array( $this, 'registerAndBuildFields' ));
+
+    // add_action( 'admin_post_nopriv_save_my_custom_form', array( $this, 'my_save_custom_form' ));
+    // add_action( 'admin_post_save_my_custom_form', array( $this, 'my_save_custom_form' ));
 	}
+
+  function my_save_custom_form() {
+    $inputValue = $_POST['example-jpg-file'];
+    // echo $inputValue;
+
+
+    if(isset($_FILES['example-jpg-file'])){
+      $filename = basename($_FILES["example-jpg-file"]["name"]);
+      echo $filename;
+      $file = wp_upload_bits( $_FILES['example-jpg-file']['name'], null, @file_get_contents( $_FILES['example-jpg-file']['tmp_name'] ) );
+    // echo basename($_FILES["example-jpg-file"]["name"]);
+    }
+
+    // global $wpdb;
+    // $inputValue = $_POST['name-1'];
+    // $wpdb->insert(
+    //   'wp_test_data',
+    //   array(
+    //     'name' => $inputValue,
+    //   ),
+    // );
+    wp_redirect( admin_url('/admin.php?page=').$this->plugin_name );
+    die;
+  }
 
 	/**
 	 * Register the stylesheets for the admin area.
@@ -75,7 +102,9 @@ class Cgb_Carousel_Admin {
 		 */
 
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/cgb-carousel-admin.css', array(), $this->version, 'all' );
-
+    
+    
+    
     wp_register_style('quasar-css', plugin_dir_url( __FILE__ ) . 'css/quasar.min.css', false,'1.1','all');
     wp_enqueue_style( 'quasar-css');
 
@@ -113,22 +142,26 @@ class Cgb_Carousel_Admin {
     // wp_register_script( 'vue-script', 'https://cdn.jsdelivr.net/npm/vue/dist/vue.js',array ( 'jquery' ), 1.1, true);
     wp_register_script('vue-script', plugin_dir_url( __FILE__ ) . 'js/vue.min.js',array ( 'jquery' ), 1.1, true);
     wp_register_script('quasar-script', plugin_dir_url( __FILE__ ) . 'js/quasar.min.js',array ( 'jquery' ), 1.1, true);
+    wp_register_script('axios', plugin_dir_url( __FILE__ ) . 'js/axios.min.js',array ( 'jquery' ), 1.1, true);
     wp_register_script('vue-main', plugin_dir_url( __FILE__ ) . 'js/main.js',array ( 'jquery' ), 1.1, true);
 
     wp_enqueue_script( 'vue-script');
     wp_enqueue_script( 'quasar-script');
+    wp_enqueue_script( 'axios');
     wp_enqueue_script( 'vue-main');
 
-    // wp_enqueue_script( $this->plugin_name, 'https://cdn.jsdelivr.net/npm/vue/dist/vue.js',array ( 'jquery' ), 1.1, true);
-    // wp_enqueue_script($this->plugin_name, plugin_dir_url( __FILE__ ) . '/js/quasar.min.js',array ( 'jquery' ), 1.1, true);
-    // wp_enqueue_script($this->plugin_name, plugin_dir_url( __FILE__ ) . '/js/main.js',array ( 'jquery' ), 1.1, true);
+    wp_localize_script('vue-main', 'Rest', [
+      'nonce' => wp_create_nonce('wp_rest'),
+    ]);
 
+    
   }
 
   public function addPluginAdminMenu() {
     //add_menu_page( $page_title, $menu_title, $capability, $menu_slug, $function, $icon_url, $position );
     add_menu_page(  $this->plugin_name, 'CGB Carousel', 'administrator', $this->plugin_name, array( $this, 'displayPluginAdminDashboard' ), 'dashicons-chart-area', 26 );
     
+    // $this->my_save_custom_form();
     //add_submenu_page( '$parent_slug, $page_title, $menu_title, $capability, $menu_slug, $function );
     // add_submenu_page( $this->plugin_name, 'CGB Carousel Settings', 'Settings', 'administrator', $this->plugin_name.'-settings', array( $this, 'displayPluginAdminSettings' ));
   }
@@ -165,6 +198,10 @@ class Cgb_Carousel_Admin {
   }
 
   public function registerAndBuildFields() {
+    $action = empty( $_REQUEST['action'] ) ? '' : $_REQUEST['action'];
+    if(!empty($action)){
+      do_action('admin_post_save_my_custom_form');
+    }
       /**
      * First, we add_settings_section. This is necessary since all future settings must belong to one.
      * Second, add_settings_field
