@@ -37,6 +37,12 @@ function myInit() {
   $globalUrl = url_to_postid(get_permalink());
 }
 
+function getCarouselImages() {
+  global $wpdb;
+  $results = $wpdb->get_results("SELECT * FROM wp_carousel_images");
+  return $results;
+}
+
 function get_posted_date() {
   $time_string = '<time class="entry-date published updated" datetime="%1$s">%2$s</time>';
   if ( get_the_time( 'U' ) !== get_the_modified_time( 'U' ) ) {

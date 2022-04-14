@@ -215,11 +215,10 @@ new Vue({
     },
     getPosts(){
       return new Promise((resolve, reject) => {
-        window.axios.get(settings.API_BASE_PATH+'wp/v2/posts?per_page=10')
+        window.axios.get(settings.API_BASE_PATH+'wp/v2/posts?per_page=4')
         .then((response) => {
           let posts = response.data ? response.data : this.page_posts
           posts = posts.map(x => {
-            console.log(x.excerpt.rendered)
             x.excerpt.rendered = x.excerpt.rendered.replace('<p>','')
             x.excerpt.rendered = x.excerpt.rendered.replace('</p>','')
             x.excerpt.rendered = x.excerpt.rendered.replace('[&hellip;]','...')

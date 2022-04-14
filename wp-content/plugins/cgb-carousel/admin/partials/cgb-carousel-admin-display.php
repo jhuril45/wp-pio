@@ -11,16 +11,6 @@
  * @package    Cgb_Carousel
  * @subpackage Cgb_Carousel/admin/partials
  */
-function getImageList() {
-  try{
-    $user = wp_get_current_user();
-    global $wpdb;
-    $results = $wpdb->get_results("SELECT * FROM wp_carousel_images");
-    return $results;
-  }catch(Exception $error){
-    return $error;
-  }
-}
 ?>
 
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
@@ -29,7 +19,6 @@ function getImageList() {
     <div class="col-12 text-start text-bold text-h5 q-gutter-x-md q-my-md">
       <span>
         Carousel Images
-        
       </span>
       <q-btn
         size="sm"
@@ -51,7 +40,7 @@ function getImageList() {
             contain>
           </q-img>
           <div class="absolute-top-right">
-            <q-btn round icon="close" color="red"></q-btn>
+            <q-btn round icon="close" color="red" @click="deleteImage(image)"></q-btn>
           </div>
         </q-card-section>
 
@@ -64,34 +53,6 @@ function getImageList() {
         </q-card-actions>
       </q-card>
       
-    </div>
-    <div class="col-4" v-if="false">
-      <q-form
-        class="q-gutter-md"
-        action="" 
-        method="POST"
-        enctype="multipart/form-data"
-        >
-        <input type="hidden" id="action" name="action" value="save_my_custom_form">
-        <input type="file" id="example-jpg-file" name="example-jpg-file" value="" />
-        <q-file filled bottom-slots v-model="file" label="Label" counter for="example-jpg-file" v-if="false">
-          <template v-slot:prepend>
-            <q-icon name="cloud_upload" @click.stop />
-          </template>
-          <template v-slot:append>
-            <q-icon name="close" @click.stop="file = null" class="cursor-pointer" />
-          </template>
-
-          <template v-slot:hint>
-            Field hint
-          </template>
-        </q-file>
-
-        <div>
-          <q-btn label="Submit" type="submit" color="primary"></q-btn>
-          <q-btn label="Reset" type="reset" color="primary" flat class="q-ml-sm"></q-btn>
-        </div>
-      </q-form>
     </div>
   </div>
 

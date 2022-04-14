@@ -16,13 +16,18 @@ new Vue({
       carousel_dialog: false,
       stars: 3,
       loading: false,
+      form:{
+        title: null,
+        featured_image: null,
+        content: null,
+      }
     }
   },
   created(){
 
   },
   mounted(){
-    this.getCarouselImages()
+
   },
   methods: {
     deleteImage(image){
@@ -55,19 +60,17 @@ new Vue({
         this.images = response.data
       })
     },
-    submitCarouselImage(evt){
+    addPost(evt){
       if(this.loading) return
       this.loading = true
       const formData = new FormData()
-      formData.append('file',this.file)
-      window.axios.post(settings.API_BASE_PATH+'myplugin/v1/add-carousel',formData)
+      formData.append('title',this.form.title)
+      formData.append('content',this.form.content)
+      formData.append('featured_image',this.form.featured_image)
+      window.axios.post(settings.API_BASE_PATH+'myplugin/v1/add-post',formData)
       .then((response) => {
         console.log(response.data)
-        this.getCarouselImages()
         this.loading = false
-        this.carousel_dialog = false
-        this.file = null
-        this.file_display = null
       })
       .catch((error) => {
         this.loading = false

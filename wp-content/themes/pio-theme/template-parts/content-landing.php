@@ -8,21 +8,35 @@
     :height="$q.screen.lt.sm ? '200px' : '400px'"
     control-text-color="primary"
   >
-    <q-carousel-slide class="q-pa-none" :name="1">
+    <?php 
+      $index = 1;
+      foreach (fetchCarouselImages() as $key => $value) {
+    ?>
+    <q-carousel-slide class="q-pa-none" :name="<?php echo $index?>">
+      <q-img
+        src="<?php echo($value->path); ?>"
+        style="height:100%; width:100%"
+        :cover="!$q.screen.lt.sm"
+        :contain="$q.screen.lt.sm"></q-img>
+    </q-carousel-slide>
+    <?php 
+      $index = $index + 1;
+    }?>
+    <q-carousel-slide class="q-pa-none" :name="1" v-if="false">
       <q-img
         src="<?php echo get_template_directory_uri().'/assets/images/banner1.png'; ?>"
         style="height:100%; width:100%"
         :cover="!$q.screen.lt.sm"
         :contain="$q.screen.lt.sm"></q-img>
     </q-carousel-slide>
-    <q-carousel-slide class="q-pa-none" :name="2">
+    <q-carousel-slide class="q-pa-none" :name="2" v-if="false">
       <q-img
         src="<?php echo get_template_directory_uri().'/assets/images/banner2.png'; ?>"
         style="height:100%; width:100%"
         :cover="!$q.screen.lt.sm"
         :contain="$q.screen.lt.sm"></q-img>
     </q-carousel-slide>
-    <q-carousel-slide class="q-pa-none" :name="3">
+    <q-carousel-slide class="q-pa-none" :name="3" v-if="false">
       <q-img
         src="<?php echo get_template_directory_uri().'/assets/images/banner3.png'; ?>"
         style="height:100%; width:100%"

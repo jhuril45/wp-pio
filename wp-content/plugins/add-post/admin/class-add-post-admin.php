@@ -3,11 +3,11 @@
 /**
  * The admin-specific functionality of the plugin.
  *
- * @link       cgb-carousel
+ * @link       jhuril45@gmail.com
  * @since      1.0.0
  *
- * @package    Cgb_Carousel
- * @subpackage Cgb_Carousel/admin
+ * @package    Add_Post
+ * @subpackage Add_Post/admin
  */
 
 /**
@@ -16,11 +16,11 @@
  * Defines the plugin name, version, and two examples hooks for how to
  * enqueue the admin-specific stylesheet and JavaScript.
  *
- * @package    Cgb_Carousel
- * @subpackage Cgb_Carousel/admin
+ * @package    Add_Post
+ * @subpackage Add_Post/admin
  * @author     Jhuril Bandola <jhuril45@gmail.com>
  */
-class Cgb_Carousel_Admin {
+class Add_Post_Admin {
 
 	/**
 	 * The ID of this plugin.
@@ -65,18 +65,17 @@ class Cgb_Carousel_Admin {
 		 * This function is provided for demonstration purposes only.
 		 *
 		 * An instance of this class should be passed to the run() function
-		 * defined in Cgb_Carousel_Loader as all of the hooks are defined
+		 * defined in Add_Post_Loader as all of the hooks are defined
 		 * in that particular class.
 		 *
-		 * The Cgb_Carousel_Loader will then create the relationship
+		 * The Add_Post_Loader will then create the relationship
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
 
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/cgb-carousel-admin.css', array(), $this->version, 'all' );
-	}
+		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/add-post-admin.css', array(), $this->version, 'all' );
 
-  
+	}
 
 	/**
 	 * Register the JavaScript for the admin area.
@@ -89,20 +88,21 @@ class Cgb_Carousel_Admin {
 		 * This function is provided for demonstration purposes only.
 		 *
 		 * An instance of this class should be passed to the run() function
-		 * defined in Cgb_Carousel_Loader as all of the hooks are defined
+		 * defined in Add_Post_Loader as all of the hooks are defined
 		 * in that particular class.
 		 *
-		 * The Cgb_Carousel_Loader will then create the relationship
+		 * The Add_Post_Loader will then create the relationship
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/cgb-carousel-admin.js', array( 'jquery' ), $this->version, true );
-  }
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/add-post-admin.js', array( 'jquery' ), $this->version, false );
+
+	}
 
   public function addPluginAdminMenu() {
     //add_menu_page( $page_title, $menu_title, $capability, $menu_slug, $function, $icon_url, $position );
-    add_menu_page(  $this->plugin_name, 'CGB Carousel', 'administrator', $this->plugin_name, array( $this, 'displayPluginAdminDashboard' ), 'dashicons-cover-image', 26 );
+    add_menu_page($this->plugin_name, 'Add Post', 'administrator', $this->plugin_name, array( $this, 'displayPluginAdminDashboard' ), 'dashicons-insert', 26 );
     
     // $this->my_save_custom_form();
     //add_submenu_page( '$parent_slug, $page_title, $menu_title, $capability, $menu_slug, $function );
@@ -136,4 +136,5 @@ class Cgb_Carousel_Admin {
     ]);
 		require_once 'partials/'.$this->plugin_name.'-admin-display.php';
   }
+
 }
