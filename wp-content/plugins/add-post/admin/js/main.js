@@ -9,7 +9,7 @@ new Vue({
   },
   data: function () {
     return {
-      file: null,
+      slide: 1,
       file_display: null,
       name: null,
       images: [],
@@ -20,45 +20,46 @@ new Vue({
         title: null,
         featured_image: null,
         content: null,
-      }
+        attachments: [],
+      },
     }
   },
   created(){
 
   },
   mounted(){
-
+    // console.log(this.$refs.slide)
+    // console.log(this.$refs.slide.$slots)
+    // console.log(this.$refs.slide.$scopedSlots)
   },
   methods: {
-    deleteImage(image){
-      const formData = new FormData()
-      formData.append('id',image.id)
-      window.axios.post(settings.API_BASE_PATH+'myplugin/v1/delete-carousel-display',formData)
-      .then((response) => {
-        console.log(response.data)
-        this.getCarouselImages()
-      })
+    resetForm(){
+      this.form = {
+        title: null,
+        featured_image: null,
+        content: null,
+        attachments: [],
+      }
+
+      this.images = []
+      this.file_display = null
     },
-    activateImage(image){
-      const is_display = image.is_display == 1 ? 0 : 1
-      const formData = new FormData()
-      formData.append('id',image.id)
-      formData.append('is_display',is_display)
-      window.axios.post(settings.API_BASE_PATH+'myplugin/v1/update-carousel-display',formData)
-      .then((response) => {
-        console.log(response.data)
-      })
-    },
-    addedFile(file){
-      if(file){
+    addedFile(file,is_attachments=false){
+      if(!is_attachments){
         this.file_display = URL.createObjectURL(file)
+      }else{
+        file.forEach(el => {
+          const index = this.form.attachments.findIndex(x => x['__key'] == el['__key'])
+          if(index < 0) this.form.attachments.push(el)
+        });
       }
     },
-    getCarouselImages(evt){
-      window.axios.get(settings.API_BASE_PATH+'myplugin/v1/get-carousel')
-      .then((response) => {
-        this.images = response.data
-      })
+    removeAttachment(attachment){
+      const index_form = this.form.attachments.findIndex(x => x['__key'] == attachment['__key'])
+      const index_images = this.images.findIndex(x => x['__key'] == attachment['__key'])
+
+      index_form >= 0 ? this.form.attachments.splice(index_form,1) : ''
+      index_images >= 0 ? this.images.splice(index_images,1) : ''
     },
     addPost(evt){
       if(this.loading) return
@@ -67,10 +68,15 @@ new Vue({
       formData.append('title',this.form.title)
       formData.append('content',this.form.content)
       formData.append('featured_image',this.form.featured_image)
+      formData.append('attachment_length',this.form.attachments.length)
+      for(var i = 0; i < this.form.attachments.length; i++){
+        formData.append('attachment-'+parseInt(i+1),this.form.attachments[i])
+      }
       window.axios.post(settings.API_BASE_PATH+'myplugin/v1/add-post',formData)
       .then((response) => {
         console.log(response.data)
         this.loading = false
+        // this.resetForm()
       })
       .catch((error) => {
         this.loading = false

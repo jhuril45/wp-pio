@@ -75,23 +75,66 @@ function fetchCarouselImages() {
 function submitPost() {
   try{
     $user = wp_get_current_user();
-    $post_title = $_POST['title'];
-    $post_content = $_POST['content'];
-    if($_POST['featured_image']){
-      $temp= explode('.',basename($_FILES['file']['featured_image']));
-      $extension = end($temp);
-      $file_name = time().'.'.$extension;
-    }
-    $post = array(
-      'post_title' => $post_title,
-      'post_content' => $post_content,
-      'post_status' => 'publish',
+
+    $post = wp_insert_post(
+      array(
+        'post_title' => $_POST['title'],
+        'post_content' => $_POST['content'],
+        'post_status' => 'publish',
+      )
     );
-    wp_insert_post($post);
-    return $post_content;
+
+    $featured_image = basename($_FILES["featured_image"]["name"]);
+
+    if($featured_image){
+      $featured_image = uploadFileSubmitted('featured_image');
+      $attachment_image = insertAttachment($featured_image,$post,true);
+    }
+    if($_POST['attachment_length'] > 0){
+      for ($i=1; $i <= $_POST['attachment_length']; $i++) { 
+        $attachment_file = uploadFileSubmitted('attachment-'.$i);
+        $attachment = insertAttachment($attachment_file,$post,true);
+      }
+    }
+    
+    return $post;
   }catch(Exception $error){
     return $error;
   }
+}
+
+function uploadFileSubmitted($file_name){
+  $upload_dir = wp_upload_dir();
+  $temp = explode('.',basename($_FILES[$file_name]['name']));
+  $extension = end($temp);
+  $image_data = file_get_contents($_FILES[$file_name]['tmp_name'] );
+      
+  $filename = 'jhuril'.time().'.'.$extension;
+  
+  $file = wp_mkdir_p($upload_dir['path']) ? $upload_dir['path'] . '/' . $filename : $upload_dir['basedir'] . '/' . $filename;
+
+  file_put_contents($file, $image_data);
+  return $file;
+}
+
+function insertAttachment($file,$post_id,$is_featured=false){
+  $filename = basename($file);
+  $attachment = array(
+    'post_mime_type' => wp_check_filetype($filename, null )['type'],
+    'post_title' => sanitize_file_name($filename),
+    'post_content' => '',
+    'post_status' => 'inherit'
+  );
+  
+  $attach_id = wp_insert_attachment( $attachment, $file, $post_id );
+
+  require_once(ABSPATH . 'wp-admin/includes/image.php'); 
+
+  $attach_data = wp_generate_attachment_metadata( $attach_id, $file );
+  $res1= wp_update_attachment_metadata( $attach_id, $attach_data );
+  $res2= $is_featured ? set_post_thumbnail( $post_id, $attach_id ) : null;
+  
+  return $res2;
 }
 
 add_action( 'rest_api_init', function () {
