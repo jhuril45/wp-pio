@@ -182,3 +182,24 @@ body {
 .page-card{
   min-height: 60vh !important;
 }
+
+.post-title{
+  padding: 10px 0;
+  font-size: 3em;
+  font-weight: 500;
+  line-height: 0.9;
+}
+
+.post-content{
+  padding: 10px 0;
+  font-size: 1.7em;
+  font-weight: 500;
+  line-height: 0.9;
+  white-space: break-spaces;
+}
+
+.post-time-stamp{
+  font-size: .90em;
+  font-weight: 400;
+  color: #959595;
+}

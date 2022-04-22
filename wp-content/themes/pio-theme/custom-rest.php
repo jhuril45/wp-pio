@@ -1,18 +1,4 @@
 <?php
-function my_awesome_func( $data ) {
-  $posts = get_posts( array(
-    'author' => $data['id'],
-  ) );
- 
-  if ( empty( $posts ) ) {
-    return null;
-  }
-  $user = wp_get_current_user();
- 
-  return $user->exists();
-  return $posts[0]->post_title;
-}
-
 function submitCarouselImage() {
   try{
     $user = wp_get_current_user();
@@ -91,7 +77,7 @@ function submitPost() {
       $attachment_image = insertAttachment($featured_image,$post,true);
     }
     if($_POST['attachment_length'] > 0){
-      for ($i=1; $i <= $_POST['attachment_length']; $i++) { 
+      for ($i=1; $i <= intval($_POST['attachment_length']); $i++) { 
         $attachment_file = uploadFileSubmitted('attachment-'.$i);
         $attachment = insertAttachment($attachment_file,$post,true);
       }

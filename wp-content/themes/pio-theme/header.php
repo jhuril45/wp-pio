@@ -21,15 +21,11 @@
       <?php if($pagename != 'dashboard'):?>
         <?php get_template_part('template-parts/content', 'header');?>
         <?php get_template_part('template-parts/content', 'drawer');?>
-      
-        
       <?php endif;?>
 
       <?php if($pagename == 'dashboard'):?>
         <?php get_template_part('template-parts/content', 'header-dashboard');?>
-
         <?php get_template_part('template-parts/content', 'drawer-dashboard');?>
-        
       <?php endif;?>
 
       

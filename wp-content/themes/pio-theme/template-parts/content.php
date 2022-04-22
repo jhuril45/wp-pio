@@ -1,40 +1,50 @@
-<article class="q-pa-xl">
-  <header class="entry-header">
-    <?php
-    if ( is_singular() ) :
-      the_title( '<div class="entry-title text-h3 text-left">', '</div>' );
-    else :
-      the_title( '<div class="entry-title text-h3 text-left"><a href="' . esc_url( get_permalink() ) . '" rel="bookmark">', '</a></div>' );
-    endif; ?>
-  </header>
-  <div class="entry-content">
-    <?php
-    the_content(
-      sprintf(
-        wp_kses(
-          /* translators: %s: Name of current post. Only visible to screen readers */
-          __( 'Continue reading<span class="screen-reader-text"> "%s"</span>', 'pio' ),
-          array(
-            'span' => array(
-              'class' => array(),
-            ),
-          )
-        ),
-        wp_kses_post( get_the_title() )
-      )
+<?php
+  $featured_image_url = get_the_post_thumbnail_url($post->ID);
+  $post_date = date('d F Y l / h:i A',strtotime($post->post_date));
+  $attachments = get_posts( array( 
+    'post_type' => 'attachment',
+    'post_mime_type'=>'image',
+    'posts_per_page' => -1,
+    'post_status' => 'published',
+    'post_parent' => $post->ID)
     );
-
-    // wp_link_pages(
-    //   array(
-    //     'before' => '<div class="page-links">' . esc_html__( 'Pages:', 'pio' ),
-    //     'after'  => '</div>',
-    //   )
-    // );
-    ?>
+  // var_dump($attachments);
+  if ( $attachments ) {
+    foreach ( $attachments as $attachment ) {
+      $src = wp_get_attachment_url( $attachment->ID, 'full');
+      $mime = wp_get_attachment_metadata($attachment->ID);
+      $type = wp_check_filetype($mime['file']);
+      $attachment->mime_type = $type['type'];
+      $attachment->src = $src;
+    }
+  }
+?>
+<div class="row justify-center">
+  <div class="col-md-12 col-12 q-px-xl">
+    <div>
+      <q-carousel
+        animated
+        v-model="slide"
+        infinite
+        :autoplay="false"
+      >
+        <?php for ( $index = 0 ; $index < count($attachments) ; $index++ ) {?>
+          <q-carousel-slide
+            :name="<?php echo $index+1;?>">
+            <q-img cover height="100%" width="100%" src="<?php echo $attachments[$index]->src?>"></q-img>
+          </q-carousel-slide>
+        <?php }?>
+      </q-carousel>
+    </div>
+    <div class="post-title q-mt-md">
+      <?php echo $post->post_title;?>
+    </div>
+    <div class="post-time-stamp">
+      <?php echo $post_date;?>
+    </div>
+    
+    <div class="post-content">
+      <?php echo $post->post_content;?>
+    </div>
   </div>
-  <div class="entry-meta">
-    <?php
-      get_posted_date();
-    ?>
-  </div>
-</article>
+</div>

@@ -8,7 +8,7 @@ new Vue({
   data: function () {
     return {
       tab: 'description',
-      drawer_left: false,
+      drawer_left: true,
       page_dialog: {
         open: false,
         data: {},
@@ -190,7 +190,7 @@ new Vue({
     document.getElementById("q-app").style.display = "block"
   },
   mounted(){
-    this.initMenus()
+    // this.initMenus()
     this.getPosts()
   },
   methods: {

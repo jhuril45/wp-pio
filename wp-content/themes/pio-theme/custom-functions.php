@@ -30,12 +30,23 @@ function custom_get_post_data(){
   // $data = get_post($post_id);
   return $post_id;
 }
-add_action('init', 'myInit');
+
+function custom_get_user_role(){
+  return wp_get_current_user()->roles[0];
+}
+
+function add_custom_query_var( $vars ){
+  $vars[] = "tab";
+  return $vars;
+}
+
+add_filter( 'query_vars', 'add_custom_query_var' );
 
 function myInit() {
   global $globalUrl;
   $globalUrl = url_to_postid(get_permalink());
 }
+add_action('init', 'myInit');
 
 function getCarouselImages() {
   global $wpdb;
@@ -76,9 +87,7 @@ function redirect_private_page_to_login(){
     $queried_object = get_queried_object();
 
     if ($queried_object->post_status == "private" && !is_user_logged_in()) {
-
-        wp_redirect(home_url('/login'));
-
+      wp_redirect(home_url('/login'));
     } 
 }
 
@@ -90,6 +99,15 @@ function admin_default_page() {
     return home_url('/wp-admin');
   }
 }
+
+function restrict_admin() {
+  
+  $user = wp_get_current_user();
+  if($user->roles[0] != 'administrator'){
+    return wp_redirect(home_url('/dashboard'));
+  }
+}
+add_action( 'admin_init', 'restrict_admin', 1 );
 
 function my_login_logo() { ?>
   <style type="text/css">
@@ -103,5 +121,3 @@ function my_login_logo() { ?>
   </style>
 <?php }
 add_action( 'login_enqueue_scripts', 'my_login_logo' );
-
-// add_filter('login_redirect', 'admin_default_page');
