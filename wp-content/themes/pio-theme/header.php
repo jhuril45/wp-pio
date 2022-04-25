@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
   <title>
-  <?php bloginfo( 'name' ); ?>
+    <?php bloginfo( 'name' ); ?>
   </title>
 
   <!-- Template CSS -->
@@ -17,7 +17,7 @@
 
 <body>
   <div id="q-app" style="display:none">
-    <q-layout view="lHh lpr lff" container style="height: 100vh" class="shadow-2">
+    <q-layout view="lHh lpr lff" container style="min-height: 100vh" class="shadow-2">
       <?php if($pagename != 'dashboard'):?>
         <?php get_template_part('template-parts/content', 'header');?>
         <?php get_template_part('template-parts/content', 'drawer');?>
@@ -31,4 +31,4 @@
       
 
       <q-page-container>
-        <q-page id="<?php echo $pagename?>">
+        <q-page>

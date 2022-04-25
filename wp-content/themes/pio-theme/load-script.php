@@ -13,10 +13,17 @@ function add_script()
   wp_register_script('clockComponent', get_template_directory_uri() . '/assets/js/clockComponent.js',array ( 'jquery' ), 1.1, true);
   wp_enqueue_script( 'clockComponent');
 
-  wp_register_script('vue-main', get_template_directory_uri() . '/assets/js/main.js',array ( 'jquery' ), 1.1, true);
-  wp_enqueue_script( 'vue-main');
+  if($wp_query->queried_object->post_name == 'dashboard'){
+    wp_register_script('vue-main', get_template_directory_uri() . '/assets/js/add_post.js',array ( 'jquery' ), 1.1, true);
+    wp_enqueue_script( 'vue-main');
+  }else{
+    wp_register_script('vue-main', get_template_directory_uri() . '/assets/js/main.js',array ( 'jquery' ), 1.1, true);
+    wp_enqueue_script( 'vue-main');
+  }
 
+  wp_localize_script('vue-main', 'Rest', [
+    'nonce' => wp_create_nonce('wp_rest'),
+  ]);
   
-
 }
 add_action('wp_enqueue_scripts', 'add_script');

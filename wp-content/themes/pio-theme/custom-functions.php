@@ -19,6 +19,12 @@ function get_rest_featured_image( $object, $field_name, $request ) {
   return false;
 }
 
+function check_news_category() {
+	$is_term = term_exists('News');
+  wp_create_category('News');
+}
+add_action( 'admin_init', 'check_news_category' );
+
 function custom_get_custom_logo(){
   $logo = get_theme_mod( 'custom_logo' );
   $image = wp_get_attachment_image_src( $logo , 'full' );

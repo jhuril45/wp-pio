@@ -9,12 +9,8 @@ new Vue({
   },
   data: function () {
     return {
-      slide: 1,
       file_display: null,
-      name: null,
       images: [],
-      carousel_dialog: false,
-      stars: 3,
       loading: false,
       form:{
         title: null,
@@ -76,7 +72,7 @@ new Vue({
       .then((response) => {
         console.log(response.data)
         this.loading = false
-        // this.resetForm()
+        this.resetForm()
       })
       .catch((error) => {
         this.loading = false

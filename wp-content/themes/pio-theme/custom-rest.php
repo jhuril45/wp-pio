@@ -61,12 +61,14 @@ function fetchCarouselImages() {
 function submitPost() {
   try{
     $user = wp_get_current_user();
-
+    $term = get_term_by('name', 'News', 'category');
+    // return $term;
     $post = wp_insert_post(
       array(
         'post_title' => $_POST['title'],
         'post_content' => $_POST['content'],
         'post_status' => 'publish',
+        'post_category' => array($term->term_id),
       )
     );
 
@@ -82,7 +84,6 @@ function submitPost() {
         $attachment = insertAttachment($attachment_file,$post,true);
       }
     }
-    
     return $post;
   }catch(Exception $error){
     return $error;

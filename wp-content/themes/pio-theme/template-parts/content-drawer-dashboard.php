@@ -16,8 +16,10 @@
       </q-item>
       <q-item v-ripple>
         <q-item-section>
-          <q-item-label class="text-bold">
-            City Government Butuan
+          <q-item-label class="text-bold cursor-pointer">
+            <a href="<?php echo esc_url(remove_query_arg( 'tab'));?>">
+              City Government Butuan
+            </a>
           </q-item-label>
           <q-item-label>
           <div class="text-dark text-caption">

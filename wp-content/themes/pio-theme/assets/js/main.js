@@ -1,18 +1,22 @@
-const settings = {API_BASE_PATH: "/vue_wp/wp-json/"}
+var settings = {API_BASE_PATH: "/vue_wp/wp-json/"}
+window.Quasar.plugins.LoadingBar.setDefaults({ color: 'white' });
 // Quasar.iconSet.set(Quasar.iconSet.svgFontawesomeV5)
-new Vue({
+
+
+window.vue = new Vue({
   el: '#q-app',
+  mixins: [],
   components:{
     
   },
   data: function () {
     return {
       tab: 'description',
-      drawer_left: true,
+      drawer_left: false,
       page_dialog: {
         open: false,
         data: {},
-      },   
+      },
       slide: 1,
       menus: [],
       header_menus: [
@@ -184,12 +188,22 @@ new Vue({
           name: 'Status of Appropriation , Allotment and Obligations as of January 31, 2022',
         },
       ],
+      loading: false,
+      form:{
+        title: null,
+        featured_image: null,
+        content: null,
+        attachments: [],
+      },
+      file_display: null,
+      images: [],
     }
   },
   created(){
     document.getElementById("q-app").style.display = "block"
   },
   mounted(){
+    // window.Quasar.LoadingBar.start()
     // this.initMenus()
     this.getPosts()
   },
@@ -270,6 +284,43 @@ new Vue({
           resolve()
         })
       })
+      
+    },
+
+    ///Add Post ///
+    resetForm(){
+      this.form = {
+        title: null,
+        featured_image: null,
+        content: null,
+        attachments: [],
+      }
+
+      this.images = []
+      this.file_display = null
+    },
+    addedFile(file,is_attachments=false){
+      console.log(is_attachments)
+      if(!is_attachments){
+        this.file_display = this.getImageUrl(file)
+      }else{
+        file.forEach(el => {
+          const index = this.form.attachments.findIndex(x => x['__key'] == el['__key'])
+          if(index < 0) this.form.attachments.push(el)
+        });
+      }
+    },
+    getImageUrl(file){
+      return URL.createObjectURL(file)
+    },
+    removeAttachment(attachment){
+      const index_form = this.form.attachments.findIndex(x => x['__key'] == attachment['__key'])
+      const index_images = this.images.findIndex(x => x['__key'] == attachment['__key'])
+
+      index_form >= 0 ? this.form.attachments.splice(index_form,1) : ''
+      index_images >= 0 ? this.images.splice(index_images,1) : ''
+    },
+    addPost(evt){
       
     },
   },

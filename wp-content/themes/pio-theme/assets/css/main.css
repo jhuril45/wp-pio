@@ -185,21 +185,37 @@ body {
 
 .post-title{
   padding: 10px 0;
-  font-size: 3em;
+  font-size: 2em;
   font-weight: 500;
-  line-height: 0.9;
+  line-height: 1;
 }
 
 .post-content{
   padding: 10px 0;
-  font-size: 1.7em;
-  font-weight: 500;
-  line-height: 0.9;
-  white-space: break-spaces;
+  font-size: 1em;
+  /* font-weight: 300; */
+  line-height: 1;
+  white-space: pre-line;
 }
 
 .post-time-stamp{
-  font-size: .90em;
+  font-size: 1em;
   font-weight: 400;
   color: #959595;
+}
+
+.carousel-img{
+  background-size: contain !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+}
+
+@media only screen and (max-width: 768px) {
+  .post-title{
+    font-size: 1.5em;
+  }
+
+  .post-content{
+    font-size: .75em;
+  }
 }
