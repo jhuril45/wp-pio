@@ -10,7 +10,7 @@
     <q-card class="add-post-card">
       <q-card-section class="text-bold text-h5">
         <span>
-          Add Post
+          Add Report
         </span>
       </q-card-section>
       <q-card-section>
@@ -22,40 +22,12 @@
             <q-input
               v-model="form.title"
               placeholder="Title"
-              :rules="[val => !!val || 'Invalid Post Title']">
-            </q-input>
-          </div>
-          <div class="col-12">
-            <q-img
-              :src="file_display ? file_display : '<?php echo get_template_directory_uri().'/assets/images/Butuan_Logo_Transparent.png';?>'"
-              height="180px"
-              class="cursor-pointer"
-              @click="$refs.featured_image.$el.click()"
-              contain>
-              <div class="absolute-bottom text-subtitle1 text-center">
-                Featured Image
-              </div>
-            </q-img>
-            <q-file
-              ref="featured_image"
-              v-model="form.featured_image"
-              accept=".jpg, image/*"
-              @input="addedFile"
-              v-show="false"></q-file>
-          </div>
-          <div class="col-12">
-            <q-input
-              v-model="form.content"
-              placeholder="Content"
-              class="full-width"
-              outlined
-              autogrow
-              :rules="[val => !!val || 'Invalid Post Title']">
+              :rules="[val => !!val || 'Invalid Report Title']">
             </q-input>
           </div>
           <div class="col-12">
             <div class="text-body1">
-              Attachments
+              Attachment
             </div>
             <q-file
               ref="attachments"

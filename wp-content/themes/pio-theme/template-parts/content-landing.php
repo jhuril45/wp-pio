@@ -1,51 +1,41 @@
+<?php 
+$carousel_images = fetchCarouselImages();
+?>
 <div class="full-width">
   <q-carousel
     animated
     v-model="slide"
-    arrows
-    navigation
+    :arrows="Boolean(<?php echo(count($carousel_images) > 1);?>)"
+    :navigation="Boolean(<?php echo(count($carousel_images) > 1);?>)"
     infinite
-    :height="$q.screen.lt.sm ? '200px' : '400px'"
     control-text-color="primary"
   >
     <?php 
+      if($carousel_images){
       $index = 1;
-      foreach (fetchCarouselImages() as $key => $value) {
+      foreach ($carousel_images as $key => $value) {
     ?>
     <q-carousel-slide class="q-pa-none" :name="<?php echo $index?>">
-      <q-img
+      <img
         src="<?php echo($value->path); ?>"
-        style="height:100%; width:100%"
-        :cover="!$q.screen.lt.sm"
-        :contain="$q.screen.lt.sm"></q-img>
+        style="max-height:100%;width:100%;height:90%">
     </q-carousel-slide>
     <?php 
-      $index = $index + 1;
-    }?>
-    <q-carousel-slide class="q-pa-none" :name="1" v-if="false">
-      <q-img
-        src="<?php echo get_template_directory_uri().'/assets/images/banner1.png'; ?>"
-        style="height:100%; width:100%"
-        :cover="!$q.screen.lt.sm"
-        :contain="$q.screen.lt.sm"></q-img>
+        $index = $index + 1;
+      }
+    }else{
+    ?>
+    <q-carousel-slide class="q-pa-none" :name="1">
+      <img
+        src="<?php echo get_template_directory_uri().'/assets/images/ButuanOnDesign.png'; ?>"
+        style="max-height:100%;width:100%;height:90%">
     </q-carousel-slide>
-    <q-carousel-slide class="q-pa-none" :name="2" v-if="false">
-      <q-img
-        src="<?php echo get_template_directory_uri().'/assets/images/banner2.png'; ?>"
-        style="height:100%; width:100%"
-        :cover="!$q.screen.lt.sm"
-        :contain="$q.screen.lt.sm"></q-img>
-    </q-carousel-slide>
-    <q-carousel-slide class="q-pa-none" :name="3" v-if="false">
-      <q-img
-        src="<?php echo get_template_directory_uri().'/assets/images/banner3.png'; ?>"
-        style="height:100%; width:100%"
-        :cover="!$q.screen.lt.sm"
-        :contain="$q.screen.lt.sm"></q-img>
-    </q-carousel-slide>
+    <?php 
+    }
+    ?>
   </q-carousel>
 </div>
-<div class="full-width row justify-start q-my-xl" :class="$q.screen.lt.sm ? 'q-pa-md' : 'q-pa-xl'">
+<div class="full-width row justify-start " :class="$q.screen.lt.sm ? 'q-my-lg q-px-md' : 'q-my-xl q-pa-xl'">
   <div class="col-12 text-center q-my-md text-bold" :class="$q.screen.lt.sm ? 'text-h5' : 'text-h4'">
     PLANS AND PROGRAMS
   </div>
@@ -82,6 +72,21 @@
       </div>
     </div>
   </div>
+</div>
+<div class="full-width row justify-center bg-primary" :class="$q.screen.lt.sm ? 'q-pa-md' : 'q-pa-lg'">
+  <div class="col-md-8 col-12 q-py-md text-white text-center" :class="$q.screen.lt.sm ? 'q-px-sm' : ''">
+    <div :class="$q.screen.lt.sm ? 'text-h5' : 'text-h4'">
+      ButuanOn News Update Noon Time Cast
+    </div>
+    <div class="q-mb-md" :class="$q.screen.lt.sm ? 'text-body2' : 'text-body1'">
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum, minus tempora nemo quia consectetur totam iste eius officiis quo nulla vitae et eveniet laborum voluptas in? Unde facilis praesentium iusto?
+    </div>
+    <q-video
+      style="height:400px;"
+      src="https://www.youtube.com/embed/YmBY9yNfNos"
+    />
+  </div>
+  
 </div>
 <div class="full-width">
   <q-parallax>
@@ -139,7 +144,7 @@
     </template>
   </q-parallax>
 </div>
-<div class="full-width row justify-start q-my-xl" :class="$q.screen.lt.sm ? 'q-pa-md' : 'q-pa-xl'">
+<div class="full-width row justify-start" :class="$q.screen.lt.sm ? 'q-my-lg q-px-md' : 'q-my-xl q-pa-xl'">
   <div class="col-12 text-center q-my-md text-bold" :class="$q.screen.lt.sm ? 'text-h5' : 'text-h4'">
     LATEST NEWS
   </div>
@@ -170,7 +175,7 @@
   <div class="col-12 text-center q-my-md text-bold" :class="$q.screen.lt.sm ? 'text-h5' : 'text-h4'">
     QUICK LINKS
   </div>
-  <div class="col-12 row q-pt-md">
+  <div class="col-12 row">
     <div class="q-py-xs col-12 col-md-4 q-px-md">
       <q-card class="news-card" style="max-height:150px">
         <a href="<?php echo site_url()?>/transparency">

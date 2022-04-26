@@ -1,6 +1,6 @@
 <q-drawer
   v-model="drawer_left"
-  :width="200"
+  :width="250"
   side="left"
   bordered
   content-class="bg-grey-3"
@@ -14,17 +14,15 @@
           </q-avatar>
         </q-item-section>
       </q-item>
-      <q-item v-ripple>
-        <q-item-section>
-          <q-item-label class="text-bold cursor-pointer">
-            <a href="<?php echo esc_url(remove_query_arg( 'tab'));?>">
-              City Government Butuan
-            </a>
+      <q-item class="q-py-none" v-ripple href="<?php echo esc_url(remove_query_arg( ''));?>">
+        <q-item-section class="q-py-none">
+          <q-item-label class="text-bold cursor-pointer text-center">
+            City Government Butuan
           </q-item-label>
           <q-item-label>
-          <div class="text-dark text-caption">
-            <page-clock :is_break="false"></page-clock>
-          </div>
+            <div class="text-dark text-caption text-center">
+              <page-clock :is_break="false"></page-clock>
+            </div>
           </q-item-label>
         </q-item-section>
       </q-item>
@@ -35,7 +33,18 @@
         </q-item-section>
         <q-item-section>
           <q-item-label class="text-body2 text-bold">
-            Add New Post
+            Add Post
+          </q-item-label>
+        </q-item-section>
+      </q-item>
+      <q-separator></q-separator>
+      <q-item clickable v-ripple href="<?php echo esc_url( add_query_arg( 'tab', 'add-report' ) );?>">
+        <q-item-section side>
+          <q-icon :name="'picture_as_pdf'"></q-icon>
+        </q-item-section>
+        <q-item-section>
+          <q-item-label class="text-body2 text-bold">
+            Add Report
           </q-item-label>
         </q-item-section>
       </q-item>

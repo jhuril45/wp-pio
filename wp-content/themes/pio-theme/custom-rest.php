@@ -13,6 +13,7 @@ function submitCarouselImage() {
       array(
         'path' => $file['url'],
         'is_display' => true,
+        'placement_number' => 0,
       ),
     );
 

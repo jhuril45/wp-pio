@@ -17,11 +17,15 @@
       $attachment->mime_type = $type['type'];
       $attachment->src = $src;
     }
+  }else{
+    $attachment = new stdClass();
+    $attachment->src = get_template_directory_uri().'/assets/images/Butuan_Logo_Transparent.png';
+    array_push($attachments,$attachment);
   }
 
   $data = get_posts( array( 
     'post_type' => 'post',
-    'posts_per_page' => 1,
+    'posts_per_page' => 5,
     'exclude' => array($post->ID),
     )
   );
@@ -39,8 +43,8 @@
   }
 ?>
 <div class="row justify-center">
-  <div class="col-md-8 col-12 q-py-lg q-px-md">
-    <q-card>
+  <div class="col-md-9 col-12" :class="$q.screen.lt.sm ? 'q-py-sm q-px-md' : 'q-py-lg q-px-xl'">
+    <q-card flat>
       <q-card-section class="">
         <div class="post-title">
           <?php echo $post->post_title;?>
@@ -77,11 +81,14 @@
       </q-card-section>
     </q-card>
   </div>
-  <div class="col-md-4 col-12 q-py-lg q-px-md" v-if="<?php echo(count($recent_posts))?> > 0">
+  <div class="col-md-3 col-12 q-py-lg q-px-md" v-if="<?php echo(count($recent_posts))?> > 0">
+    <div class="text-h6 q-my-md">
+      NEWS ARTICLES
+    </div>
     <?php
       foreach($recent_posts as $key => $value) { ?>
       <div class="col-12 row q-gutter-y-sm">
-        <div class="col-12">
+        <div class="col-12 q-pt-md">
           <q-card class="news-card" >
             <a href="<?php echo($value->guid);?>">
               <q-img
