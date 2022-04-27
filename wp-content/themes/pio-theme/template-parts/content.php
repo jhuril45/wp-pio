@@ -42,9 +42,9 @@
     array_push($recent_posts,$value);
   }
 ?>
-<div class="row justify-center">
-  <div class="col-md-9 col-12" :class="$q.screen.lt.sm ? 'q-py-sm q-px-md' : 'q-py-lg q-px-xl'">
-    <q-card flat>
+<div class="row justify-end">
+  <div class="col-md-8 col-12" :class="$q.screen.lt.sm ? 'q-py-sm q-px-md' : 'q-py-lg q-px-xl'">
+    <q-card flat :class="$q.screen.lt.sm ? '' : ''">
       <q-card-section class="">
         <div class="post-title">
           <?php echo $post->post_title;?>
@@ -58,19 +58,35 @@
         <q-carousel
           animated
           v-model="slide"
+          ref="carousel"
           infinite
           :autoplay="false"
-          :padding="false"
-          :arrows="Boolean(<?php echo(count($attachments) > 1);?>)"
-          control-color="primary"
+          :padding="true"
         >
           <?php for ( $index = 0 ; $index < count($attachments) ; $index++ ) {?>
             <q-carousel-slide
-              class="q-pa-none carousel-img"
+              class="q-pa-none carousel-img cursor-pointer"
               :name="<?php echo $index+1;?>"
-              img-src="<?php echo $attachments[$index]->src?>">
+              img-src="<?php echo $attachments[$index]->src?>"
+              @click="post_attachments=true">
             </q-carousel-slide>
           <?php }?>
+          <template v-slot:control>
+            <q-carousel-control
+              position="bottom-right"
+              :offset="[18, 18]"
+              class="q-gutter-xs"
+            >
+              <q-btn
+                push round dense color="primary" text-color="white" icon="arrow_left"
+                @click="$refs.carousel.previous()"
+              ></q-btn>
+              <q-btn
+                push round dense color="primary" text-color="white" icon="arrow_right"
+                @click="$refs.carousel.next()"
+              ></q-btn>
+            </q-carousel-control>
+          </template>
         </q-carousel>
       </q-card-section>
 

@@ -111,7 +111,7 @@
               :mobile-arrows="$q.screen.lt.md"
             >
               <q-tab name="mission_vision" label="Mission & Vision"></q-tab>
-              <q-tab name="home" label="Home"></q-tab>
+              <q-tab name="citizens_charter" label="Citizens Charter"></q-tab>
               <q-tab name="services" label="Services"></q-tab>
               <q-tab name="organization" label="Organizational Structure"></q-tab>
               <q-tab name="forms" label="Forms"></q-tab>
@@ -119,8 +119,8 @@
             <q-separator></q-separator>
 
             <q-tab-panels v-model="page_tab" animated class="q-px-md">
-              <q-tab-panel name="home">
-                <div class="text-h6">Home</div>
+              <q-tab-panel name="citizens_charter">
+                <div class="text-h6">Citizens Charter</div>
                 Lorem ipsum dolor sit amet consectetur adipisicing elit.
               </q-tab-panel>
 
@@ -185,7 +185,6 @@
           </div>
         </q-card-section>
       </q-card>
-      
     </div>
   </div>
 <?php get_footer(); ?>

@@ -1,11 +1,11 @@
 <q-footer>
-  <div class="row q-py-lg" :class="$q.screen.lt.sm ? 'q-px-md' : 'q-px-xl'">
-    <div class="col-12 col-md-3" >
+  <div class="row q-py-lg" :class="$q.screen.lt.sm ? 'text-start q-px-md' : 'q-px-xl'">
+    <div class="col-6 col-md-3" >
       <q-list dense padding class="rounded-borders">
         <q-item>
           <q-item-section>
             <q-item-label class="text-h6 q-mb-md">
-              Visit us
+              Visit Us
             </q-item-label>
             <q-item-label>
               City Government of Butuan
@@ -21,7 +21,7 @@
       </q-list>
     </div>
 
-    <div class="col-12 col-md-3" :class="$q.screen.lt.sm ? 'q-px-sm' : 'q-px-lg'">
+    <div class="col-6 col-md-3" :class="$q.screen.lt.sm ? 'q-px-sm' : 'q-px-lg'">
       <q-list dense padding class="rounded-borders">
         <q-item>
           <q-item-section>
@@ -63,7 +63,7 @@
       </q-list>
     </div>
 
-    <div class="col-12 col-md-3" :class="$q.screen.lt.sm ? 'q-px-sm' : 'q-px-lg'">
+    <div class="col-6 col-md-3" :class="$q.screen.lt.sm ? 'q-px-sm' : 'q-px-lg'">
       <q-list dense padding class="rounded-borders">
         <q-item>
           <q-item-section>
@@ -95,7 +95,7 @@
       </q-list>
     </div>
 
-    <div class="col-12 col-md-3" :class="$q.screen.lt.sm ? 'q-px-sm' : 'q-px-lg'">
+    <div class="col-6 col-md-3" :class="$q.screen.lt.sm ? 'q-px-sm' : 'q-px-lg'">
       <q-list dense padding class="rounded-borders">
         <q-item>
           <q-item-section>

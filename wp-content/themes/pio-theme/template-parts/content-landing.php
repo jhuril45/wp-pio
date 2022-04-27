@@ -5,10 +5,9 @@ $carousel_images = fetchCarouselImages();
   <q-carousel
     animated
     v-model="slide"
-    :arrows="Boolean(<?php echo(count($carousel_images) > 1);?>)"
-    :navigation="Boolean(<?php echo(count($carousel_images) > 1);?>)"
+    ref="carousel"
+    height="300px"
     infinite
-    control-text-color="primary"
   >
     <?php 
       if($carousel_images){
@@ -33,9 +32,26 @@ $carousel_images = fetchCarouselImages();
     <?php 
     }
     ?>
+    <template v-slot:control v-if="Boolean(<?php echo(count($carousel_images) > 1);?>)">
+      <q-carousel-control
+        position="bottom-right"
+        :offset="[18, 18]"
+        class="q-gutter-xs"
+      >
+        <q-btn
+          push round dense color="primary" text-color="white" icon="arrow_left"
+          @click="$refs.carousel.previous()"
+        ></q-btn>
+        <q-btn
+          push round dense color="primary" text-color="white" icon="arrow_right"
+          @click="$refs.carousel.next()"
+        ></q-btn>
+      </q-carousel-control>
+    </template>
   </q-carousel>
 </div>
-<div class="full-width row justify-start " :class="$q.screen.lt.sm ? 'q-my-lg q-px-md' : 'q-my-xl q-pa-xl'">
+
+<div class="full-width row justify-start q-my-md" :class="$q.screen.lt.sm ? 'q-px-md' : 'q-pa-xl'">
   <div class="col-12 text-center q-my-md text-bold" :class="$q.screen.lt.sm ? 'text-h5' : 'text-h4'">
     PLANS AND PROGRAMS
   </div>
@@ -73,6 +89,7 @@ $carousel_images = fetchCarouselImages();
     </div>
   </div>
 </div>
+
 <div class="full-width row justify-center bg-primary" :class="$q.screen.lt.sm ? 'q-pa-md' : 'q-pa-lg'">
   <div class="col-md-8 col-12 q-py-md text-white text-center" :class="$q.screen.lt.sm ? 'q-px-sm' : ''">
     <div :class="$q.screen.lt.sm ? 'text-h5' : 'text-h4'">
@@ -86,9 +103,61 @@ $carousel_images = fetchCarouselImages();
       src="https://www.youtube.com/embed/YmBY9yNfNos"
     />
   </div>
-  
 </div>
+
 <div class="full-width">
+  <div class="row relative-position">
+    <q-img cover src="https://cdn.quasar.dev/img/parallax2.jpg" height="500px">
+      <div class="absolute-left full-width row" style="background:none !important;">
+        <div class="col-12 col-md-6 rounded-borders q-pa-lg q-my-lg" style="background: rgba(79, 195, 247, 0.8)">
+          <div class="text-h4 text-white text-start">DEPARTMENTS & OFFICES</div>
+          <div class="text-subtitle2 text-white text-start q-mt-md">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum sequi, similique maxime rerum soluta modi ut illum impedit minima ipsam fugit quis veritatis amet distinctio nulla vitae? Cum, dolor illo.
+          </div>
+          <div class="full-width q-mt-md">
+            <q-item>
+              <q-item-section>
+                <q-item-label>
+                  <a href="" class="text-white footer-link text-body1">
+                    Know Butuan City
+                  </a>
+                </q-item-label>
+                <q-item-label>
+                  <a href="" class="text-white footer-link text-body1">
+                    Departments
+                  </a>
+                </q-item-label>
+                <q-item-label>
+                  <a href="" class="text-white footer-link text-body1">
+                    Services
+                  </a>
+                </q-item-label>
+                <q-item-label>
+                  <a href="" class="text-white footer-link text-body1">
+                    Transparency
+                  </a>
+                </q-item-label>
+                <q-item-label>
+                  <a href="" class="text-white footer-link text-body1">
+                    News
+                  </a>
+                </q-item-label>
+                <q-item-label>
+                  <a href="" class="text-white footer-link text-body1">
+                    Contact Us
+                  </a>
+                </q-item-label>
+              </q-item-section>
+            </q-item>
+          </div>
+        </div>
+      </div>
+    </q-img>
+    
+  </div>
+</div>
+
+<div class="full-width" v-if="false">
   <q-parallax>
     <template v-slot:media>
       <img src="https://cdn.quasar.dev/img/parallax2.jpg">
@@ -144,6 +213,7 @@ $carousel_images = fetchCarouselImages();
     </template>
   </q-parallax>
 </div>
+
 <div class="full-width row justify-start" :class="$q.screen.lt.sm ? 'q-my-lg q-px-md' : 'q-my-xl q-pa-xl'">
   <div class="col-12 text-center q-my-md text-bold" :class="$q.screen.lt.sm ? 'text-h5' : 'text-h4'">
     LATEST NEWS
@@ -171,7 +241,8 @@ $carousel_images = fetchCarouselImages();
     </div>
   </div>
 </div>
-<div class="full-width row justify-start q-my-xl" :class="$q.screen.lt.sm ? 'q-pa-md' : 'q-pa-xl'">
+
+<div class="full-width row justify-start" :class="$q.screen.lt.sm ? 'q-my-lg q-px-md' : 'q-my-xl q-pa-xl'">
   <div class="col-12 text-center q-my-md text-bold" :class="$q.screen.lt.sm ? 'text-h5' : 'text-h4'">
     QUICK LINKS
   </div>
@@ -202,6 +273,7 @@ $carousel_images = fetchCarouselImages();
     </div>
   </div>
 </div>
+
 <q-dialog v-model="page_dialog.open">
   <q-card style="width:350px">
     <q-card-section class="row items-center q-pa-none">
@@ -233,7 +305,7 @@ $carousel_images = fetchCarouselImages();
 
         <q-tab-panel name="offices" class="q-pa-none">
           <q-list class="q-py-none" separator>
-            <q-item clickable v-ripple v-for="off in 4" :key="'office-'+off">
+            <q-item clickable v-ripple v-for="off in 4" :key="'office-'+off" href="<?php echo get_home_url().'/offices-pio' ?>">
               <q-item-section avatar top>
                 <q-avatar>
                   <img src="<?php echo get_template_directory_uri().'/assets/images/Butuan_Logo_Transparent.png'; ?>">

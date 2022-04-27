@@ -197,6 +197,7 @@ window.vue = new Vue({
       },
       file_display: null,
       images: [],
+      lorem: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus excepturi quia aliquid doloremque accusantium suscipit vero pariatur expedita esse. Ipsa cumque culpa fugit dolorem eligendi nobis perferendis qui commodi magni.',
     }
   },
   created(){
