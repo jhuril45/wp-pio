@@ -14,7 +14,7 @@
           </q-avatar>
         </q-item-section>
       </q-item>
-      <q-item class="q-py-none" v-ripple href="<?php echo esc_url(remove_query_arg( ''));?>">
+      <q-item class="q-py-none" v-ripple href="<?php echo get_home_url().'/dashboard'?>">
         <q-item-section class="q-py-none">
           <q-item-label class="text-bold cursor-pointer text-center">
             City Government Butuan
@@ -27,7 +27,7 @@
         </q-item-section>
       </q-item>
       <q-separator></q-separator>
-      <q-item clickable v-ripple href="<?php echo esc_url( add_query_arg( 'tab', 'add-post' ) );?>">
+      <q-item clickable v-ripple href="<?php echo get_home_url().'/dashboard?tab=add-post';?>">
         <q-item-section side>
           <q-icon :name="'add'"></q-icon>
         </q-item-section>
@@ -38,7 +38,7 @@
         </q-item-section>
       </q-item>
       <q-separator></q-separator>
-      <q-item clickable v-ripple href="<?php echo esc_url( add_query_arg( 'tab', 'add-report' ) );?>">
+      <q-item clickable v-ripple href="<?php echo get_home_url().'/dashboard?tab=add-report';?>">
         <q-item-section side>
           <q-icon :name="'picture_as_pdf'"></q-icon>
         </q-item-section>

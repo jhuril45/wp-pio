@@ -152,8 +152,23 @@
               </q-tab-panel>
 
               <q-tab-panel name="organization">
-                <div class="text-h6">Organizational Structure</div>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                <div @click="orgClick">
+                  <organization-chart :datasource="ds" ref="org_chart" class="org_chart_parent">
+                    <template slot-scope="{ nodeData }" >
+                      <div :class="['node-box',  nodeData.id == '1' ? 'parent' : '']" class="cursor-pointer">
+                        <div class="node-title">{{nodeData.title}}</div>
+                        <div class="node-content">
+                          <q-avatar>
+                            <img :src="nodeData.img">
+                          </q-avatar>
+                          <div>
+                            <span class="text-capitalize">{{nodeData.name}}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </template>
+                  </organization-chart>
+                </div>
               </q-tab-panel>
               <q-tab-panel name="forms">
                 <div class="row justify-center">

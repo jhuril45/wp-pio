@@ -59,6 +59,52 @@ function fetchCarouselImages() {
   }
 }
 
+function fetchPosts() {
+  try{
+    $user = wp_get_current_user();
+    $args = array( 
+      'author' => $user->ID,
+      'numberposts'	=> 3,
+    );
+
+    return array(
+      'posts' => get_posts($args),
+    );
+
+  }catch(Exception $error){
+    return $error;
+  }
+}
+
+function fetchPost() {
+  try{
+    $id = $_GET['id'];
+    $post = get_post($id);
+    $attachments = get_posts( array( 
+      'post_type' => 'attachment',
+      'post_mime_type'=>'image',
+      'posts_per_page' => -1,
+      'post_status' => 'published',
+      'post_parent' => $id)
+      );
+
+    foreach ( $attachments as $attachment ) {
+      $src = wp_get_attachment_url( $attachment->ID, 'full');
+      $mime = wp_get_attachment_metadata($attachment->ID);
+      $type = wp_check_filetype($mime['file']);
+      $attachment->mime_type = $type['type'];
+      $attachment->src = $src;
+    }
+
+    return array(
+      'post' => $post,
+      'attachments' => $attachments,
+    );
+  }catch(Exception $error){
+    return $error;
+  }
+}
+
 function submitPost() {
   try{
     $user = wp_get_current_user();
@@ -86,6 +132,34 @@ function submitPost() {
       }
     }
     return $post;
+  }catch(Exception $error){
+    return $error;
+  }
+}
+
+function submitReport() {
+  try{
+    $user = wp_get_current_user();
+    $attachment = basename($_FILES["attachment"]["name"]);
+
+    if($attachment){
+      $temp = explode('.',basename($_FILES["attachment"]["name"]));
+      $extension = end($temp);
+      $file_name = time().'.'.$extension;
+      $file = uploadFileSubmitted('attachment');
+
+      global $wpdb;
+      $report = $wpdb->insert(
+        $wpdb->prefix.'reports',
+        array(
+          'title' => $_POST['title'],
+          'year' => $_POST['year'],
+          'path' => $file,
+          'type' => 'report',
+        ),
+      );
+      return $file;
+    }
   }catch(Exception $error){
     return $error;
   }
@@ -157,5 +231,26 @@ add_action( 'rest_api_init', function () {
   register_rest_route( 'myplugin/v1', '/add-post', array(
     'methods' => 'POST',
     'callback' => 'submitPost',
+  ) );
+} );
+
+add_action( 'rest_api_init', function () {
+  register_rest_route( 'myplugin/v1', '/add-report', array(
+    'methods' => 'POST',
+    'callback' => 'submitReport',
+  ) );
+} );
+
+add_action( 'rest_api_init', function () {
+  register_rest_route( 'myplugin/v1', '/get-posts', array(
+    'methods' => 'GET',
+    'callback' => 'fetchPosts',
+  ) );
+} );
+
+add_action( 'rest_api_init', function () {
+  register_rest_route( 'myplugin/v1', '/get-post', array(
+    'methods' => 'GET',
+    'callback' => 'fetchPost',
   ) );
 } );

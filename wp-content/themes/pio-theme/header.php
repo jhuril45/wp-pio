@@ -17,7 +17,7 @@
 
 <body>
   <div id="q-app" style="display:none">
-    <q-layout view="lHh lpr lff" class="shadow-2">
+    <q-layout view="LHh lpr lff" class="shadow-2">
       <?php if($pagename != 'dashboard'):?>
         <?php get_template_part('template-parts/content', 'header');?>
         <?php get_template_part('template-parts/content', 'drawer');?>

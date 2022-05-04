@@ -4,6 +4,12 @@ function add_css()
    wp_register_style('quasar-css', get_template_directory_uri() . '/assets/css/quasar.min.css', false,'1.1','all');
    wp_enqueue_style( 'quasar-css');
 
+   wp_register_style('org-chart', get_template_directory_uri() . '/assets/css/org-chart.min.css', false,'1.1','all');
+   wp_enqueue_style( 'org-chart');
+
+   wp_register_style('organization-chart', get_template_directory_uri() . '/assets/css/organization-chart.min.css', false,'1.1','all');
+   wp_enqueue_style( 'organization-chart');
+
    wp_register_style('animate', get_template_directory_uri() . '/assets/css/animate.min.css', false,'1.1','all');
    wp_enqueue_style( 'quasar');
 

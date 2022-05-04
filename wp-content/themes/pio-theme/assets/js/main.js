@@ -7,12 +7,13 @@ window.vue = new Vue({
   el: '#q-app',
   mixins: [],
   components:{
-    
+    'organization-chart' : window.orgchart.default,
   },
   data: function () {
     return {
       tab: 'description',
       drawer_left: false,
+      posts: null,
       page_dialog: {
         open: false,
         data: {},
@@ -109,7 +110,6 @@ window.vue = new Vue({
       page_menus: [],
       timer: '1',
       date: '2022/03/23',
-      page_posts: [],
       flip_cards: [
         {
           icon: 'agriculture',
@@ -140,7 +140,7 @@ window.vue = new Vue({
           description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nec nisl tincidunt, condimentum nibh vitae, bibendum neque. Donec vitae hendrerit arcu. Donec enim lacus, elementum sed justo sed,'
         },
       ],
-      page_tab: 'mission_vision',
+      page_tab: 'organization',
       login_form: {
         username: '',
         password: '',
@@ -189,26 +189,66 @@ window.vue = new Vue({
         },
       ],
       loading: false,
-      form:{
+      form_post:{
+        id: null,
         title: null,
         featured_image: null,
         content: null,
         attachments: [],
       },
+      form_report:{
+        title: 'Add Report',
+        attachment: null,
+        year: 2020,
+      },
+      year_options: [2016,2017,2018,2019,2020,2021,2022],
       file_display: null,
       images: [],
       lorem: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus excepturi quia aliquid doloremque accusantium suscipit vero pariatur expedita esse. Ipsa cumque culpa fugit dolorem eligendi nobis perferendis qui commodi magni.',
+      ds: {
+        id: "1",
+        name: "Lao Lao",
+        title: "Department Head",
+        img: "https://cdn.quasar.dev/img/avatar1.jpg",
+        children: [
+          { 
+            id: "2",
+            name: "Bo Miao",
+            title: "Division Head",
+            img: "https://cdn.quasar.dev/img/avatar2.jpg",
+          },
+          {
+            id: "3",
+            name: "Su Miao",
+            title: "Division Head",
+            img: "https://cdn.quasar.dev/img/avatar3.jpg",
+          },
+          { 
+            id: "8", 
+            name: "Hong Miao", 
+            title: "Division Head",
+            img: "https://cdn.quasar.dev/img/avatar4.jpg",
+          },
+          {
+            id: "9",
+            name: "Chun Miao",
+            title: "Division Head",
+            img: "https://cdn.quasar.dev/img/avatar5.jpg",
+          },
+        ],
+      },
     }
   },
   created(){
     document.getElementById("q-app").style.display = "block"
   },
   mounted(){
-    // window.Quasar.LoadingBar.start()
-    // this.initMenus()
-    this.getPosts()
+    console.log(1)
   },
   methods: {
+    orgClick(){
+      console.log(this.$refs.org_chart)
+    },
     onSubmit(){
 
     },
@@ -227,22 +267,6 @@ window.vue = new Vue({
     redirectPage(url){
       console.log(url)
       window.location.href = url
-    },
-    getPosts(){
-      return new Promise((resolve, reject) => {
-        window.axios.get(settings.API_BASE_PATH+'wp/v2/posts?per_page=4')
-        .then((response) => {
-          let posts = response.data ? response.data : this.page_posts
-          posts = posts.map(x => {
-            x.excerpt.rendered = x.excerpt.rendered.replace('<p>','')
-            x.excerpt.rendered = x.excerpt.rendered.replace('</p>','')
-            x.excerpt.rendered = x.excerpt.rendered.replace('[&hellip;]','...')
-            return x
-          })
-          this.page_posts = posts
-          resolve()
-        })
-      })
     },
     async initMenus(){
       try{
@@ -323,6 +347,17 @@ window.vue = new Vue({
     },
     addPost(evt){
       
+    },
+    //Add Report
+    resetReportForm(){
+      this.form_report = {
+        title: null,
+        attachment: null,
+        year: null,
+      }
+    },
+    addReport(){
+
     },
   },
 })

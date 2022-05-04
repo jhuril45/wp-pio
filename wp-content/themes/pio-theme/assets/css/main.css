@@ -210,6 +210,15 @@ body {
   background-position: center !important;
 }
 
+.org_chart_parent .orgchart{
+  background-image: none !important;
+  border: none !important;
+}
+
+.org_chart_parent{
+  border: none !important;
+}
+
 @media only screen and (max-width: 768px) {
   .post-title{
     font-size: 1.5em;

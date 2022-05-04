@@ -1,12 +1,30 @@
 <?php 
 $carousel_images = fetchCarouselImages();
+
+$data = get_posts( array( 
+  'post_type' => 'post',
+  'posts_per_page' => 5,
+  )
+);
+$recent_posts = [];
+foreach ($data as $key => $value) {
+  $post_thumbnail_id = get_post_thumbnail_id($value->ID);
+  if ( $post_thumbnail_id ) {
+    $src = wp_get_attachment_url( $attachment->ID, 'full');
+    $recent_src = wp_get_attachment_url( $post_thumbnail_id, 'full');
+    $value->fimg_url = $recent_src;
+  }else{
+    $value->fimg_url = get_template_directory_uri().'/assets/images/Butuan_Logo_Transparent.png';
+  }
+  array_push($recent_posts,$value);
+}
 ?>
 <div class="full-width">
   <q-carousel
     animated
     v-model="slide"
     ref="carousel"
-    height="300px"
+    height="400px"
     infinite
   >
     <?php 
@@ -91,7 +109,7 @@ $carousel_images = fetchCarouselImages();
 </div>
 
 <div class="full-width row justify-center bg-primary" :class="$q.screen.lt.sm ? 'q-pa-md' : 'q-pa-lg'">
-  <div class="col-md-8 col-12 q-py-md text-white text-center" :class="$q.screen.lt.sm ? 'q-px-sm' : ''">
+  <div class="col-md-8 col-12 q-py-md text-white text-center q-px-md" :class="$q.screen.lt.sm ? 'q-px-sm' : ''">
     <div :class="$q.screen.lt.sm ? 'text-h5' : 'text-h4'">
       ButuanOn News Update Noon Time Cast
     </div>
@@ -103,12 +121,18 @@ $carousel_images = fetchCarouselImages();
       src="https://www.youtube.com/embed/YmBY9yNfNos"
     />
   </div>
+  <div class="col-md-4 col-12 q-py-md text-white text-center q-px-md" :class="$q.screen.lt.sm ? 'q-px-sm' : ''">
+    <div class="q-py-lg">
+      <iframe src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fbutuancitypioofficial&tabs=timeline&width=340&height=500&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId" width="340" height="500" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share">
+      </iframe>
+    </div>
+  </div>
 </div>
 
 <div class="full-width">
   <div class="row relative-position">
-    <q-img cover src="https://cdn.quasar.dev/img/parallax2.jpg" height="500px">
-      <div class="absolute-left full-width row" style="background:none !important;">
+    <q-img cover src="<?php echo get_template_directory_uri().'/assets/images/city-hall-drone.png'; ?>" height="500px">
+      <div class="absolute-left full-width row justify-end" style="background:none !important;">
         <div class="col-12 col-md-6 rounded-borders q-pa-lg q-my-lg" style="background: rgba(79, 195, 247, 0.8)">
           <div class="text-h4 text-white text-start">DEPARTMENTS & OFFICES</div>
           <div class="text-subtitle2 text-white text-start q-mt-md">
@@ -157,88 +181,36 @@ $carousel_images = fetchCarouselImages();
   </div>
 </div>
 
-<div class="full-width" v-if="false">
-  <q-parallax>
-    <template v-slot:media>
-      <img src="https://cdn.quasar.dev/img/parallax2.jpg">
-    </template>
-
-    <template v-slot:content="scope">
-      <div
-        class="absolute items-start row q-px-lg"
-      >
-        <div class="col-12 col-md-6 rounded-borders q-pa-lg q-gutter-y-md" style="background: rgba(79, 195, 247, 0.8)">
-          <div class="text-h4 text-white text-start">DEPARTMENTS & OFFICES</div>
-          <div class="text-subtitle2 text-white text-start">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum sequi, similique maxime rerum soluta modi ut illum impedit minima ipsam fugit quis veritatis amet distinctio nulla vitae? Cum, dolor illo.
-          </div>
-          <div class="full-width">
-            <q-item>
-              <q-item-section>
-                <q-item-label>
-                  <a href="" class="text-white footer-link text-body1">
-                    Know Butuan City
-                  </a>
-                </q-item-label>
-                <q-item-label>
-                  <a href="" class="text-white footer-link text-body1">
-                    Departments
-                  </a>
-                </q-item-label>
-                <q-item-label>
-                  <a href="" class="text-white footer-link text-body1">
-                    Services
-                  </a>
-                </q-item-label>
-                <q-item-label>
-                  <a href="" class="text-white footer-link text-body1">
-                    Transparency
-                  </a>
-                </q-item-label>
-                <q-item-label>
-                  <a href="" class="text-white footer-link text-body1">
-                    News
-                  </a>
-                </q-item-label>
-                <q-item-label>
-                  <a href="" class="text-white footer-link text-body1">
-                    Contact Us
-                  </a>
-                </q-item-label>
-              </q-item-section>
-            </q-item>
-          </div>
-        </div>
-      </div>
-    </template>
-  </q-parallax>
-</div>
-
 <div class="full-width row justify-start" :class="$q.screen.lt.sm ? 'q-my-lg q-px-md' : 'q-my-xl q-pa-xl'">
   <div class="col-12 text-center q-my-md text-bold" :class="$q.screen.lt.sm ? 'text-h5' : 'text-h4'">
     LATEST NEWS
   </div>
   <div class="col-12 row q-pt-md">
-    <div v-for="(post,index) in page_posts" :key="'news-card-'+index" class="q-py-xs col-6 col-md-3 q-px-md">
-      <q-card class="news-card">
-        <a :href="post.link">
-        <q-img
-          contain
-          height="200px"
-          :src="post.fimg_url ? post.fimg_url : '<?php 
-            echo get_template_directory_uri().'/assets/images/Butuan_Logo_Transparent.png';
-          ?>'"
-          basic
-        >
-          <div class="absolute-bottom text-caption text-start">
-            <q-item-label lines="3" class="q-px-none q-py-none">
-              {{post.title.rendered}}
-            </q-item-label>
-          </div>
-        </q-img>
-        </a>
-      </q-card>
-    </div>
+    <?php
+      foreach($recent_posts as $key => $value) { ?>
+      <div class="col-6 col-md-3 row q-gutter-y-sm q-px-sm">
+        <div class="col-12 q-pt-md">
+          <q-card class="news-card" >
+            <a href="<?php echo($value->guid);?>">
+              <q-img
+                cover
+                height="200px"
+                src="<?php echo($value->fimg_url);?>"
+                basic
+              >
+                <div class="absolute-bottom text-caption text-start">
+                  <q-item-label lines="3" class="q-px-none q-py-none">
+                    <?php echo $value->post_title?>
+                  </q-item-label>
+                </div>
+              </q-img>
+            </a>
+          </q-card>
+        </div>
+      </div>
+    <?php
+      }
+    ?>
   </div>
 </div>
 

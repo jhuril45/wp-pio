@@ -41,12 +41,18 @@ function custom_get_user_role(){
   return wp_get_current_user()->roles[0];
 }
 
-function add_custom_query_var( $vars ){
+function add_tab_query_var( $vars ){
   $vars[] = "tab";
   return $vars;
 }
 
-add_filter( 'query_vars', 'add_custom_query_var' );
+function add_id_query_var( $vars ){
+  $vars[] = "id";
+  return $vars;
+}
+
+add_filter( 'query_vars', 'add_tab_query_var' );
+add_filter( 'query_vars', 'add_id_query_var' );
 
 function myInit() {
   global $globalUrl;
@@ -97,17 +103,7 @@ function redirect_private_page_to_login(){
     } 
 }
 
-function admin_default_page() {
-  $user = wp_get_current_user();
-  if($user->roles[0] != 'administrator'){
-    return home_url('/dashboard');
-  }else{
-    return home_url('/wp-admin');
-  }
-}
-
 function restrict_admin() {
-  
   $user = wp_get_current_user();
   if($user->roles[0] != 'administrator'){
     return wp_redirect(home_url('/dashboard'));

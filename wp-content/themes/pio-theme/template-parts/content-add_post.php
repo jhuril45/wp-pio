@@ -1,4 +1,4 @@
-<?php 
+<?php
   if(is_user_logged_in()){
     wp_register_script('add-post-script', get_template_directory_uri() . '/assets/js/add_post.js',array ( 'jquery' ), 1.1, true);
     wp_enqueue_script( 'add-post-script');
@@ -10,7 +10,7 @@
     <q-card class="add-post-card">
       <q-card-section class="text-bold text-h5">
         <span>
-          Add Post
+          {{form_post.id ? 'Edit Post' : 'Add Post'}}
         </span>
       </q-card-section>
       <q-card-section>
@@ -20,7 +20,7 @@
           @submit="addPost">
           <div class="col-12">
             <q-input
-              v-model="form.title"
+              v-model="form_post.title"
               placeholder="Title"
               :rules="[val => !!val || 'Invalid Post Title']">
             </q-input>
@@ -38,14 +38,14 @@
             </q-img>
             <q-file
               ref="featured_image"
-              v-model="form.featured_image"
+              v-model="form_post.featured_image"
               accept=".jpg, image/*"
               @input="addedFile"
               v-show="false"></q-file>
           </div>
           <div class="col-12">
             <q-input
-              v-model="form.content"
+              v-model="form_post.content"
               placeholder="Content"
               class="full-width"
               outlined
@@ -74,7 +74,7 @@
                     <div class="col-12 text-center text-subtitle2 text-bold q-pt-sm">Add attachment</div>
                   </div>
                 </div>
-                <div v-for="(attachment,index) in form.attachments" :key="attachment['__key']" class="q-pa-sm relative-position" style="height:200px;width:150px">
+                <div v-for="(attachment,index) in form_post.attachments" :key="attachment['__key']" class="q-pa-sm relative-position" style="height:200px;width:150px">
                   <q-img cover height="100%" width="100%" :src="getImageUrl(attachment)">
                   </q-img>
                   <span class="absolute-top-right">
