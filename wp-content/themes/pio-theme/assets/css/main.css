@@ -95,6 +95,10 @@
 
 .header-links li {
   display: inline;
+}
+
+.header-links a {
+  display: inline;
   border-radius: 10px;
   color: rgb(190, 190, 190);
   font-weight: bold;
@@ -103,11 +107,11 @@
   padding: 10px;
   text-align: center;
 }
-.header-links li:hover {
+.header-links a:hover {
   color: #004a9e;
   cursor: pointer;
 }
-.header-links li.active{
+.header-links a.active{
   color: #004a9e;
   /* background-color: #092f50; */
 }
@@ -180,7 +184,7 @@ body {
 }
 
 .page-card{
-  min-height: 90vh !important;
+  min-height: 50vh !important;
 }
 
 .post-title{
@@ -205,7 +209,7 @@ body {
 }
 
 .carousel-img{
-  background-size: contain !important;
+  background-size: cover !important;
   background-repeat: no-repeat !important;
   background-position: center !important;
 }

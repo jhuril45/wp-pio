@@ -15,7 +15,7 @@ if(!is_user_logged_in()){
     }
   }else{?>
     <div class="row justify-center">
-      <div class="col-10 q-py-lg">
+      <div class="col-12 col-md-6 q-py-lg">
         <?php get_template_part('template-parts/content', 'posts-table');?>
       </div>
     </div>

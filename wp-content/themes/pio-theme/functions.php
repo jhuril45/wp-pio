@@ -23,6 +23,7 @@ require get_template_directory() . '/custom-functions.php';
 require get_template_directory() . '/custom-rest.php';
 
 add_action("after_switch_theme", "cgb_create_tables");
+add_action("after_switch_theme", "cgb_create_pages");
 
 function cgb_create_tables(){
     global $wpdb;
@@ -48,10 +49,29 @@ function cgb_create_tables(){
       id int(10) unsigned NOT NULL AUTO_INCREMENT,
       title varchar(255) NOT NULL,
       year int(10) NOT NULL,
+      quarter int(10) DEFAULT NULL,
       path varchar(255) NOT NULL,
-      type varchar(255) NOT NULL,
+      type int(5) NOT NULL,
       PRIMARY KEY  (id),
       KEY file_path (path)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
     dbDelta( $sql );
+}
+
+function cgb_create_pages(){
+  $check_page_exist = get_page_by_title('Offices',);
+  if(empty($check_page_exist)) {
+    wp_insert_post(
+      array(
+      'comment_status' => 'close',
+      'ping_status'    => 'close',
+      'post_author'    => 1,
+      'post_title'     => ucwords('Offices'),
+      'post_name'      => strtolower(str_replace(' ', '-', trim('Offices'))),
+      'post_status'    => 'publish',
+      'post_content'   => '',
+      'post_type'      => 'page',
+      )
+    );
+  }
 }

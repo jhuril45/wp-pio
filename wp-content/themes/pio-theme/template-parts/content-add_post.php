@@ -16,6 +16,7 @@
       <q-card-section>
         <q-form
           class="row q-gutter-y-lg"
+          ref="add_post_form"
           greedy
           @submit="addPost">
           <div class="col-12">
@@ -75,7 +76,11 @@
                   </div>
                 </div>
                 <div v-for="(attachment,index) in form_post.attachments" :key="attachment['__key']" class="q-pa-sm relative-position" style="height:200px;width:150px">
-                  <q-img cover height="100%" width="100%" :src="getImageUrl(attachment)">
+                  <q-img
+                    cover
+                    height="100%"
+                    width="100%"
+                    :src="getImageUrl(attachment)">
                   </q-img>
                   <span class="absolute-top-right">
                     <q-btn

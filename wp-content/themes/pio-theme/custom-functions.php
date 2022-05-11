@@ -51,8 +51,14 @@ function add_id_query_var( $vars ){
   return $vars;
 }
 
+function add_office_query_var( $vars ){
+  $vars[] = "office";
+  return $vars;
+}
+
 add_filter( 'query_vars', 'add_tab_query_var' );
 add_filter( 'query_vars', 'add_id_query_var' );
+add_filter( 'query_vars', 'add_office_query_var' );
 
 function myInit() {
   global $globalUrl;

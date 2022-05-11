@@ -52,7 +52,8 @@ function fetchCarouselImages() {
   try{
     $user = wp_get_current_user();
     global $wpdb;
-    $results = $wpdb->get_results("SELECT * FROM wp_carousel_images");
+    $table_name = $wpdb->prefix . "carousel_images";
+    $results = $wpdb->get_results("SELECT * FROM $table_name");
     return $results;
   }catch(Exception $error){
     return $error;
@@ -76,10 +77,29 @@ function fetchPosts() {
   }
 }
 
+function fetchReports() {
+  try{
+    $user = wp_get_current_user();
+    global $wpdb;
+    $table_name = $wpdb->prefix . "reports";
+    $results = $wpdb->get_results("SELECT * FROM $table_name");
+    return $results;
+
+  }catch(Exception $error){
+    return $error;
+  }
+}
+
 function fetchPost() {
   try{
     $id = $_GET['id'];
     $post = get_post($id);
+
+    $featured_image = get_the_post_thumbnail_url($post->ID);
+    if(!empty($featured_image)){
+      $post->featured_image = $featured_image;
+    }
+    
     $attachments = get_posts( array( 
       'post_type' => 'attachment',
       'post_mime_type'=>'image',
@@ -96,6 +116,7 @@ function fetchPost() {
       $attachment->src = $src;
     }
 
+    
     return array(
       'post' => $post,
       'attachments' => $attachments,
@@ -112,6 +133,7 @@ function submitPost() {
     // return $term;
     $post = wp_insert_post(
       array(
+        'ID' => $_POST['id'] ? $_POST['id'] : 0,
         'post_title' => $_POST['title'],
         'post_content' => $_POST['content'],
         'post_status' => 'publish',
@@ -146,7 +168,7 @@ function submitReport() {
       $temp = explode('.',basename($_FILES["attachment"]["name"]));
       $extension = end($temp);
       $file_name = time().'.'.$extension;
-      $file = uploadFileSubmitted('attachment');
+      $file = wp_upload_bits( $file_name, null, @file_get_contents( $_FILES['attachment']['tmp_name'] ) );
 
       global $wpdb;
       $report = $wpdb->insert(
@@ -154,8 +176,9 @@ function submitReport() {
         array(
           'title' => $_POST['title'],
           'year' => $_POST['year'],
-          'path' => $file,
-          'type' => 'report',
+          'path' => $file['url'],
+          'type' => $_POST['type'],
+          'quarter' => $_POST['quarter'] ? $_POST['quarter'] : null,
         ),
       );
       return $file;
@@ -171,7 +194,7 @@ function uploadFileSubmitted($file_name){
   $extension = end($temp);
   $image_data = file_get_contents($_FILES[$file_name]['tmp_name'] );
       
-  $filename = 'jhuril'.time().'.'.$extension;
+  $filename = time().'.'.$extension;
   
   $file = wp_mkdir_p($upload_dir['path']) ? $upload_dir['path'] . '/' . $filename : $upload_dir['basedir'] . '/' . $filename;
 
@@ -252,5 +275,12 @@ add_action( 'rest_api_init', function () {
   register_rest_route( 'myplugin/v1', '/get-post', array(
     'methods' => 'GET',
     'callback' => 'fetchPost',
+  ) );
+} );
+
+add_action( 'rest_api_init', function () {
+  register_rest_route( 'myplugin/v1', '/get-reports', array(
+    'methods' => 'GET',
+    'callback' => 'fetchReports',
   ) );
 } );

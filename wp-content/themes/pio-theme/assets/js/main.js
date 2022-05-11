@@ -8,9 +8,12 @@ window.vue = new Vue({
   mixins: [],
   components:{
     'organization-chart' : window.orgchart.default,
+    'vue-pdf-embed' : window.VuePdfEmbed,
   },
-  data: function () {
+  data() {
     return {
+      report_pdf: false,
+      reportSource: null,
       tab: 'description',
       drawer_left: false,
       posts: null,
@@ -27,50 +30,20 @@ window.vue = new Vue({
           "parent": 0,
           "title": "Home",
           "url": "http://localhost/vue_wp/",
-          "attr": "",
-          "target": "",
-          "classes": "",
-          "xfn": "",
-          "description": "",
-          "object_id": 11,
-          "object": "custom",
-          "object_slug": "home",
-          "type": "custom",
-          "type_label": "Custom Link"
         },
         {
           "id": 16,
           "order": 2,
           "parent": 0,
           "title": "About Butuan",
-          "url": "#",
-          "attr": "",
-          "target": "",
-          "classes": "",
-          "xfn": "",
-          "description": "",
-          "object_id": 16,
-          "object": "custom",
-          "object_slug": "about-butuan",
-          "type": "custom",
-          "type_label": "Custom Link"
+          "url": "http://localhost/vue_wp/about",
         },
         {
           "id": 17,
           "order": 3,
           "parent": 0,
           "title": "Government",
-          "url": "#",
-          "attr": "",
-          "target": "",
-          "classes": "",
-          "xfn": "",
-          "description": "",
-          "object_id": 17,
-          "object": "custom",
-          "object_slug": "government",
-          "type": "custom",
-          "type_label": "Custom Link"
+          "url": "http://localhost/vue_wp/offices",
         },
         {
           "id": 18,
@@ -78,16 +51,6 @@ window.vue = new Vue({
           "parent": 0,
           "title": "Tourism",
           "url": "#",
-          "attr": "",
-          "target": "",
-          "classes": "",
-          "xfn": "",
-          "description": "",
-          "object_id": 18,
-          "object": "custom",
-          "object_slug": "tourism",
-          "type": "custom",
-          "type_label": "Custom Link"
         },
         {
           "id": 19,
@@ -95,16 +58,6 @@ window.vue = new Vue({
           "parent": 0,
           "title": "Business",
           "url": "#",
-          "attr": "",
-          "target": "",
-          "classes": "",
-          "xfn": "",
-          "description": "",
-          "object_id": 19,
-          "object": "custom",
-          "object_slug": "business",
-          "type": "custom",
-          "type_label": "Custom Link"
         }
       ],
       page_menus: [],
@@ -140,14 +93,29 @@ window.vue = new Vue({
           description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nec nisl tincidunt, condimentum nibh vitae, bibendum neque. Donec vitae hendrerit arcu. Donec enim lacus, elementum sed justo sed,'
         },
       ],
-      page_tab: 'organization',
+      page_tab: 'mission_vision',
       login_form: {
         username: '',
         password: '',
       },
-      transparency_type: 'Anually',
-      transparency_year: 2022,
+      transparency_type: 1,
+      transparency_year: 'All',
+      transparency_quarter: 1,
+      pagination: {
+        rowsPerPage: 10
+      },
       filter: '',
+      columns_report: [
+        {
+          name: 'title',
+          required: true,
+          label: '',
+          align: 'left',
+          field: row => row.title,
+          format: val => `${val}`,
+          sortable: true
+        },
+      ],
       columns: [
         {
           name: 'name',
@@ -197,13 +165,44 @@ window.vue = new Vue({
         attachments: [],
       },
       form_report:{
-        title: 'Add Report',
+        title: '',
         attachment: null,
-        year: 2020,
+        year: null,
+        type: null,
+        quarter: null,
       },
+      report_options: [
+        {
+          label: 'Annual',
+          value: 1,
+        },
+        {
+          label: 'Quarter',
+          value: 2,
+        },
+      ],
+      quarter_options: [
+        {
+          label: '1st Quarter',
+          value: 1,
+        },
+        {
+          label: '2nd Quarter',
+          value: 2,
+        },
+        {
+          label: '3rd Quarter',
+          value: 3,
+        },
+        {
+          label: '4th Quarter',
+          value: 4,
+        },
+      ],
       year_options: [2016,2017,2018,2019,2020,2021,2022],
       file_display: null,
       images: [],
+      reports: [],
       lorem: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus excepturi quia aliquid doloremque accusantium suscipit vero pariatur expedita esse. Ipsa cumque culpa fugit dolorem eligendi nobis perferendis qui commodi magni.',
       ds: {
         id: "1",
@@ -239,11 +238,20 @@ window.vue = new Vue({
       },
     }
   },
+  computed:{
+    reports_data(){
+      return this.reports.filter(x => 
+        x.type == this.transparency_type && 
+        (this.transparency_year != 'All' ? (x.year == this.transparency_year) : true) && 
+        (this.transparency_type == 2 ? (x.quarter == this.transparency_quarter) : true)
+      )
+    }
+  },
   created(){
     document.getElementById("q-app").style.display = "block"
   },
   mounted(){
-    console.log(1)
+
   },
   methods: {
     orgClick(){
@@ -268,48 +276,15 @@ window.vue = new Vue({
       console.log(url)
       window.location.href = url
     },
-    async initMenus(){
-      try{
-        await this.getMenus()
-        this.getHeaderMenus()
-        this.getPageMenus()
-      }catch(error){
-        console.log(error)
-      }
-    },
-    getMenus(){
+    getReports(){
       return new Promise((resolve, reject) => {
-        window.axios.get(settings.API_BASE_PATH+'wp-api-menus/v2/menus')
-        .then((response) => {
-          this.menus = response.data ? response.data : this.menus
-          resolve()
-        })
-      })
-    },
-    async getHeaderMenus(){
-      return new Promise((resolve, reject) => {
-        const index = this.menus.findIndex(x => x.slug == 'header-menu')
-        if(index < 0) return
-        window.axios.get(settings.API_BASE_PATH+'wp-api-menus/v2/menus/'+this.menus[index].ID)
-        .then((response) => {
-          this.header_menus = response.data && response.data.items ? response.data.items : this.header_menus
-          resolve()
-        })
-      })
-    },
-    async getPageMenus(){
-      return new Promise((resolve, reject) => {
-        const index = this.menus.findIndex(x => x.slug == 'main-page-menu')
-        console.log(index)
-        if(index < 0) return
-        window.axios.get(settings.API_BASE_PATH+'wp-api-menus/v2/menus/'+this.menus[index].ID)
+        window.axios.get(settings.API_BASE_PATH+'myplugin/v1/get-reports')
         .then((response) => {
           console.log(response.data)
-          this.page_menus = response.data && response.data.items ? response.data.items : this.page_menus
+          this.reports = response.data ? response.data : []
           resolve()
         })
       })
-      
     },
 
     ///Add Post ///
@@ -320,6 +295,9 @@ window.vue = new Vue({
         content: null,
         attachments: [],
       }
+      this.$nextTick(() => {
+        this.$refs.add_post_form.resetValidation()
+      })
 
       this.images = []
       this.file_display = null
@@ -330,8 +308,8 @@ window.vue = new Vue({
         this.file_display = this.getImageUrl(file)
       }else{
         file.forEach(el => {
-          const index = this.form.attachments.findIndex(x => x['__key'] == el['__key'])
-          if(index < 0) this.form.attachments.push(el)
+          const index = this.form_post.attachments.findIndex(x => x['__key'] == el['__key'])
+          if(index < 0) this.form_post.attachments.push(el)
         });
       }
     },
@@ -339,10 +317,10 @@ window.vue = new Vue({
       return URL.createObjectURL(file)
     },
     removeAttachment(attachment){
-      const index_form = this.form.attachments.findIndex(x => x['__key'] == attachment['__key'])
+      const index_form = this.form_post.attachments.findIndex(x => x['__key'] == attachment['__key'])
       const index_images = this.images.findIndex(x => x['__key'] == attachment['__key'])
 
-      index_form >= 0 ? this.form.attachments.splice(index_form,1) : ''
+      index_form >= 0 ? this.form_post.attachments.splice(index_form,1) : ''
       index_images >= 0 ? this.images.splice(index_images,1) : ''
     },
     addPost(evt){
@@ -355,6 +333,9 @@ window.vue = new Vue({
         attachment: null,
         year: null,
       }
+      this.$nextTick(() => {
+        this.$refs.add_report_form.resetValidation()
+      })
     },
     addReport(){
 

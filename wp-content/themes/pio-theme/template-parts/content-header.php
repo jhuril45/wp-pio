@@ -46,7 +46,8 @@
       class="q-mr-sm"
       v-if="$q.screen.lt.sm"
       color="primary"
-      @click="drawer_left = !drawer_left"></q-btn>
+      @click="drawer_left = !drawer_left">
+    </q-btn>
     <div class="row items-center full-height q-gutter-x-sm">
       <div class="col-shrink">
         <a href="<?php echo get_home_url() ?>">
@@ -63,9 +64,14 @@
       <div class="col" v-if="$q.screen.gt.xs">
         <ul class="header-links">
           <li
-            :class="link.object_slug == 'home' ? 'active' : ''"
             v-for="(link,index) in header_menus"
-            :key="'header-menu-'+index" v-text="link.title">
+            :key="'header-menu-'+index">
+            <a
+              :href="link.url ? link.url : ''"
+              style="text-decoration:none"
+              :class="link.object_slug == 'home' ? 'active' : ''">
+              {{link.title}}
+            </a>
           </li>
         </ul>
       </div>

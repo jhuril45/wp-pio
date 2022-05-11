@@ -220,10 +220,11 @@ foreach ($data as $key => $value) {
   </div>
   <div class="col-12 row">
     <div class="q-py-xs col-12 col-md-4 q-px-md">
-      <q-card class="news-card" style="max-height:150px">
+      <q-card class="news-card" style="max-height:200px">
         <a href="<?php echo site_url()?>/transparency">
           <q-img
-            contain
+            cover
+            height="150px"
             src="<?php echo get_template_directory_uri().'/assets/images/transparency-seal.jpg'; ?>"
             basic
           >
@@ -232,11 +233,25 @@ foreach ($data as $key => $value) {
       </q-card>
     </div>
     <div class="q-py-xs col-12 col-md-4 q-px-md">
-      <q-card class="news-card" style="max-height:150px">
+      <q-card class="news-card" style="max-height:200px">
         <a href="">
           <q-img
-            contain
+            cover
+            height="150px"
             src="<?php echo get_template_directory_uri().'/assets/images/bids-awards.jpg'; ?>"
+            basic
+          >
+          </q-img>
+        </a>
+      </q-card>
+    </div>
+    <div class="q-py-xs col-12 col-md-4 q-px-md">
+      <q-card class="news-card" style="max-height:200px">
+        <a href="https://www.jobstreet.com.ph/">
+          <q-img
+            cover
+            height="150px"
+            src="<?php echo get_template_directory_uri().'/assets/images/jobstreet.jpg'; ?>"
             basic
           >
           </q-img>
