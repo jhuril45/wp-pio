@@ -6,22 +6,6 @@
 <q-card>
   <q-card-section class="q-px-sm q-py-md">
     <div class="row q-gutter-y-md">
-      <div class="col-12 col-md-6 q-px-sm">
-        <q-select
-          dense
-          outlined
-          v-model="transparency_type"
-          :options="['Anually','Quarterly']"
-          label="Report type" />
-      </div>
-      <div class="col-12 col-md-6 q-px-sm">
-        <q-select
-          dense
-          outlined
-          v-model="transparency_year"
-          :options="[2019,2020,2021,2022]"
-          label="Year" />
-      </div>
       <div class="col-12" v-if="posts">
         <q-table
           flat
