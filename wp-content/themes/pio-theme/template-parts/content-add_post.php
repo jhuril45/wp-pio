@@ -7,7 +7,7 @@
 
 <div class="row q-py-lg q-gutter-y-md">
   <div class="col-12 row justify-center">
-    <q-card class="add-post-card">
+    <q-card class="add-post-card col-12 col-md-6">
       <q-card-section class="text-bold text-h5">
         <span>
           {{form_post.id ? 'Edit Post' : 'Add Post'}}
@@ -45,7 +45,14 @@
               v-show="false"></q-file>
           </div>
           <div class="col-12">
+            <q-editor
+              ref="editor_ref"
+              v-model="form_post.content"
+              @paste.native="evt => pasteCapture(evt)"
+              height="50vh">
+            </q-editor>
             <q-input
+              v-if="false"
               v-model="form_post.content"
               placeholder="Content"
               class="full-width"
@@ -74,6 +81,24 @@
                     </div>
                     <div class="col-12 text-center text-subtitle2 text-bold q-pt-sm">Add attachment</div>
                   </div>
+                </div>
+                <div v-for="(attachment,index) in form_post.existing_attachments" :key="attachment.ID" class="q-pa-sm relative-position" style="height:200px;width:150px">
+                  <q-img
+                    cover
+                    height="100%"
+                    width="100%"
+                    :src="attachment.src">
+                  </q-img>
+                  <span class="absolute-top-right">
+                    <q-btn
+                      @click="removePostAttachment(attachment)"
+                      size="sm"
+                      padding="5px 5px"
+                      round
+                      color="red"
+                      icon="close">
+                    </q-btn>
+                  </span>
                 </div>
                 <div v-for="(attachment,index) in form_post.attachments" :key="attachment['__key']" class="q-pa-sm relative-position" style="height:200px;width:150px">
                   <q-img

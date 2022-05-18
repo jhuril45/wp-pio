@@ -56,11 +56,25 @@ function cgb_create_tables(){
       KEY file_path (path)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
     dbDelta( $sql );
+
+    $bids = $wpdb->prefix . "bid_reports";  //get the database table prefix to create my new table
+
+    $sql = "CREATE TABLE $bids (
+      id int(10) unsigned NOT NULL AUTO_INCREMENT,
+      title varchar(255) NOT NULL,
+      year int(10) NOT NULL,
+      month int(10) DEFAULT NULL,
+      path varchar(255) NOT NULL,
+      type int(5) NOT NULL,
+      PRIMARY KEY  (id),
+      KEY file_path (path)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+    dbDelta( $sql );
 }
 
 function cgb_create_pages(){
-  $check_page_exist = get_page_by_title('Offices',);
-  if(empty($check_page_exist)) {
+  $office_page = get_page_by_title('Offices',);
+  if(empty($office_page)) {
     wp_insert_post(
       array(
       'comment_status' => 'close',
@@ -68,6 +82,38 @@ function cgb_create_pages(){
       'post_author'    => 1,
       'post_title'     => ucwords('Offices'),
       'post_name'      => strtolower(str_replace(' ', '-', trim('Offices'))),
+      'post_status'    => 'publish',
+      'post_content'   => '',
+      'post_type'      => 'page',
+      )
+    );
+  }
+
+  $bids_page = get_page_by_title('Bids',);
+  if(empty($bids_page)) {
+    wp_insert_post(
+      array(
+      'comment_status' => 'close',
+      'ping_status'    => 'close',
+      'post_author'    => 1,
+      'post_title'     => ucwords('Bids'),
+      'post_name'      => strtolower(str_replace(' ', '-', trim('bids'))),
+      'post_status'    => 'publish',
+      'post_content'   => '',
+      'post_type'      => 'page',
+      )
+    );
+  }
+
+  $tourism_page = get_page_by_title('Toursim',);
+  if(empty($tourism_page)) {
+    wp_insert_post(
+      array(
+      'comment_status' => 'close',
+      'ping_status'    => 'close',
+      'post_author'    => 1,
+      'post_title'     => ucwords('Toursim'),
+      'post_name'      => strtolower(str_replace(' ', '-', trim('tourism'))),
       'post_status'    => 'publish',
       'post_content'   => '',
       'post_type'      => 'page',

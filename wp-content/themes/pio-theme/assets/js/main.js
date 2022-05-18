@@ -50,7 +50,7 @@ window.vue = new Vue({
           "order": 4,
           "parent": 0,
           "title": "Tourism",
-          "url": "#",
+          "url": "http://localhost/vue_wp/tourism",
         },
         {
           "id": 19,
@@ -66,6 +66,7 @@ window.vue = new Vue({
       flip_cards: [
         {
           icon: 'agriculture',
+          image: 'http://localhost/vue_wp/wp-content/themes/pio-theme/assets/images/agriculture.jpg',
           class_front: 'bg-green-5 text-white',
           class_back: 'bg-green-8 text-white',
           title: 'Agriculture',
@@ -73,6 +74,7 @@ window.vue = new Vue({
         },
         {
           icon: 'warning',
+          image: 'http://localhost/vue_wp/wp-content/themes/pio-theme/assets/images/disaster.jpg',
           class_front: 'bg-light-blue-6 text-white',
           class_back: 'bg-light-blue-8 text-white',
           title: 'Disaster Risk Reduction',
@@ -80,6 +82,7 @@ window.vue = new Vue({
         },
         {
           icon: 'school',
+          image: 'http://localhost/vue_wp/wp-content/themes/pio-theme/assets/images/school.jpg',
           class_front: 'bg-purple-4 text-white',
           class_back: 'bg-purple-7 text-white',
           title: 'Education',
@@ -87,9 +90,42 @@ window.vue = new Vue({
         },
         {
           icon: 'health_and_safety',
+          image: 'http://localhost/vue_wp/wp-content/themes/pio-theme/assets/images/health.jpg',
           class_front: 'bg-light-green-6 text-white',
           class_back: 'bg-light-green-8 text-white',
           title: 'Health',
+          description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nec nisl tincidunt, condimentum nibh vitae, bibendum neque. Donec vitae hendrerit arcu. Donec enim lacus, elementum sed justo sed,'
+        },
+        {
+          icon: 'apartment',
+          image: 'http://localhost/vue_wp/wp-content/themes/pio-theme/assets/images/infrastracture.jpg',
+          class_front: 'bg-deep-orange-6 text-white',
+          class_back: 'bg-deep-orange-8 text-white',
+          title: 'Infrastracture Development',
+          description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nec nisl tincidunt, condimentum nibh vitae, bibendum neque. Donec vitae hendrerit arcu. Donec enim lacus, elementum sed justo sed,'
+        },
+        {
+          icon: 'beach_access',
+          image: 'http://localhost/vue_wp/wp-content/themes/pio-theme/assets/images/tourism.jpg',
+          class_front: 'bg-yellow-6 text-white',
+          class_back: 'bg-yellow-8 text-white',
+          title: 'Tourism',
+          description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nec nisl tincidunt, condimentum nibh vitae, bibendum neque. Donec vitae hendrerit arcu. Donec enim lacus, elementum sed justo sed,'
+        },
+        {
+          icon: 'traffic',
+          image: 'http://localhost/vue_wp/wp-content/themes/pio-theme/assets/images/traffic.jpg',
+          class_front: 'bg-cyan-6 text-white',
+          class_back: 'bg-cyan-8 text-white',
+          title: 'Transportation and Traffic Management',
+          description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nec nisl tincidunt, condimentum nibh vitae, bibendum neque. Donec vitae hendrerit arcu. Donec enim lacus, elementum sed justo sed,'
+        },
+        {
+          icon: 'recycling',
+          image: 'http://localhost/vue_wp/wp-content/themes/pio-theme/assets/images/recycle.jpg',
+          class_front: 'bg-green-6 text-white',
+          class_back: 'bg-green-8 text-white',
+          title: 'Solid Waste Management',
           description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nec nisl tincidunt, condimentum nibh vitae, bibendum neque. Donec vitae hendrerit arcu. Donec enim lacus, elementum sed justo sed,'
         },
       ],
@@ -161,8 +197,9 @@ window.vue = new Vue({
         id: null,
         title: null,
         featured_image: null,
-        content: null,
+        content: '',
         attachments: [],
+        existing_attachments: [],
       },
       form_report:{
         title: '',
@@ -171,6 +208,27 @@ window.vue = new Vue({
         type: null,
         quarter: null,
       },
+      form_bid_report:{
+        title: '',
+        attachment: null,
+        year: null,
+        type: null,
+        month: null,
+      },
+      bid_report_options: [
+        {
+          label: 'Invitation to Bid',
+          value: 1,
+        },
+        {
+          label: 'Supplemental Bid',
+          value: 2,
+        },
+        {
+          label: 'Minutes of Pre Bid',
+          value: 3,
+        },
+      ],
       report_options: [
         {
           label: 'Annual',
@@ -199,10 +257,19 @@ window.vue = new Vue({
           value: 4,
         },
       ],
-      year_options: [2016,2017,2018,2019,2020,2021,2022],
+      year_options: [
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022
+      ],
       file_display: null,
       images: [],
       reports: [],
+      bids: [],
       lorem: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus excepturi quia aliquid doloremque accusantium suscipit vero pariatur expedita esse. Ipsa cumque culpa fugit dolorem eligendi nobis perferendis qui commodi magni.',
       ds: {
         id: "1",
@@ -245,6 +312,61 @@ window.vue = new Vue({
         (this.transparency_year != 'All' ? (x.year == this.transparency_year) : true) && 
         (this.transparency_type == 2 ? (x.quarter == this.transparency_quarter) : true)
       )
+    },
+    bids_data(){
+      return this.bids
+    },
+    month_options(){
+      return [
+        {
+          label: 'January',
+          value: 1,
+        },
+        {
+          label: 'February',
+          value: 2,
+        },
+        {
+          label: 'March',
+          value: 3,
+        },
+        {
+          label: 'April',
+          value: 4,
+        },
+        {
+          label: 'May',
+          value: 5,
+        },
+        {
+          label: 'June',
+          value: 6,
+        },
+        {
+          label: 'July',
+          value: 7,
+        },
+        {
+          label: 'August',
+          value: 8,
+        },
+        {
+          label: 'September',
+          value: 9,
+        },
+        {
+          label: 'October',
+          value: 10,
+        },
+        {
+          label: 'November',
+          value: 11,
+        },
+        {
+          label: 'December',
+          value: 12,
+        },
+      ]
     }
   },
   created(){
@@ -254,6 +376,27 @@ window.vue = new Vue({
 
   },
   methods: {
+    pasteCapture (evt) {
+      // Let inputs do their thing, so we don't break pasting of links.
+      if (evt.target.nodeName === 'INPUT') return
+      let text, onPasteStripFormattingIEPaste
+      evt.preventDefault()
+      if (evt.originalEvent && evt.originalEvent.clipboardData.getData) {
+        text = evt.originalEvent.clipboardData.getData('text/plain')
+        this.$refs.editor_ref.runCmd('insertText', text)
+      }
+      else if (evt.clipboardData && evt.clipboardData.getData) {
+        text = evt.clipboardData.getData('text/plain')
+        this.$refs.editor_ref.runCmd('insertText', text)
+      }
+      else if (window.clipboardData && window.clipboardData.getData) {
+        if (!onPasteStripFormattingIEPaste) {
+          onPasteStripFormattingIEPaste = true
+          this.$refs.editor_ref.runCmd('ms-pasteTextOnly', text)
+        }
+        onPasteStripFormattingIEPaste = false
+      }
+    },
     orgClick(){
       console.log(this.$refs.org_chart)
     },
@@ -286,13 +429,22 @@ window.vue = new Vue({
         })
       })
     },
-
+    getBids(){
+      return new Promise((resolve, reject) => {
+        window.axios.get(settings.API_BASE_PATH+'myplugin/v1/get-bids')
+        .then((response) => {
+          console.log(response.data)
+          this.bids = response.data ? response.data : []
+          resolve()
+        })
+      })
+    },
     ///Add Post ///
     resetForm(){
       this.form = {
         title: null,
         featured_image: null,
-        content: null,
+        content: '',
         attachments: [],
       }
       this.$nextTick(() => {
@@ -316,6 +468,9 @@ window.vue = new Vue({
     getImageUrl(file){
       return URL.createObjectURL(file)
     },
+    removePostAttachment(){
+
+    },
     removeAttachment(attachment){
       const index_form = this.form_post.attachments.findIndex(x => x['__key'] == attachment['__key'])
       const index_images = this.images.findIndex(x => x['__key'] == attachment['__key'])
@@ -338,6 +493,9 @@ window.vue = new Vue({
       })
     },
     addReport(){
+
+    },
+    addBidReport(){
 
     },
   },

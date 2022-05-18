@@ -48,6 +48,26 @@
           </q-item-label>
         </q-item-section>
       </q-item>
+      <q-item clickable v-ripple href="<?php echo get_home_url().'/dashboard?tab=add-bid-report';?>">
+        <q-item-section side>
+          <q-icon :name="'picture_as_pdf'"></q-icon>
+        </q-item-section>
+        <q-item-section>
+          <q-item-label class="text-body2 text-bold">
+            Add Bid Report
+          </q-item-label>
+        </q-item-section>
+      </q-item>
+      <q-item clickable v-ripple href="<?php echo wp_logout_url();?>">
+        <q-item-section side>
+          <q-icon :name="'picture_as_pdf'"></q-icon>
+        </q-item-section>
+        <q-item-section>
+          <q-item-label class="text-body2 text-bold">
+            Logout
+          </q-item-label>
+        </q-item-section>
+      </q-item>
     </q-list>
   </q-scroll-area>
 </q-drawer>

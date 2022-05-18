@@ -90,6 +90,19 @@ function fetchReports() {
   }
 }
 
+function fetchBids() {
+  try{
+    $user = wp_get_current_user();
+    global $wpdb;
+    $table_name = $wpdb->prefix . "bid_reports";
+    $results = $wpdb->get_results("SELECT * FROM $table_name");
+    return $results;
+
+  }catch(Exception $error){
+    return $error;
+  }
+}
+
 function fetchPost() {
   try{
     $id = $_GET['id'];
@@ -121,6 +134,19 @@ function fetchPost() {
       'post' => $post,
       'attachments' => $attachments,
     );
+  }catch(Exception $error){
+    return $error;
+  }
+}
+
+function removePostAttachment() {
+  try{
+    $user = wp_get_current_user();
+    $attachment = null;
+    if (isset($_POST['id'])) {
+      $attachment = wp_delete_attachment($_POST['id']);
+    }
+    return $attachment;
   }catch(Exception $error){
     return $error;
   }
@@ -179,6 +205,35 @@ function submitReport() {
           'path' => $file['url'],
           'type' => $_POST['type'],
           'quarter' => $_POST['quarter'] ? $_POST['quarter'] : null,
+        ),
+      );
+      return $file;
+    }
+  }catch(Exception $error){
+    return $error;
+  }
+}
+
+function submitBidReport() {
+  try{
+    $user = wp_get_current_user();
+    $attachment = basename($_FILES["attachment"]["name"]);
+
+    if($attachment){
+      $temp = explode('.',basename($_FILES["attachment"]["name"]));
+      $extension = end($temp);
+      $file_name = time().'.'.$extension;
+      $file = wp_upload_bits( $file_name, null, @file_get_contents( $_FILES['attachment']['tmp_name'] ) );
+
+      global $wpdb;
+      $report = $wpdb->insert(
+        $wpdb->prefix.'bid_reports',
+        array(
+          'title' => $_POST['title'],
+          'year' => $_POST['year'],
+          'path' => $file['url'],
+          'type' => $_POST['type'],
+          'month' => $_POST['month'] ? $_POST['month'] : null,
         ),
       );
       return $file;
@@ -282,5 +337,26 @@ add_action( 'rest_api_init', function () {
   register_rest_route( 'myplugin/v1', '/get-reports', array(
     'methods' => 'GET',
     'callback' => 'fetchReports',
+  ) );
+} );
+
+add_action( 'rest_api_init', function () {
+  register_rest_route( 'myplugin/v1', '/get-bids', array(
+    'methods' => 'GET',
+    'callback' => 'fetchBids',
+  ) );
+} );
+
+add_action( 'rest_api_init', function () {
+  register_rest_route( 'myplugin/v1', '/remove-post-attachment', array(
+    'methods' => 'POST',
+    'callback' => 'removePostAttachment',
+  ) );
+} );
+
+add_action( 'rest_api_init', function () {
+  register_rest_route( 'myplugin/v1', '/add-bid-report', array(
+    'methods' => 'POST',
+    'callback' => 'submitBidReport',
   ) );
 } );

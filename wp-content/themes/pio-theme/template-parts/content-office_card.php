@@ -70,8 +70,9 @@
 
       <q-tab-panels v-model="page_tab" animated class="q-px-md">
         <q-tab-panel name="citizens_charter">
-          <div class="text-h6">Citizens Charter</div>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit.
+          <img src="<?php echo get_template_directory_uri().'/assets/images/PIO 1.jpg'; ?>">
+          <img src="<?php echo get_template_directory_uri().'/assets/images/PIO 2.jpg'; ?>">
+          <img src="<?php echo get_template_directory_uri().'/assets/images/PIO 3.jpg'; ?>">
         </q-tab-panel>
 
         <q-tab-panel name="services">

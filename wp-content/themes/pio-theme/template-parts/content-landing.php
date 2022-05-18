@@ -24,7 +24,7 @@ foreach ($data as $key => $value) {
     animated
     v-model="slide"
     ref="carousel"
-    height="400px"
+    :height="$q.screen.lt.sm ? '250px' : '600px'"
     infinite
   >
     <?php 
@@ -33,9 +33,17 @@ foreach ($data as $key => $value) {
       foreach ($carousel_images as $key => $value) {
     ?>
     <q-carousel-slide class="q-pa-none" :name="<?php echo $index?>">
-      <img
+      <q-img
         src="<?php echo($value->path); ?>"
-        style="max-height:100%;width:100%;height:90%">
+        style="max-height:100%;width:100%;height:100%"
+        >
+        <?php if($index >= 4) {?>
+          <div class="text-body1" style="left:35%;top:50%;transform: translate(-50%,-50%);background:rgba(33, 150, 243,0.7)">
+            {{lorem}}
+            {{lorem}}
+          </div>
+        <?php } ?>
+      </q-img>
     </q-carousel-slide>
     <?php 
         $index = $index + 1;
@@ -43,9 +51,10 @@ foreach ($data as $key => $value) {
     }else{
     ?>
     <q-carousel-slide class="q-pa-none" :name="1">
-      <img
+      <q-img
         src="<?php echo get_template_directory_uri().'/assets/images/ButuanOnDesign.png'; ?>"
-        style="max-height:100%;width:100%;height:90%">
+        style="max-height:100%;width:100%;height:100%"
+        :contain="$q.screen.lt.sm"></q-img>
     </q-carousel-slide>
     <?php 
     }
@@ -69,6 +78,7 @@ foreach ($data as $key => $value) {
   </q-carousel>
 </div>
 
+<!-- Plans and Programs must be dynamic -->
 <div class="full-width row justify-start q-my-md" :class="$q.screen.lt.sm ? 'q-px-md' : 'q-pa-xl'">
   <div class="col-12 text-center q-my-md text-bold" :class="$q.screen.lt.sm ? 'text-h5' : 'text-h4'">
     PLANS AND PROGRAMS
@@ -79,14 +89,20 @@ foreach ($data as $key => $value) {
     :key="'flip-card-'+index">
     <div class="flip-card">
       <div class="flip-card-inner">
-        <div class="flip-card-front rounded-borders" :class="flip.class_front ? flip.class_front : ''">
-          <div class="fit row justify-center items-center">
-            <div class="col-12 text-center">
-              <q-icon :name="flip.icon" size="60px"></q-icon>
-              <p class="text-h6">
-                {{flip.title}}
-              </p>
+        <div class="flip-card-front rounded-borders relative-position" >
+          <q-img
+            cover
+            height="100%"
+            :src="flip.image">
+            <div class="absolute-full flex flex-center" style="opacity: 0.7;" :class="flip.class_front ? flip.class_front : ''">
+              
             </div>
+          </q-img>
+          <div class="text-h6 absolute-center text-white">
+            <q-icon :name="flip.icon" size="60px"></q-icon>
+            <p class="text-h6">
+              {{flip.title}}
+            </p>
           </div>
         </div>
         <div class="flip-card-back rounded-borders" :class="flip.class_back ? flip.class_back : ''">
@@ -108,6 +124,7 @@ foreach ($data as $key => $value) {
   </div>
 </div>
 
+<!-- Youtube video must be dynamic -->
 <div class="full-width row justify-center bg-primary" :class="$q.screen.lt.sm ? 'q-pa-md' : 'q-pa-lg'">
   <div class="col-md-8 col-12 q-py-md text-white text-center q-px-md" :class="$q.screen.lt.sm ? 'q-px-sm' : ''">
     <div :class="$q.screen.lt.sm ? 'text-h5' : 'text-h4'">
@@ -121,7 +138,7 @@ foreach ($data as $key => $value) {
       src="https://www.youtube.com/embed/YmBY9yNfNos"
     />
   </div>
-  <div class="col-md-4 col-12 q-py-md text-white text-center q-px-md" :class="$q.screen.lt.sm ? 'q-px-sm' : ''">
+  <div class="col-md-4 col-12 q-py-md text-white text-center " :class="$q.screen.lt.sm ? '' : ''">
     <div class="q-py-lg">
       <iframe src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fbutuancitypioofficial&tabs=timeline&width=340&height=500&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId" width="340" height="500" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share">
       </iframe>
@@ -214,17 +231,18 @@ foreach ($data as $key => $value) {
   </div>
 </div>
 
+<!-- Quick Links must be dynamic -->
 <div class="full-width row justify-start" :class="$q.screen.lt.sm ? 'q-my-lg q-px-md' : 'q-my-xl q-pa-xl'">
   <div class="col-12 text-center q-my-md text-bold" :class="$q.screen.lt.sm ? 'text-h5' : 'text-h4'">
     QUICK LINKS
   </div>
-  <div class="col-12 row">
+  <div class="col-12 row q-gutter-y-lg">
     <div class="q-py-xs col-12 col-md-4 q-px-md">
       <q-card class="news-card" style="max-height:200px">
         <a href="<?php echo site_url()?>/transparency">
           <q-img
             cover
-            height="150px"
+            :height="$q.screen.lt.sm ? '100px' : '135px'"
             src="<?php echo get_template_directory_uri().'/assets/images/transparency-seal.jpg'; ?>"
             basic
           >
@@ -234,10 +252,10 @@ foreach ($data as $key => $value) {
     </div>
     <div class="q-py-xs col-12 col-md-4 q-px-md">
       <q-card class="news-card" style="max-height:200px">
-        <a href="">
+        <a href="<?php echo site_url()?>/bids">
           <q-img
             cover
-            height="150px"
+            :height="$q.screen.lt.sm ? '100px' : '135px'"
             src="<?php echo get_template_directory_uri().'/assets/images/bids-awards.jpg'; ?>"
             basic
           >
@@ -250,7 +268,7 @@ foreach ($data as $key => $value) {
         <a href="https://www.jobstreet.com.ph/">
           <q-img
             cover
-            height="150px"
+            :height="$q.screen.lt.sm ? '100px' : '135px'"
             src="<?php echo get_template_directory_uri().'/assets/images/jobstreet.jpg'; ?>"
             basic
           >
@@ -261,8 +279,44 @@ foreach ($data as $key => $value) {
   </div>
 </div>
 
+<!-- Links must be dynamic -->
+<div class="full-width row justify-start" :class="$q.screen.lt.sm ? 'q-my-lg q-px-md' : 'q-my-xl q-pa-xl'">
+  <div class="col-12 row justify-center q-mt-lg" :class="$q.screen.lt.sm ? 'q-gutter-y-xl' : 'q-gutter-x-xl'">
+    <div class="q-px-sm" :class="$q.screen.lt.sm ? 'col-12 row justify-center' : 'col-auto'">
+      <a href="https://www.gov.ph/">
+        <img src="https://www.davaocity.gov.ph/wp-content/uploads/2018/10/ph_logo.png" style="height:80px">
+      </a>
+    </div>
+    <div class="q-px-sm" :class="$q.screen.lt.sm ? 'col-12 row justify-center' : 'col-auto'">
+      <a href="https://www.dti.gov.ph/">
+        <img src="https://www.davaocity.gov.ph/wp-content/uploads/2018/10/ph_logo_2.png" style="height:80px">
+      </a>
+    </div>
+    <div class="q-px-sm" :class="$q.screen.lt.sm ? 'col-12 row justify-center' : 'col-auto'">
+      <a href="https://www.deped.gov.ph/">
+        <img src="https://www.davaocity.gov.ph/wp-content/uploads/2018/10/ph_logo_3.png" style="height:80px">
+      </a>
+    </div>
+    <div class="q-px-sm" :class="$q.screen.lt.sm ? 'col-12 row justify-center' : 'col-auto'">
+      <a href="https://dfa.gov.ph/">
+        <img src="https://www.davaocity.gov.ph/wp-content/uploads/2018/10/ph_logo_4.png" style="height:80px">
+      </a>
+    </div>
+    <div class="q-px-sm" :class="$q.screen.lt.sm ? 'col-12 row justify-center' : 'col-auto'">
+      <a href="https://www.dilg.gov.ph/">
+        <img src="https://www.davaocity.gov.ph/wp-content/uploads/2018/10/ph_logo_5.png" style="height:80px">
+      </a>
+    </div>
+    <div class="q-px-sm" :class="$q.screen.lt.sm ? 'col-12 row justify-center' : 'col-auto'">
+      <a href="http://tourism.gov.ph/">
+        <img src="https://www.davaocity.gov.ph/wp-content/uploads/2018/10/ph_logo_6.png" style="height:80px">
+      </a>
+    </div>
+  </div>
+</div>
+
 <q-dialog v-model="page_dialog.open">
-  <q-card style="width:350px">
+  <q-card >
     <q-card-section class="row items-center q-pa-none">
       <div class="text-h6 q-pa-sm">{{page_dialog.data.title}}</div>
       <q-space></q-space>
