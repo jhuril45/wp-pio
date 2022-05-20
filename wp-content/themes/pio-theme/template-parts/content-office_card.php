@@ -3,7 +3,7 @@
     <div class="row q-gutter-x-md">
       <div class="col-12 col-md-shrink row justify-center">
         <q-avatar size="100px" class="shadow-9">
-          <img src="<?php echo get_template_directory_uri().'/assets/images/Butuan_Logo_Transparent.png'; ?>">
+          <img src="<?php echo get_template_directory_uri().'/assets/images/PIO.png'; ?>">
         </q-avatar>
       </div>
       <div class="col-12 col-md-shrink">
@@ -103,23 +103,7 @@
         </q-tab-panel>
 
         <q-tab-panel name="organization">
-          <div @click="orgClick">
-            <organization-chart :datasource="ds" ref="org_chart" class="org_chart_parent">
-              <template slot-scope="{ nodeData }" >
-                <div :class="['node-box',  nodeData.id == '1' ? 'parent' : '']" class="cursor-pointer">
-                  <div class="node-title">{{nodeData.title}}</div>
-                  <div class="node-content">
-                    <q-avatar>
-                      <img :src="nodeData.img">
-                    </q-avatar>
-                    <div>
-                      <span class="text-capitalize">{{nodeData.name}}</span>
-                    </div>
-                  </div>
-                </div>
-              </template>
-            </organization-chart>
-          </div>
+          <img src="<?php echo get_template_directory_uri().'/assets/images/PIO Organizational Structure.jpg'; ?>">
         </q-tab-panel>
         <q-tab-panel name="forms">
           <div class="row justify-center">

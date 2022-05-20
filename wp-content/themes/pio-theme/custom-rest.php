@@ -207,7 +207,7 @@ function submitReport() {
           'quarter' => $_POST['quarter'] ? $_POST['quarter'] : null,
         ),
       );
-      return $file;
+      return $report;
     }
   }catch(Exception $error){
     return $error;

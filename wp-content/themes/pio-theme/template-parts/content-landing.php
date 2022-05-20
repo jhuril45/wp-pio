@@ -25,6 +25,7 @@ foreach ($data as $key => $value) {
     v-model="slide"
     ref="carousel"
     :height="$q.screen.lt.sm ? '250px' : '600px'"
+    autoplay
     infinite
   >
     <?php 
@@ -282,39 +283,39 @@ foreach ($data as $key => $value) {
 <!-- Links must be dynamic -->
 <div class="full-width row justify-around" :class="$q.screen.lt.sm ? 'q-my-lg q-px-md' : 'q-my-xl q-pa-xl'">
   <div class="col-12 row justify-center q-mt-lg" :class="$q.screen.lt.sm ? 'q-gutter-y-xl' : 'q-gutter-x-xl'">
-    <div class="q-px-lg" :class="$q.screen.lt.sm ? 'col-12 row justify-center' : 'col-auto'">
+    <div class="" :class="$q.screen.lt.sm ? 'col-12 row justify-center' : 'col-grow'">
       <a href="https://www.gov.ph/">
-        <img src="https://www.davaocity.gov.ph/wp-content/uploads/2018/10/ph_logo.png" style="height:80px">
+        <img src="https://www.davaocity.gov.ph/wp-content/uploads/2018/10/ph_logo.png" style="height:70px">
       </a>
     </div>
-    <div class="q-px-lg" :class="$q.screen.lt.sm ? 'col-12 row justify-center' : 'col-auto'">
+    <div class="q-px-lg" :class="$q.screen.lt.sm ? 'col-12 row justify-center' : 'col-grow'">
       <a href="https://www.dti.gov.ph/">
-        <img src="https://www.davaocity.gov.ph/wp-content/uploads/2018/10/ph_logo_2.png" style="height:80px">
+        <img src="https://www.davaocity.gov.ph/wp-content/uploads/2018/10/ph_logo_2.png" style="height:70px">
       </a>
     </div>
-    <div class="q-px-lg" :class="$q.screen.lt.sm ? 'col-12 row justify-center' : 'col-auto'">
+    <div class="q-px-lg" :class="$q.screen.lt.sm ? 'col-12 row justify-center' : 'col-grow'">
       <a href="https://www.deped.gov.ph/">
-        <img src="https://www.davaocity.gov.ph/wp-content/uploads/2018/10/ph_logo_3.png" style="height:80px">
+        <img src="https://www.davaocity.gov.ph/wp-content/uploads/2018/10/ph_logo_3.png" style="height:70px">
       </a>
     </div>
-    <div class="q-px-lg" :class="$q.screen.lt.sm ? 'col-12 row justify-center' : 'col-auto'">
+    <div class="q-px-lg" :class="$q.screen.lt.sm ? 'col-12 row justify-center' : 'col-grow'">
       <a href="https://dfa.gov.ph/">
-        <img src="https://www.davaocity.gov.ph/wp-content/uploads/2018/10/ph_logo_4.png" style="height:80px">
+        <img src="https://www.davaocity.gov.ph/wp-content/uploads/2018/10/ph_logo_4.png" style="height:70px">
       </a>
     </div>
-    <div class="q-px-lg" :class="$q.screen.lt.sm ? 'col-12 row justify-center' : 'col-auto'">
+    <div class="q-px-lg" :class="$q.screen.lt.sm ? 'col-12 row justify-center' : 'col-grow'">
       <a href="https://www.dilg.gov.ph/">
-        <img src="https://www.davaocity.gov.ph/wp-content/uploads/2018/10/ph_logo_5.png" style="height:80px">
+        <img src="https://www.davaocity.gov.ph/wp-content/uploads/2018/10/ph_logo_5.png" style="height:70px">
       </a>
     </div>
-    <div class="q-px-lg" :class="$q.screen.lt.sm ? 'col-12 row justify-center' : 'col-auto'">
+    <div class="q-px-lg" :class="$q.screen.lt.sm ? 'col-12 row justify-center' : 'col-grow'">
       <a href="http://tourism.gov.ph/">
-        <img src="https://www.davaocity.gov.ph/wp-content/uploads/2018/10/ph_logo_6.png" style="height:80px">
+        <img src="https://www.davaocity.gov.ph/wp-content/uploads/2018/10/ph_logo_6.png" style="height:70px">
       </a>
     </div>
-    <div class="q-px-lg" :class="$q.screen.lt.sm ? 'col-12 row justify-center' : 'col-auto'">
+    <div class="" :class="$q.screen.lt.sm ? 'col-12 row justify-center' : 'col-grow'">
       <a href="http://tourism.gov.ph/">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Department_of_Budget_and_Management_%28DBM%29.svg/1200px-Department_of_Budget_and_Management_%28DBM%29.svg.png" style="height:80px">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Department_of_Budget_and_Management_%28DBM%29.svg/1200px-Department_of_Budget_and_Management_%28DBM%29.svg.png" style="height:70px">
       </a>
     </div>
   </div>
