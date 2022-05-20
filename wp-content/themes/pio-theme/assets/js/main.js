@@ -1,4 +1,6 @@
-var settings = {API_BASE_PATH: "/vue_wp/wp-json/"}
+var settings = {
+  API_BASE_PATH: "/vue_wp/wp-json/"
+}
 window.Quasar.plugins.LoadingBar.setDefaults({ color: 'white' });
 // Quasar.iconSet.set(Quasar.iconSet.svgFontawesomeV5)
 
@@ -66,7 +68,7 @@ window.vue = new Vue({
       flip_cards: [
         {
           icon: 'agriculture',
-          image: 'http://localhost/vue_wp/wp-content/themes/pio-theme/assets/images/agriculture.jpg',
+          image: 'agriculture.jpg',
           class_front: 'bg-green-5 text-white',
           class_back: 'bg-green-8 text-white',
           title: 'Agriculture',
@@ -74,7 +76,7 @@ window.vue = new Vue({
         },
         {
           icon: 'warning',
-          image: 'http://localhost/vue_wp/wp-content/themes/pio-theme/assets/images/disaster.jpg',
+          image: 'disaster.jpg',
           class_front: 'bg-light-blue-6 text-white',
           class_back: 'bg-light-blue-8 text-white',
           title: 'Disaster Risk Reduction',
@@ -82,7 +84,7 @@ window.vue = new Vue({
         },
         {
           icon: 'school',
-          image: 'http://localhost/vue_wp/wp-content/themes/pio-theme/assets/images/school.jpg',
+          image: 'school.jpg',
           class_front: 'bg-purple-4 text-white',
           class_back: 'bg-purple-7 text-white',
           title: 'Education',
@@ -90,7 +92,7 @@ window.vue = new Vue({
         },
         {
           icon: 'health_and_safety',
-          image: 'http://localhost/vue_wp/wp-content/themes/pio-theme/assets/images/health.jpg',
+          image: 'health.jpg',
           class_front: 'bg-light-green-6 text-white',
           class_back: 'bg-light-green-8 text-white',
           title: 'Health',
@@ -98,7 +100,7 @@ window.vue = new Vue({
         },
         {
           icon: 'apartment',
-          image: 'http://localhost/vue_wp/wp-content/themes/pio-theme/assets/images/infrastracture.jpg',
+          image: 'infrastracture.jpg',
           class_front: 'bg-deep-orange-6 text-white',
           class_back: 'bg-deep-orange-8 text-white',
           title: 'Infrastracture Development',
@@ -106,7 +108,7 @@ window.vue = new Vue({
         },
         {
           icon: 'beach_access',
-          image: 'http://localhost/vue_wp/wp-content/themes/pio-theme/assets/images/tourism.jpg',
+          image: 'tourism.jpg',
           class_front: 'bg-yellow-6 text-white',
           class_back: 'bg-yellow-8 text-white',
           title: 'Tourism',
@@ -114,7 +116,7 @@ window.vue = new Vue({
         },
         {
           icon: 'traffic',
-          image: 'http://localhost/vue_wp/wp-content/themes/pio-theme/assets/images/traffic.jpg',
+          image: 'traffic.jpg',
           class_front: 'bg-cyan-6 text-white',
           class_back: 'bg-cyan-8 text-white',
           title: 'Transportation and Traffic Management',
@@ -122,7 +124,7 @@ window.vue = new Vue({
         },
         {
           icon: 'recycling',
-          image: 'http://localhost/vue_wp/wp-content/themes/pio-theme/assets/images/recycle.jpg',
+          image: 'recycle.jpg',
           class_front: 'bg-green-6 text-white',
           class_back: 'bg-green-8 text-white',
           title: 'Solid Waste Management',

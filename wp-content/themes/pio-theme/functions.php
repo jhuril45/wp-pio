@@ -120,4 +120,20 @@ function cgb_create_pages(){
       )
     );
   }
+
+  $dashboard_page = get_page_by_title('Dashboard',);
+  if(empty($dashboard_page)) {
+    wp_insert_post(
+      array(
+      'comment_status' => 'close',
+      'ping_status'    => 'close',
+      'post_author'    => 1,
+      'post_title'     => ucwords('Dashboard'),
+      'post_name'      => strtolower(str_replace(' ', '-', trim('dashboard'))),
+      'post_status'    => 'publish',
+      'post_content'   => '',
+      'post_type'      => 'page',
+      )
+    );
+  }
 }

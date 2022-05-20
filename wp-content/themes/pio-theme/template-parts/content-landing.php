@@ -93,7 +93,7 @@ foreach ($data as $key => $value) {
           <q-img
             cover
             height="100%"
-            :src="flip.image">
+            :src="'<?php echo get_template_directory_uri().'/assets/images/'; ?>'+flip.image">
             <div class="absolute-full flex flex-center" style="opacity: 0.7;" :class="flip.class_front ? flip.class_front : ''">
               
             </div>
@@ -280,36 +280,41 @@ foreach ($data as $key => $value) {
 </div>
 
 <!-- Links must be dynamic -->
-<div class="full-width row justify-start" :class="$q.screen.lt.sm ? 'q-my-lg q-px-md' : 'q-my-xl q-pa-xl'">
+<div class="full-width row justify-around" :class="$q.screen.lt.sm ? 'q-my-lg q-px-md' : 'q-my-xl q-pa-xl'">
   <div class="col-12 row justify-center q-mt-lg" :class="$q.screen.lt.sm ? 'q-gutter-y-xl' : 'q-gutter-x-xl'">
-    <div class="q-px-sm" :class="$q.screen.lt.sm ? 'col-12 row justify-center' : 'col-auto'">
+    <div class="q-px-lg" :class="$q.screen.lt.sm ? 'col-12 row justify-center' : 'col-auto'">
       <a href="https://www.gov.ph/">
         <img src="https://www.davaocity.gov.ph/wp-content/uploads/2018/10/ph_logo.png" style="height:80px">
       </a>
     </div>
-    <div class="q-px-sm" :class="$q.screen.lt.sm ? 'col-12 row justify-center' : 'col-auto'">
+    <div class="q-px-lg" :class="$q.screen.lt.sm ? 'col-12 row justify-center' : 'col-auto'">
       <a href="https://www.dti.gov.ph/">
         <img src="https://www.davaocity.gov.ph/wp-content/uploads/2018/10/ph_logo_2.png" style="height:80px">
       </a>
     </div>
-    <div class="q-px-sm" :class="$q.screen.lt.sm ? 'col-12 row justify-center' : 'col-auto'">
+    <div class="q-px-lg" :class="$q.screen.lt.sm ? 'col-12 row justify-center' : 'col-auto'">
       <a href="https://www.deped.gov.ph/">
         <img src="https://www.davaocity.gov.ph/wp-content/uploads/2018/10/ph_logo_3.png" style="height:80px">
       </a>
     </div>
-    <div class="q-px-sm" :class="$q.screen.lt.sm ? 'col-12 row justify-center' : 'col-auto'">
+    <div class="q-px-lg" :class="$q.screen.lt.sm ? 'col-12 row justify-center' : 'col-auto'">
       <a href="https://dfa.gov.ph/">
         <img src="https://www.davaocity.gov.ph/wp-content/uploads/2018/10/ph_logo_4.png" style="height:80px">
       </a>
     </div>
-    <div class="q-px-sm" :class="$q.screen.lt.sm ? 'col-12 row justify-center' : 'col-auto'">
+    <div class="q-px-lg" :class="$q.screen.lt.sm ? 'col-12 row justify-center' : 'col-auto'">
       <a href="https://www.dilg.gov.ph/">
         <img src="https://www.davaocity.gov.ph/wp-content/uploads/2018/10/ph_logo_5.png" style="height:80px">
       </a>
     </div>
-    <div class="q-px-sm" :class="$q.screen.lt.sm ? 'col-12 row justify-center' : 'col-auto'">
+    <div class="q-px-lg" :class="$q.screen.lt.sm ? 'col-12 row justify-center' : 'col-auto'">
       <a href="http://tourism.gov.ph/">
         <img src="https://www.davaocity.gov.ph/wp-content/uploads/2018/10/ph_logo_6.png" style="height:80px">
+      </a>
+    </div>
+    <div class="q-px-lg" :class="$q.screen.lt.sm ? 'col-12 row justify-center' : 'col-auto'">
+      <a href="http://tourism.gov.ph/">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Department_of_Budget_and_Management_%28DBM%29.svg/1200px-Department_of_Budget_and_Management_%28DBM%29.svg.png" style="height:80px">
       </a>
     </div>
   </div>
@@ -346,7 +351,7 @@ foreach ($data as $key => $value) {
 
         <q-tab-panel name="offices" class="q-pa-none">
           <q-list class="q-py-none" separator>
-            <q-item clickable v-ripple v-for="off in 4" :key="'office-'+off" href="<?php echo get_home_url().'/offices-pio' ?>">
+            <q-item clickable v-ripple v-for="off in 4" :key="'office-'+off" href="<?php echo get_home_url().'/offices' ?>">
               <q-item-section avatar top>
                 <q-avatar>
                   <img src="<?php echo get_template_directory_uri().'/assets/images/Butuan_Logo_Transparent.png'; ?>">
