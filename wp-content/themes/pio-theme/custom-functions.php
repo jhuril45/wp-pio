@@ -1,4 +1,25 @@
 <?php
+function getRecentPosts(){
+  $data = get_posts( array( 
+    'post_type' => 'post',
+    'posts_per_page' => 5,
+    )
+  );
+  $recent_posts = [];
+  foreach ($data as $key => $value) {
+    $post_thumbnail_id = get_post_thumbnail_id($value->ID);
+    if ( $post_thumbnail_id ) {
+      $src = wp_get_attachment_url( $attachment->ID, 'full');
+      $recent_src = wp_get_attachment_url( $post_thumbnail_id, 'full');
+      $value->fimg_url = $recent_src;
+    }else{
+      $value->fimg_url = get_template_directory_uri().'/assets/images/Butuan_Logo_Transparent.png';
+    }
+    array_push($recent_posts,$value);
+  }
+  return $recent_posts;
+}
+
 function register_rest_images(){
   register_rest_field( array('post'),
       'fimg_url',
@@ -70,6 +91,122 @@ function getCarouselImages() {
   global $wpdb;
   $results = $wpdb->get_results("SELECT * FROM wp_carousel_images");
   return $results;
+}
+
+function getHeaderMenus() {
+  $arr = [
+    array(
+      "title" => "Home",
+      "url" => "",
+      "slug" => "home",
+      "is_menu" => false,
+    ),
+    array(
+      "title" => "About Butuan",
+      "url" => "",
+      "slug" => "",
+      "is_menu" => false,
+    ),
+    array(
+      "title" => "Government",
+      "url" => "",
+      "slug" => "government",
+      "is_menu" => true,
+      "sub_menu" => [
+        array(
+          "title" => "City Offices",
+          "url" => "/offices",
+          "slug" => "offices",
+        ),
+      ]
+    ),
+    array(
+      "title" => "Tourism",
+      "url" => "",
+      "slug" => "",
+      "is_menu" => false,
+    ),
+    array(
+      "title" => "Business",
+      "url" => "",
+      "slug" => "",
+      "is_menu" => false,
+    )
+  ];
+
+  return $arr;
+}
+
+function getFlipCards() {
+  $lorem = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nec nisl tincidunt, condimentum nibh vitae, bibendum neque. Donec vitae hendrerit arcu. Donec enim lacus, elementum sed justo sed,';
+  $arr = [
+    array(
+      'icon' => 'agriculture',
+      'image' => 'agriculture.jpg',
+      'class_front' => 'bg-green-5 text-white',
+      'class_back' => 'bg-green-8 text-white',
+      'title' => 'Agriculture',
+      'description' => $lorem,
+    ),
+    array(
+      'icon' => 'warning',
+      'image' => 'disaster.jpg',
+      'class_front' => 'bg-light-blue-6 text-white',
+      'class_back' => 'bg-light-blue-8 text-white',
+      'title' => 'Disaster Risk Reduction',
+      'description' => $lorem,
+    ),
+    array(
+      'icon' => 'school',
+      'image' => 'school.jpg',
+      'class_front' => 'bg-purple-4 text-white',
+      'class_back' => 'bg-purple-7 text-white',
+      'title' => 'Education',
+      'description' => $lorem,
+    ),
+    array(
+      'icon' => 'health_and_safety',
+      'image' => 'health.jpg',
+      'class_front' => 'bg-light-green-6 text-white',
+      'class_back' => 'bg-light-green-8 text-white',
+      'title' => 'Health',
+      'description' => $lorem,
+    ),
+    array(
+      'icon' => 'apartment',
+      'image' => 'infrastracture.jpg',
+      'class_front' => 'bg-deep-orange-6 text-white',
+      'class_back' => 'bg-deep-orange-8 text-white',
+      'title' => 'Infrastracture Development',
+      'description' => $lorem,
+    ),
+    array(
+      'icon' => 'beach_access',
+      'image' => 'tourism.jpg',
+      'class_front' => 'bg-yellow-6 text-white',
+      'class_back' => 'bg-yellow-8 text-white',
+      'title' => 'Tourism',
+      'description' => $lorem,
+    ),
+    array(
+      'icon' => 'traffic',
+      'image' => 'traffic.jpg',
+      'class_front' => 'bg-cyan-6 text-white',
+      'class_back' => 'bg-cyan-8 text-white',
+      'title' => 'Transportation and Traffic Management',
+      'description' => $lorem,
+    ),
+    array(
+      'icon' => 'recycling',
+      'image' => 'recycle.jpg',
+      'class_front' => 'bg-green-6 text-white',
+      'class_back' => 'bg-green-8 text-white',
+      'title' => 'Solid Waste Management',
+      'description' => $lorem,
+    ),
+  ];
+  
+  return $arr;
 }
 
 function get_posted_date() {

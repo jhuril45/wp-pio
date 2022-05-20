@@ -1,12 +1,8 @@
-<?php 
+<?php
 $carousel_images = fetchCarouselImages();
-
-$data = get_posts( array( 
-  'post_type' => 'post',
-  'posts_per_page' => 5,
-  )
-);
+$flip_cards = getFlipCards();
 $recent_posts = getRecentPosts();
+
 ?>
 <div class="full-width">
   <q-carousel
@@ -15,29 +11,39 @@ $recent_posts = getRecentPosts();
     ref="carousel"
     :height="$q.screen.lt.sm ? '250px' : '600px'"
     autoplay
-    infinite>
-
-    <template v-if="carousel_images.length">
-      <q-carousel-slide class="q-pa-none" :name="index+1" v-for="(carousel,index) in carousel_images" :key="'landing-carousel'+index">
-        <q-img
-          :src="carousel.path"
-          style="max-height:100%;width:100%;height:100%"
-          >
-          <div v-if="index >= 3" class="text-body1" style="left:35%;top:50%;transform: translate(-50%,-50%);background:rgba(33, 150, 243,0.7)">
+    infinite
+  >
+    <?php 
+      if($carousel_images){
+      $index = 1;
+      foreach ($carousel_images as $key => $value) {
+    ?>
+    <q-carousel-slide class="q-pa-none" :name="<?php echo $index?>">
+      <q-img
+        src="<?php echo($value->path); ?>"
+        style="max-height:100%;width:100%;height:100%"
+        >
+        <?php if($index >= 4) {?>
+          <div class="text-body1" style="left:35%;top:50%;transform: translate(-50%,-50%);background:rgba(33, 150, 243,0.7)">
             {{lorem}}
           </div>
-        </q-img>
-      </q-carousel-slide>
-    </template>
-    <template v-else>
-      <q-carousel-slide class="q-pa-none" :name="1">
-        <q-img
-          :src="template_dir+'/assets/images/ButuanOnDesign.png'"
-          style="max-height:100%;width:100%;height:100%"
-          :contain="$q.screen.lt.sm"></q-img>
-      </q-carousel-slide>
-    </template>
-
+        <?php } ?>
+      </q-img>
+    </q-carousel-slide>
+    <?php 
+        $index = $index + 1;
+      }
+    }else{
+    ?>
+    <q-carousel-slide class="q-pa-none" :name="1">
+      <q-img
+        src="<?php echo get_template_directory_uri().'/assets/images/ButuanOnDesign.png'; ?>"
+        style="max-height:100%;width:100%;height:100%"
+        :contain="$q.screen.lt.sm"></q-img>
+    </q-carousel-slide>
+    <?php 
+    }
+    ?>
     <template v-slot:control v-if="Boolean(<?php echo(count($carousel_images) > 1);?>)">
       <q-carousel-control
         position="bottom-right"
@@ -62,45 +68,47 @@ $recent_posts = getRecentPosts();
   <div class="col-12 text-center q-my-md text-bold" :class="$q.screen.lt.sm ? 'text-h5' : 'text-h4'">
     PLANS AND PROGRAMS
   </div>
-  <div
-    class="col-12 col-md-3 col-sm-6 q-pa-xs q-pt-md"
-    v-for="(flip,index) in flip_cards"
-    :key="'flip-card-'+index">
-    <div class="flip-card">
-      <div class="flip-card-inner">
-        <div class="flip-card-front rounded-borders relative-position" >
-          <q-img
-            cover
-            height="100%"
-            :src="'<?php echo get_template_directory_uri().'/assets/images/'; ?>'+flip.image">
-            <div class="absolute-full flex flex-center" style="opacity: 0.7;" :class="flip.class_front ? flip.class_front : ''">
-              
+  <?php foreach($flip_cards as $key => $flip){?>
+    <div
+      class="col-12 col-md-3 col-sm-6 q-pa-xs q-pt-md">
+      <div class="flip-card">
+        <div class="flip-card-inner">
+          <div class="flip-card-front rounded-borders relative-position" >
+            <q-img
+              cover
+              height="100%"
+              src="<?php echo get_template_directory_uri().'/assets/images/'.$flip['image'];?>">
+              <div
+                class="absolute-full flex flex-center"
+                style="opacity: 0.7;"
+                :class="'<?php echo ($flip['class_front'] ? $flip['class_front'] : '');?>'">
+              </div>
+            </q-img>
+            <div class="text-h6 absolute-center text-white">
+              <q-icon :name="'<?php echo $flip['icon'];?>'" size="60px"></q-icon>
+              <p class="text-h6">
+                <?php echo $flip['title'];?>
+              </p>
             </div>
-          </q-img>
-          <div class="text-h6 absolute-center text-white">
-            <q-icon :name="flip.icon" size="60px"></q-icon>
-            <p class="text-h6">
-              {{flip.title}}
-            </p>
           </div>
-        </div>
-        <div class="flip-card-back rounded-borders" :class="flip.class_back ? flip.class_back : ''">
-          <div class="fit row items-center">
-            <div class="text-white text-center q-px-sm">
-              <p>{{flip.description}}</p>
-              <q-btn
-                rounded
-                color="primary"
-                label="View More"
-                @click="page_dialog.data=flip;tab='description';page_dialog.open=true"
-                text-color="white"
-                outline></q-btn>
+          <div class="flip-card-back rounded-borders" :class="'<?php echo($flip['class_back'] ? $flip['class_back'] : '');?>'">
+            <div class="fit row items-center">
+              <div class="text-white text-center q-px-sm">
+                <p><?php echo $flip['description'];?></p>
+                <q-btn
+                  rounded
+                  color="primary"
+                  label="View More"
+                  @click="openPageDialog()"
+                  text-color="white"
+                  outline></q-btn>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
+  <?php }?>
 </div>
 
 <!-- Youtube video must be dynamic -->
@@ -127,7 +135,7 @@ $recent_posts = getRecentPosts();
 
 <div class="full-width">
   <div class="row relative-position">
-    <q-img cover :src="template_dir + '/assets/images/city-hall-drone.png'" height="500px">
+    <q-img cover src="<?php echo get_template_directory_uri().'/assets/images/city-hall-drone.png'; ?>" height="500px">
       <div class="absolute-left full-width row justify-end" style="background:none !important;">
         <div class="col-12 col-md-6 rounded-borders q-pa-lg q-my-lg" style="background: rgba(79, 195, 247, 0.8)">
           <div class="text-h4 text-white text-start">DEPARTMENTS & OFFICES</div>
@@ -177,35 +185,36 @@ $recent_posts = getRecentPosts();
   </div>
 </div>
 
-<!-- Latest news must be dynamic -->
 <div class="full-width row justify-start" :class="$q.screen.lt.sm ? 'q-my-lg q-px-md' : 'q-my-xl q-pa-xl'">
   <div class="col-12 text-center q-my-md text-bold" :class="$q.screen.lt.sm ? 'text-h5' : 'text-h4'">
     LATEST NEWS
   </div>
   <div class="col-12 row q-pt-md">
-    <div
-      v-for="(post,index) in recent_posts"
-      :key="'landing_recent'+index"
-      class="col-6 col-md-3 row q-gutter-y-sm q-px-sm">
-      <div class="col-12 q-pt-md">
-        <q-card class="news-card" >
-          <a :href="post.guid">
-            <q-img
-              cover
-              height="200px"
-              :src="post.fimg_url"
-              basic
-            >
-              <div class="absolute-bottom text-caption text-start">
-                <q-item-label lines="3" class="q-px-none q-py-none">
-                  {{post.post_title}}
-                </q-item-label>
-              </div>
-            </q-img>
-          </a>
-        </q-card>
+    <?php
+      foreach($recent_posts as $key => $value) { ?>
+      <div class="col-6 col-md-3 row q-gutter-y-sm q-px-sm">
+        <div class="col-12 q-pt-md">
+          <q-card class="news-card" >
+            <a href="<?php echo($value->guid);?>">
+              <q-img
+                cover
+                height="200px"
+                src="<?php echo($value->fimg_url);?>"
+                basic
+              >
+                <div class="absolute-bottom text-caption text-start">
+                  <q-item-label lines="3" class="q-px-none q-py-none">
+                    <?php echo $value->post_title?>
+                  </q-item-label>
+                </div>
+              </q-img>
+            </a>
+          </q-card>
+        </div>
       </div>
-    </div>
+    <?php
+      }
+    ?>
   </div>
 </div>
 

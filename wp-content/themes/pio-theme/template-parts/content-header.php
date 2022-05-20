@@ -1,3 +1,6 @@
+<?php 
+$header_menus = getHeaderMenus();
+?>
 <q-header elevated reveal>
   <q-toolbar class="bg-primary text-white q-px-lg" v-if="$q.screen.gt.sm">
     <q-toolbar-title class="text-body2 text-italic">
@@ -55,11 +58,8 @@
             cover
             height="40px"
             width="150px"
-            src="<?php echo get_template_directory_uri().'/assets/images/ButuanOnDesign.png'; ?>" />
+            :src="header_logo" />
         </a>
-      </div>
-      <div class="col-shrink header-title" v-if="false">
-        <?php bloginfo( 'name' ); ?>
       </div>
       <div class="col" v-if="$q.screen.gt.xs">
         <ul class="header-links">

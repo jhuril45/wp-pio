@@ -2,7 +2,6 @@ var settings = {
   API_BASE_PATH: "/vue_wp/wp-json/"
 }
 window.Quasar.plugins.LoadingBar.setDefaults({ color: 'white' });
-// Quasar.iconSet.set(Quasar.iconSet.svgFontawesomeV5)
 
 
 window.vue = new Vue({
@@ -14,6 +13,10 @@ window.vue = new Vue({
   },
   data() {
     return {
+      recent_posts: Main.recent_posts,
+      flip_cards: Main.flip_cards,
+      carousel_images: Main.carousel_images,
+      template_dir: Main.template_dir,
       report_pdf: false,
       reportSource: null,
       tab: 'description',
@@ -25,112 +28,9 @@ window.vue = new Vue({
       },
       slide: 1,
       menus: [],
-      header_menus: [
-        {
-          "id": 11,
-          "order": 1,
-          "parent": 0,
-          "title": "Home",
-          "url": "http://localhost/vue_wp/",
-        },
-        {
-          "id": 16,
-          "order": 2,
-          "parent": 0,
-          "title": "About Butuan",
-          "url": "http://localhost/vue_wp/about",
-        },
-        {
-          "id": 17,
-          "order": 3,
-          "parent": 0,
-          "title": "Government",
-          "url": "http://localhost/vue_wp/offices",
-        },
-        {
-          "id": 18,
-          "order": 4,
-          "parent": 0,
-          "title": "Tourism",
-          "url": "http://localhost/vue_wp/tourism",
-        },
-        {
-          "id": 19,
-          "order": 5,
-          "parent": 0,
-          "title": "Business",
-          "url": "#",
-        }
-      ],
       page_menus: [],
       timer: '1',
       date: '2022/03/23',
-      flip_cards: [
-        {
-          icon: 'agriculture',
-          image: 'agriculture.jpg',
-          class_front: 'bg-green-5 text-white',
-          class_back: 'bg-green-8 text-white',
-          title: 'Agriculture',
-          description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nec nisl tincidunt, condimentum nibh vitae, bibendum neque. Donec vitae hendrerit arcu. Donec enim lacus, elementum sed justo sed,'
-        },
-        {
-          icon: 'warning',
-          image: 'disaster.jpg',
-          class_front: 'bg-light-blue-6 text-white',
-          class_back: 'bg-light-blue-8 text-white',
-          title: 'Disaster Risk Reduction',
-          description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nec nisl tincidunt, condimentum nibh vitae, bibendum neque. Donec vitae hendrerit arcu. Donec enim lacus, elementum sed justo sed,'
-        },
-        {
-          icon: 'school',
-          image: 'school.jpg',
-          class_front: 'bg-purple-4 text-white',
-          class_back: 'bg-purple-7 text-white',
-          title: 'Education',
-          description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nec nisl tincidunt, condimentum nibh vitae, bibendum neque. Donec vitae hendrerit arcu. Donec enim lacus, elementum sed justo sed,'
-        },
-        {
-          icon: 'health_and_safety',
-          image: 'health.jpg',
-          class_front: 'bg-light-green-6 text-white',
-          class_back: 'bg-light-green-8 text-white',
-          title: 'Health',
-          description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nec nisl tincidunt, condimentum nibh vitae, bibendum neque. Donec vitae hendrerit arcu. Donec enim lacus, elementum sed justo sed,'
-        },
-        {
-          icon: 'apartment',
-          image: 'infrastracture.jpg',
-          class_front: 'bg-deep-orange-6 text-white',
-          class_back: 'bg-deep-orange-8 text-white',
-          title: 'Infrastracture Development',
-          description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nec nisl tincidunt, condimentum nibh vitae, bibendum neque. Donec vitae hendrerit arcu. Donec enim lacus, elementum sed justo sed,'
-        },
-        {
-          icon: 'beach_access',
-          image: 'tourism.jpg',
-          class_front: 'bg-yellow-6 text-white',
-          class_back: 'bg-yellow-8 text-white',
-          title: 'Tourism',
-          description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nec nisl tincidunt, condimentum nibh vitae, bibendum neque. Donec vitae hendrerit arcu. Donec enim lacus, elementum sed justo sed,'
-        },
-        {
-          icon: 'traffic',
-          image: 'traffic.jpg',
-          class_front: 'bg-cyan-6 text-white',
-          class_back: 'bg-cyan-8 text-white',
-          title: 'Transportation and Traffic Management',
-          description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nec nisl tincidunt, condimentum nibh vitae, bibendum neque. Donec vitae hendrerit arcu. Donec enim lacus, elementum sed justo sed,'
-        },
-        {
-          icon: 'recycling',
-          image: 'recycle.jpg',
-          class_front: 'bg-green-6 text-white',
-          class_back: 'bg-green-8 text-white',
-          title: 'Solid Waste Management',
-          description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nec nisl tincidunt, condimentum nibh vitae, bibendum neque. Donec vitae hendrerit arcu. Donec enim lacus, elementum sed justo sed,'
-        },
-      ],
       page_tab: 'mission_vision',
       login_form: {
         username: '',
@@ -375,9 +275,13 @@ window.vue = new Vue({
     document.getElementById("q-app").style.display = "block"
   },
   mounted(){
-
+    console.log('Dash Main')
+    console.log(Main)
   },
   methods: {
+    openPageDialog(data){
+      console.log(data)
+    },
     pasteCapture (evt) {
       // Let inputs do their thing, so we don't break pasting of links.
       if (evt.target.nodeName === 'INPUT') return

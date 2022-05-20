@@ -1,6 +1,8 @@
 <?php 
 function add_script()
 {
+  global $pagename;
+
   wp_register_script( 'vue-script', 'https://cdn.jsdelivr.net/npm/vue/dist/vue.js',array ( 'jquery' ), 1.1, true);
   wp_register_script('quasar-script', get_template_directory_uri() . '/assets/js/quasar.min.js',array ( 'jquery' ), 1.1, true);
   // wp_register_script('quasar-fontawesome', get_template_directory_uri() . '/assets/js/quasar-fontawesome5.min.js',array ( 'jquery' ), 1.1, true);
@@ -18,13 +20,30 @@ function add_script()
 
   wp_register_script('vue-pdf-embed', get_template_directory_uri() . '/assets/js/vue-pdf-embed.js',array ( 'jquery' ), 1.1, true);
   wp_enqueue_script( 'vue-pdf-embed');
-
-  wp_register_script('vue-main', get_template_directory_uri() . '/assets/js/main.js',array ( 'jquery' ), 1.1, true);
+  
+  if($pagename == 'dashboard'){
+    wp_register_script('vue-main', get_template_directory_uri() . '/assets/js/dashboard_main.js',array ( 'jquery' ), 1.1, true);
+    $page_data = [
+      'nonce' => wp_create_nonce('wp_rest'),
+      'template_dir' => get_template_directory_uri(),
+      'page_name' => $pagename,
+    ];
+  }else{
+    wp_register_script('vue-main', get_template_directory_uri() . '/assets/js/landing_main.js',array ( 'jquery' ), 1.1, true);
+    $page_data = [
+      'nonce' => wp_create_nonce('wp_rest'),
+      'carousel_images' => is_front_page() ? fetchCarouselImages() : [],
+      'flip_cards' => is_front_page() ? getFlipCards() : [],
+      'recent_posts' => is_front_page() ? getRecentPosts() : [],
+      'header_menus' => getHeaderMenus(),
+      'template_dir' => get_template_directory_uri(),
+      'page_name' => $pagename,
+      'header_logo' => get_template_directory_uri().'/assets/images/ButuanOnDesign.png',
+    ];
+  }
   wp_enqueue_script( 'vue-main');
 
-  wp_localize_script('vue-main', 'Rest', [
-    'nonce' => wp_create_nonce('wp_rest'),
-  ]);
-  
+  wp_localize_script('vue-main', 'Main', $page_data);
 }
+
 add_action('wp_enqueue_scripts', 'add_script');

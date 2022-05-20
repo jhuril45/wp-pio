@@ -1,4 +1,4 @@
-axios.defaults.headers.common['X-WP-Nonce'] = Rest.nonce
+axios.defaults.headers.common['X-WP-Nonce'] = Main.nonce
 
 window.vue.addPost = function(attachment){
   if(window.vue.loading) return
