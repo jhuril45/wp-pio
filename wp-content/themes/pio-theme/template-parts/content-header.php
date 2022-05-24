@@ -1,6 +1,3 @@
-<?php 
-$header_menus = getHeaderMenus();
-?>
 <q-header elevated reveal>
   <q-toolbar class="bg-primary text-white q-px-lg" v-if="$q.screen.gt.sm">
     <q-toolbar-title class="text-body2 text-italic">
@@ -56,13 +53,48 @@ $header_menus = getHeaderMenus();
         <a href="<?php echo get_home_url() ?>">
           <q-img
             cover
-            height="40px"
-            width="150px"
+            height="70px"
+            width="70px"
+            contain
             :src="header_logo" />
         </a>
       </div>
-      <div class="col" v-if="$q.screen.gt.xs">
-        <ul class="header-links">
+      <div class="row q-gutter-x-sm" v-if="$q.screen.gt.xs">
+        <div class="col-auto" v-for="(link,index) in header_menus" :key="'header-menu-'+index">
+          <q-btn
+            flat
+            dense
+            padding="none"
+            class="header-links"
+            v-if="link.is_menu"
+            >
+            <span class="link-item" :class="link.slug == page_name ? 'active' : ''">{{link.title}}</span>
+            <q-menu fit>
+              <q-list separator>
+                <q-item
+                  clickable
+                  v-close-popup
+                  :href="sub_menu.url"
+                  v-for="(sub_menu,index2) in link.sub_menu">
+                  <q-item-section class="header-links">
+                    <q-item-label class="link-item">{{sub_menu.title}}</q-item-label>
+                  </q-item-section>
+                </q-item>
+              </q-list>
+            </q-menu>
+          </q-btn>
+          <q-btn
+            flat
+            dense
+            padding="none"
+            class="header-links"
+            :href="link.url"
+            v-else>
+            <span class="link-item" :class="link.slug == page_name ? 'active' : ''">{{link.title}}</span>
+          </q-btn>
+        </div>
+        
+        <ul class="header-links" v-if="false">
           <li
             v-for="(link,index) in header_menus"
             :key="'header-menu-'+index">

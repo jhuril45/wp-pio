@@ -97,44 +97,174 @@ function getHeaderMenus() {
   $arr = [
     array(
       "title" => "Home",
-      "url" => "",
-      "slug" => "home",
-      "is_menu" => false,
-    ),
-    array(
-      "title" => "About Butuan",
-      "url" => "",
+      "url" => get_home_url()."",
       "slug" => "",
       "is_menu" => false,
     ),
     array(
+      "title" => "About Butuan",
+      "url" => get_home_url()."/about",
+      "slug" => "about",
+      "is_menu" => false,
+    ),
+    array(
       "title" => "Government",
-      "url" => "",
+      "url" => get_home_url()."",
       "slug" => "government",
       "is_menu" => true,
       "sub_menu" => [
         array(
-          "title" => "City Offices",
-          "url" => "/offices",
+          "title" => "City Officials",
+          "url" => get_home_url()."/city-officials",
           "slug" => "offices",
+          "parent_slug" => "government"
+        ),
+        array(
+          "title" => "City Offices",
+          "url" => get_home_url()."/offices",
+          "slug" => "offices",
+          "parent_slug" => "government"
+        ),
+        array(
+          "title" => "City Issuances",
+          "url" => get_home_url()."/offices",
+          "slug" => "offices",
+          "parent_slug" => "government"
         ),
       ]
     ),
     array(
       "title" => "Tourism",
-      "url" => "",
-      "slug" => "",
+      "url" => get_home_url()."/tourism",
+      "slug" => "tourism",
       "is_menu" => false,
     ),
     array(
       "title" => "Business",
-      "url" => "",
-      "slug" => "",
+      "url" => get_home_url()."",
+      "slug" => "business",
       "is_menu" => false,
     )
   ];
 
   return $arr;
+}
+
+function getOfficeList() {
+  $arr = [
+    array(
+      'title' => 'CITY MAYOR',
+      'url' => get_home_url().'/offices/?office=pio',
+      'slug' => 'offices-pio',
+      'is_menu' => false,
+      'head' => 'HON. RONNIE VICENTE C. LAGNADA, CE',
+      'assistant' => '',
+    ),
+  ];
+  return $arr;
+}
+
+function getOffice($office) {
+  return array(
+    'title' => 'Public Information Office',
+    'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscit elit.',
+    'logo' => get_template_directory_uri().'/assets/images/PIO.png',
+    'facebook' => 'https://www.facebook.com/butuancitypioofficial',
+    'twitter' => 'https://www.facebook.com/butuancitypioofficial',
+    'messenger' => 'https://www.facebook.com/butuancitypioofficial',
+  );
+}
+
+function getCityOfficials(){
+  return array(
+    'mayor' => array(
+      'name' => 'HON. RONNIE VICENTE C. LAGNADA',
+      'position' => 'City Mayor',
+      'image' => get_template_directory_uri().'/assets/images/RCL.webp',
+    ),
+    'vice_mayor' => array(
+      'name' => 'HON. JOSE S. AQUINO II',
+      'position' => 'City Vice Mayor',
+      'image' => get_template_directory_uri().'/assets/images/JS. Aquino.jpg',
+    ),
+    'sp_members' => [
+      array(
+        'name' => 'HON. GLENN C. CARAMPATANA',
+        'position' => 'SP Member',
+        'image' => get_template_directory_uri().'/assets/images/1 - Hon.webp',
+        'positions' => [
+          array(
+            'title' => 'Chairman',
+            'list' => [
+              'Committee on Education, Culture, Arts, and Heritage',
+              'Committee on Rules and Styles',
+            ]
+          ),
+          array(
+            'title' => 'Vice Chairman',
+            'list' => [
+              'Committee on Health',
+              'Committee on People’s Council and Sectoral Development',
+            ]
+          ),
+          array(
+            'title' => 'Member',
+            'list' => [
+              'Committee on Civil Service and Reorganization',
+              'Committee on Family, Women, and Children’s Welfare',
+            ]
+          ),
+        ]
+      ),
+      array(
+        'name' => 'HON. FERDINAND E. NALCOT',
+        'position' => 'SP Member',
+        'image' => get_template_directory_uri().'/assets/images/2 - Hon.webp',
+      ),
+      array(
+        'name' => 'HON. DERRICK A. PLAZA',
+        'position' => 'SP Member',
+        'image' => get_template_directory_uri().'/assets/images/3 - Hon.webp',
+      ),
+      array(
+        'name' => 'HON. CROMWELL P. NORTEGA',
+        'position' => 'SP Member',
+        'image' => get_template_directory_uri().'/assets/images/4 - Hon.webp',
+      ),
+    ],
+    'committees' => [
+      array(
+        'title' => 'COMMITTEE ON APPROPRIATIONS',
+        'chairman' => 'Hon. Jose S. Aquino II',
+        'vice_chairman' => 'Hon. Joseph Omar O. Andaya',
+        'members' => [
+          'Hon. Cherry May G. Busa',
+          'Hon. Cromwell P. Nortega',
+          'Hon. Vincent Rizal C. Rosario',
+        ]
+      ),
+      array(
+        'title' => 'COMMITTEE ON ACCOUNTS',
+        'chairman' => 'Hon. Derrick A. Plaza',
+        'vice_chairman' => 'Hon. Joseph Omar O. Andaya',
+        'members' => [
+          'Hon. Cherry May G. Busa',
+          'Hon. John Gil S. Unay, Sr.',
+          'Hon. Gemma P. Tabada',
+        ]
+      ),
+      array(
+        'title' => 'COMMITTEE ON BARANGAY DEVELOPMENT',
+        'chairman' => 'Hon. Gemma P. Tabada',
+        'vice_chairman' => 'Hon. Vincent Rizal C. Rosario',
+        'members' => [
+          'Hon. Wen Kok L. Chiang II',
+          'Hon. Rema E. Burdeos',
+          'Hon. Ferdinand E. Nalcot',
+        ]
+      ),
+    ]
+  );
 }
 
 function getFlipCards() {

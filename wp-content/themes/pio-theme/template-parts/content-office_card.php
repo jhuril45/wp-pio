@@ -1,21 +1,21 @@
 <q-card class="page-card">
-  <q-card-section class="bg-grey-3">
-    <div class="row q-gutter-x-md">
-      <div class="col-12 col-md-shrink row justify-center">
+  <q-card-section class="bg-grey-3 relative-position">
+    <div class="row q-gutter-x-md ">
+      <div class="col-12 col-md-shrink row justify-center ">
         <q-avatar size="100px" class="shadow-9">
-          <img src="<?php echo get_template_directory_uri().'/assets/images/PIO.png'; ?>">
+          <img :src="office.logo">
         </q-avatar>
       </div>
       <div class="col-12 col-md-shrink">
         <q-item-label class="text-h6 text-bold" :class="$q.screen.lt.md ? 'text-center q-mt-sm' : 'text-left'">
-          Public Information Office
+          {{office.title}}
         </q-item-label>
         <q-item-label class="text-body2" :class="$q.screen.lt.md ? 'text-center' : 'text-left'">
-          Lorem ipsum dolor sit amet, consectetur adipiscit elit.
+          {{office.description}}
         </q-item-label>
         <q-item-label class="text-body2 q-pt-md row q-gutter-x-md">
           <div class="col-shrink">
-            <a href="https://www.facebook.com/butuancitypioofficial" class="footer-link text-dark">
+            <a :href="office.facebook" class="footer-link text-dark">
               <q-icon
                 name="fab fa-facebook-f"
                 color="blue"
@@ -26,7 +26,7 @@
             </a>
           </div>
           <div class="col-shrink">
-            <a href="https://www.facebook.com/butuancitypioofficial" class="footer-link text-dark">
+            <a :href="office.twitter" class="footer-link text-dark">
               <q-icon
                 name="fab fa-twitter"
                 color="blue"
@@ -35,12 +35,12 @@
             </a>
           </div>
           <div class="col-shrink">
-            <a href="https://www.facebook.com/butuancitypioofficial" class="footer-link text-dark">
+            <a :href="office.messenger" class="footer-link text-dark">
               <q-icon
                 name="fas fa-phone"
                 color="blue"
                 size="xs"></q-icon>
-                <span>Call Us</span>
+                <span>Message Us</span>
             </a>
           </div>
         </q-item-label>
@@ -61,7 +61,6 @@
         :mobile-arrows="$q.screen.lt.md"
       >
         <q-tab name="mission_vision" label="Mission & Vision"></q-tab>
-        <q-tab name="citizens_charter" label="Citizens Charter"></q-tab>
         <q-tab name="services" label="Services"></q-tab>
         <q-tab name="organization" label="Organizational Structure"></q-tab>
         <q-tab name="forms" label="Forms"></q-tab>
@@ -69,15 +68,49 @@
       <q-separator></q-separator>
 
       <q-tab-panels v-model="page_tab" animated class="q-px-md">
-        <q-tab-panel name="citizens_charter">
-          <img src="<?php echo get_template_directory_uri().'/assets/images/PIO 1.jpg'; ?>">
-          <img src="<?php echo get_template_directory_uri().'/assets/images/PIO 2.jpg'; ?>">
-          <img src="<?php echo get_template_directory_uri().'/assets/images/PIO 3.jpg'; ?>">
-        </q-tab-panel>
-
         <q-tab-panel name="services">
-          <div class="text-h6">Home</div>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit.
+          <q-list bordered separator>
+            <q-expansion-item
+              group="services"
+              icon="info"
+              label="Editorial and Communication"
+              header-class=""
+            >
+              <q-card>
+                <q-card-section>
+                  <img src="<?php echo get_template_directory_uri().'/assets/images/PIO 1.jpg'; ?>">
+                </q-card-section>
+              </q-card>
+            </q-expansion-item>
+
+            <q-expansion-item
+              group="services"
+              icon="info"
+              label="Video Production"
+              header-class=""
+            >
+              <q-card>
+                <q-card-section>
+                  <img src="<?php echo get_template_directory_uri().'/assets/images/PIO 2.jpg'; ?>">
+                </q-card-section>
+              </q-card>
+            </q-expansion-item>
+
+            <q-expansion-item
+              group="services"
+              icon="info"
+              label="Communication and Transparency"
+              header-class=""
+            >
+              <q-card>
+                <q-card-section>
+                  <img src="<?php echo get_template_directory_uri().'/assets/images/PIO 3.jpg'; ?>">
+                </q-card-section>
+              </q-card>
+            </q-expansion-item>
+
+            
+          </q-list>
         </q-tab-panel>
 
         <q-tab-panel name="mission_vision">
@@ -85,8 +118,7 @@
             <div class="col-12">
               <div class="text-h6">Mission</div>
               <div>
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Pariatur, at inventore repellendus, est cupiditate qui commodi possimus repellat beatae incidunt ratione, dolores accusamus debitis molestias quas! Totam velit animi expedita.
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Pariatur, at inventore repellendus, est cupiditate qui commodi possimus repellat beatae incidunt ratione, dolores accusamus debitis molestias quas! Totam velit animi expedita.
+                The City of Butuan will strive to achieve the community's vision of a great, inspirational, competitive, liveable and sustainable city.
               </div>
             </div>
             <div class="col-12">
@@ -95,8 +127,7 @@
             <div class="col-12">
               <div class="text-h6">Vision</div>
               <div>
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Pariatur, at inventore repellendus, est cupiditate qui commodi possimus repellat beatae incidunt ratione, dolores accusamus debitis molestias quas! Totam velit animi expedita.
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Pariatur, at inventore repellendus, est cupiditate qui commodi possimus repellat beatae incidunt ratione, dolores accusamus debitis molestias quas! Totam velit animi expedita.
+                Making Butuan a great hub city of opportunities for all that spurs and supports CARAGA's sustainable growth and development.
               </div>
             </div>
           </div>

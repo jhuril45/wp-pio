@@ -43,7 +43,7 @@
   }
 ?>
 <div class="row justify-end">
-  <div class="col-md-8 col-12" :class="$q.screen.lt.sm ? 'q-py-sm q-px-md' : 'q-py-lg q-px-xl'">
+  <div class="col-md-7 col-12" :class="$q.screen.lt.sm ? 'q-py-sm q-px-md' : 'q-py-lg q-px-xl'">
     <q-card flat :class="$q.screen.lt.sm ? '' : ''">
       <q-card-section class="">
         <div class="post-title">
@@ -62,7 +62,7 @@
           infinite
           :autoplay="false"
           :padding="true"
-        >
+          height="300px">
           <?php for ( $index = 0 ; $index < count($attachments) ; $index++ ) {?>
             <q-carousel-slide
               class="q-pa-none carousel-img cursor-pointer"

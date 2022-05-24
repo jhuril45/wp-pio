@@ -14,6 +14,38 @@ window.vue = new Vue({
   data() {
     return {
       ...Main,
+      offices_table_columns: [
+        {
+          name: 'title',
+          required: true,
+          label: 'OFFICES',
+          align: 'left',
+          field: row => row.title,
+          format: val => `${val}`,
+          sortable: false
+        },
+        {
+          name: 'head',
+          required: true,
+          label: 'DEPARTMENT HEADS',
+          align: 'left',
+          field: row => row.head,
+          format: val => `${val}`,
+          sortable: false
+        },
+        {
+          name: 'assistant',
+          required: true,
+          label: 'ASSISTANT CHIEF',
+          align: 'left',
+          field: row => row.assistant,
+          format: val => `${val}`,
+          sortable: false
+        },
+      ],
+      tourism_tab: 'place_to_go',
+      city_official_tab: 'officials',
+      expanded: false,
       report_pdf: false,
       reportSource: null,
       tab: 'description',

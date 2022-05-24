@@ -1,13 +1,3 @@
-<?php 
-$carousel_images = fetchCarouselImages();
-
-$data = get_posts( array( 
-  'post_type' => 'post',
-  'posts_per_page' => 5,
-  )
-);
-$recent_posts = getRecentPosts();
-?>
 <div class="full-width">
   <q-carousel
     animated
@@ -38,7 +28,7 @@ $recent_posts = getRecentPosts();
       </q-carousel-slide>
     </template>
 
-    <template v-slot:control v-if="Boolean(<?php echo(count($carousel_images) > 1);?>)">
+    <template v-slot:control v-if="carousel_images.length">
       <q-carousel-control
         position="bottom-right"
         :offset="[18, 18]"

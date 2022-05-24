@@ -103,9 +103,9 @@ function fetchBids() {
   }
 }
 
-function fetchPost() {
+function fetchPost($post_id) {
   try{
-    $id = $_GET['id'];
+    $id = $post_id ? $post_id : $_GET['id'];
     $post = get_post($id);
 
     $featured_image = get_the_post_thumbnail_url($post->ID);

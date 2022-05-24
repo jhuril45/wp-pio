@@ -73,67 +73,43 @@ function cgb_create_tables(){
 }
 
 function cgb_create_pages(){
-  $office_page = get_page_by_title('Offices',);
-  if(empty($office_page)) {
-    wp_insert_post(
-      array(
-      'comment_status' => 'close',
-      'ping_status'    => 'close',
-      'post_author'    => 1,
-      'post_title'     => ucwords('Offices'),
-      'post_name'      => strtolower(str_replace(' ', '-', trim('Offices'))),
-      'post_status'    => 'publish',
-      'post_content'   => '',
-      'post_type'      => 'page',
-      )
-    );
-  }
-
-  $bids_page = get_page_by_title('Bids',);
-  if(empty($bids_page)) {
-    wp_insert_post(
-      array(
-      'comment_status' => 'close',
-      'ping_status'    => 'close',
-      'post_author'    => 1,
-      'post_title'     => ucwords('Bids'),
-      'post_name'      => strtolower(str_replace(' ', '-', trim('bids'))),
-      'post_status'    => 'publish',
-      'post_content'   => '',
-      'post_type'      => 'page',
-      )
-    );
-  }
-
-  $tourism_page = get_page_by_title('Toursim',);
-  if(empty($tourism_page)) {
-    wp_insert_post(
-      array(
-      'comment_status' => 'close',
-      'ping_status'    => 'close',
-      'post_author'    => 1,
-      'post_title'     => ucwords('Toursim'),
-      'post_name'      => strtolower(str_replace(' ', '-', trim('tourism'))),
-      'post_status'    => 'publish',
-      'post_content'   => '',
-      'post_type'      => 'page',
-      )
-    );
-  }
-
-  $dashboard_page = get_page_by_title('Dashboard',);
-  if(empty($dashboard_page)) {
-    wp_insert_post(
-      array(
-      'comment_status' => 'close',
-      'ping_status'    => 'close',
-      'post_author'    => 1,
-      'post_title'     => ucwords('Dashboard'),
-      'post_name'      => strtolower(str_replace(' ', '-', trim('dashboard'))),
-      'post_status'    => 'publish',
-      'post_content'   => '',
-      'post_type'      => 'page',
-      )
-    );
+  $arr = [
+    array(
+      'title' => 'Offices',
+    ),
+    array(
+      'title' => 'Bids',
+    ),
+    array(
+      'title' => 'Transparency',
+    ),
+    array(
+      'title' => 'Tourism',
+    ),
+    array(
+      'title' => 'Dashboard',
+    ),
+    array(
+      'title' => 'City Officials',
+    ),
+  ];
+  
+  foreach ($arr as $key => $value) {
+    echo($value['title']);
+    $page = get_page_by_title(strtolower($value['title']),);
+    if(empty($page)) {
+      wp_insert_post(
+        array(
+        'comment_status' => 'close',
+        'ping_status'    => 'close',
+        'post_author'    => 1,
+        'post_title'     => ucwords(strtolower($value['title'])),
+        'post_name'      => strtolower(str_replace(' ', '-', trim($value['title']))),
+        'post_status'    => 'publish',
+        'post_content'   => '',
+        'post_type'      => 'page',
+        )
+      );
+    }
   }
 }

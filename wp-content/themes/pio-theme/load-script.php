@@ -27,6 +27,7 @@ function add_script()
       'nonce' => wp_create_nonce('wp_rest'),
       'template_dir' => get_template_directory_uri(),
       'page_name' => $pagename,
+      // 'edit_post' => get_query_var( 'tab' ) && get_query_var( 'tab' ) == 'add-post' && get_query_var( 'id' ) ? fetchPost(get_query_var( 'id' )) : null, 
     ];
   }else{
     wp_register_script('vue-main', get_template_directory_uri() . '/assets/js/landing_main.js',array ( 'jquery' ), 1.1, true);
@@ -38,7 +39,10 @@ function add_script()
       'header_menus' => getHeaderMenus(),
       'template_dir' => get_template_directory_uri(),
       'page_name' => $pagename,
-      'header_logo' => get_template_directory_uri().'/assets/images/ButuanOnDesign.png',
+      'offices' => $pagename == 'offices' ? getOfficeList() : [],
+      'office' => get_query_var( 'office' ) ? getOffice('office') : '',
+      'city_officials' => $pagename == 'city-officials' ? getCityOfficials() : '',
+      'header_logo' => get_template_directory_uri().'/assets/images/Butuan_Logo_Transparent.png',
     ];
   }
   wp_enqueue_script( 'vue-main');
