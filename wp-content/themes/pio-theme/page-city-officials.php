@@ -99,7 +99,7 @@
 
                       <q-card-section style="height:100px">
                         <div class="text-body1 q-mt-sm q-mb-xs">{{sp.name}}</div>
-                        <div class="text-body2">
+                        <div class="text-body2 text-grey">
                           {{sp.position}}
                         </div>
                       </q-card-section>

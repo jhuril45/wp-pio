@@ -70,6 +70,44 @@ function cgb_create_tables(){
       KEY file_path (path)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
     dbDelta( $sql );
+
+    $offices = $wpdb->prefix . "offices";  //get the database table prefix to create my new table
+
+    $sql = "CREATE TABLE $offices (
+      id int(10) unsigned NOT NULL AUTO_INCREMENT,
+      title varchar(255) NOT NULL,
+      head varchar(255) NOT NULL,
+      assistant varchar(255) DEFAULT NULL,
+      description varchar(255) DEFAULT NULL,
+      facebook varchar(255) DEFAULT NULL,
+      twitter varchar(255) DEFAULT NULL,
+      messenger varchar(255) DEFAULT NULL,
+      logo varchar(255) DEFAULT NULL,
+      org_structure varchar(255) DEFAULT NULL,
+      PRIMARY KEY  (id),
+      KEY file_path (logo)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+    dbDelta( $sql );
+
+    $office_services = $wpdb->prefix . "office_services";  //get the database table prefix to create my new table
+    $sql = "CREATE TABLE $office_services (
+      id int(10) unsigned NOT NULL AUTO_INCREMENT,
+      title varchar(255) NOT NULL,
+      path varchar(255) NOT NULL,
+      PRIMARY KEY  (id),
+      KEY file_path (path)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+    dbDelta( $sql );
+
+    $office_forms = $wpdb->prefix . "office_forms";  //get the database table prefix to create my new table
+    $sql = "CREATE TABLE $office_forms (
+      id int(10) unsigned NOT NULL AUTO_INCREMENT,
+      title varchar(255) NOT NULL,
+      path varchar(255) NOT NULL,
+      PRIMARY KEY  (id),
+      KEY file_path (path)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+    dbDelta( $sql );
 }
 
 function cgb_create_pages(){
@@ -92,10 +130,12 @@ function cgb_create_pages(){
     array(
       'title' => 'City Officials',
     ),
+    array(
+      'title' => 'Barangays',
+    ),
   ];
   
   foreach ($arr as $key => $value) {
-    echo($value['title']);
     $page = get_page_by_title(strtolower($value['title']),);
     if(empty($page)) {
       wp_insert_post(

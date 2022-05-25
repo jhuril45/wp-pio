@@ -30,7 +30,7 @@ window.vue.getPost = function(id,edit=false){
   window.vue.loading = true
   window.axios.get(settings.API_BASE_PATH+'myplugin/v1/get-post/?id='+id)
   .then((response) => {
-    console.log(response.data.post.featured_image)
+    console.log(response.data)
     if(edit){
       window.vue.form_post.id = id
       window.vue.form_post.title = response.data.post.post_title
@@ -101,6 +101,30 @@ window.vue.addBidReport = function(attachment){
       position: 'top-right'
     })
     window.vue.resetReportForm()
+  })
+  .catch((error) => {
+    window.vue.loading = false
+  })
+}
+
+window.vue.addOffice = function(){
+  if(window.vue.loading) return
+  window.vue.loading = true
+  const formData = new FormData()
+  formData.append('title',window.vue.form_office.title)
+  formData.append('logo',window.vue.form_office.logo)
+  formData.append('org_structure',window.vue.form_office.org_structure)
+  formData.append('head',window.vue.form_office.head)
+  formData.append('description',window.vue.form_office.description)
+  formData.append('assistant',window.vue.form_office.assistant)
+  // formData.append('attachment_length',window.vue.form_post.attachments.length)
+  // for(var i = 0; i < window.vue.form_post.attachments.length; i++){
+  //   formData.append('attachment-'+parseInt(i+1),window.vue.form_post.attachments[i])
+  // }
+  window.axios.post(settings.API_BASE_PATH+'myplugin/v1/add-office',formData)
+  .then((response) => {
+    console.log(response.data)
+    window.vue.loading = false
   })
   .catch((error) => {
     window.vue.loading = false

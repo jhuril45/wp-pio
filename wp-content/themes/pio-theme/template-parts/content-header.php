@@ -27,12 +27,12 @@
       </a>
     </div>
     <div class="q-px-sm">
-      <a href="https://www.facebook.com/butuancitypioofficial" class="footer-link text-white">
+      <a href="https://www.m.me/butuancitypioofficial" class="footer-link text-white">
         <q-icon
           name="fas fa-phone"
           color="white"
           size="xs"></q-icon>
-          <span>Call Us</span>
+          <span>Message Us</span>
       </a>
     </div>
 

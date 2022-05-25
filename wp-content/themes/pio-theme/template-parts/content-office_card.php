@@ -3,17 +3,17 @@
     <div class="row q-gutter-x-md ">
       <div class="col-12 col-md-shrink row justify-center ">
         <q-avatar size="100px" class="shadow-9">
-          <img :src="office.logo">
+          <img :src="office.logo ? office.logo : header_logo">
         </q-avatar>
       </div>
       <div class="col-12 col-md-shrink">
         <q-item-label class="text-h6 text-bold" :class="$q.screen.lt.md ? 'text-center q-mt-sm' : 'text-left'">
           {{office.title}}
         </q-item-label>
-        <q-item-label class="text-body2" :class="$q.screen.lt.md ? 'text-center' : 'text-left'">
+        <q-item-label class="text-body2" :class="$q.screen.lt.md ? 'text-center' : 'text-left'" v-if="office.description">
           {{office.description}}
         </q-item-label>
-        <q-item-label class="text-body2 q-pt-md row q-gutter-x-md">
+        <q-item-label class="text-body2 q-pt-md row">
           <div class="col-shrink">
             <a :href="office.facebook" class="footer-link text-dark">
               <q-icon
@@ -25,7 +25,7 @@
                 <span>Facebook</span>
             </a>
           </div>
-          <div class="col-shrink">
+          <div class="col-shrink q-pl-md">
             <a :href="office.twitter" class="footer-link text-dark">
               <q-icon
                 name="fab fa-twitter"
@@ -34,7 +34,7 @@
                 <span>Twitter</span>
             </a>
           </div>
-          <div class="col-shrink">
+          <div class="col-shrink q-pl-md">
             <a :href="office.messenger" class="footer-link text-dark">
               <q-icon
                 name="fas fa-phone"
@@ -134,7 +134,7 @@
         </q-tab-panel>
 
         <q-tab-panel name="organization">
-          <img src="<?php echo get_template_directory_uri().'/assets/images/PIO Organizational Structure.jpg'; ?>">
+          <img :src="office.org_structure">
         </q-tab-panel>
         <q-tab-panel name="forms">
           <div class="row justify-center">

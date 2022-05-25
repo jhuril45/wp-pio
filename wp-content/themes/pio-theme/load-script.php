@@ -27,6 +27,7 @@ function add_script()
       'nonce' => wp_create_nonce('wp_rest'),
       'template_dir' => get_template_directory_uri(),
       'page_name' => $pagename,
+      'offices' => get_query_var( 'tab' ) && get_query_var( 'tab' ) == 'offices' ? getOfficeList() : [],
       // 'edit_post' => get_query_var( 'tab' ) && get_query_var( 'tab' ) == 'add-post' && get_query_var( 'id' ) ? fetchPost(get_query_var( 'id' )) : null, 
     ];
   }else{
@@ -40,8 +41,9 @@ function add_script()
       'template_dir' => get_template_directory_uri(),
       'page_name' => $pagename,
       'offices' => $pagename == 'offices' ? getOfficeList() : [],
-      'office' => get_query_var( 'office' ) ? getOffice('office') : '',
+      'office' => get_query_var( 'office' ) ? getOffice(get_query_var( 'office' )) : '',
       'city_officials' => $pagename == 'city-officials' ? getCityOfficials() : '',
+      'city_barangays' => $pagename == 'barangays' ? getCityBarangay() : '',
       'header_logo' => get_template_directory_uri().'/assets/images/Butuan_Logo_Transparent.png',
     ];
   }

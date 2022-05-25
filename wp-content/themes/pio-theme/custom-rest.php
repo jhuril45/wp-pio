@@ -103,9 +103,9 @@ function fetchBids() {
   }
 }
 
-function fetchPost($post_id) {
+function fetchPost() {
   try{
-    $id = $post_id ? $post_id : $_GET['id'];
+    $id = $_GET['id'];
     $post = get_post($id);
 
     $featured_image = get_the_post_thumbnail_url($post->ID);
@@ -209,6 +209,47 @@ function submitReport() {
       );
       return $report;
     }
+  }catch(Exception $error){
+    return $error;
+  }
+}
+
+function submitOffice() {
+  try{
+    // return 1;
+    $user = wp_get_current_user();
+    $logo_file = basename($_FILES["logo"]["name"]);
+    $org_file = basename($_FILES["org_structure"]["name"]);
+    $logo = null;
+    $org_structure = null;
+    
+    if($logo_file){
+      $temp = explode('.',$logo_file);
+      $extension = end($temp);
+      $file_name = time().'.'.$extension;
+      $logo = wp_upload_bits( $file_name, null, @file_get_contents( $_FILES['logo']['tmp_name'] ) );
+    }
+
+    if($org_file){
+      $temp = explode('.',$logo_file);
+      $extension = end($temp);
+      $file_name = time().'.'.$extension;
+      $org_structure = wp_upload_bits( $file_name, null, @file_get_contents( $_FILES['org_structure']['tmp_name'] ) );
+    }
+
+    global $wpdb;
+    $office = $wpdb->insert(
+      $wpdb->prefix.'offices',
+      array(
+        'title' => $_POST['title'],
+        'logo' => $logo ? $logo['url'] : null,
+        'org_structure' => $org_structure ? $org_structure['url'] : null,
+        'head' => $_POST['head'],
+        'assistant' => $_POST['assistant'] ? $_POST['assistant'] : null,
+        'description' => $_POST['description'] ? $_POST['description'] : null,
+      ),
+    );
+    return $office;
   }catch(Exception $error){
     return $error;
   }
@@ -360,3 +401,11 @@ add_action( 'rest_api_init', function () {
     'callback' => 'submitBidReport',
   ) );
 } );
+
+add_action( 'rest_api_init', function () {
+  register_rest_route( 'myplugin/v1', '/add-office', array(
+    'methods' => 'POST',
+    'callback' => 'submitOffice',
+  ) );
+} );
+

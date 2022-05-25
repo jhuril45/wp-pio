@@ -16,6 +16,12 @@ if(!is_user_logged_in()){
     else if(get_query_var( 'tab' ) == 'add-bid-report'){
       get_template_part('template-parts/content', 'add_bid_report');
     }
+    else if(get_query_var( 'tab' ) == 'offices'){
+      get_template_part('template-parts/content', 'offices-table');
+    }
+    else if(get_query_var( 'tab' ) == 'add-office'){
+      get_template_part('template-parts/content', 'add_office');
+    }
     else{?>
       <div class="row justify-center">
         <div class="col-12 col-md-6 q-py-lg">

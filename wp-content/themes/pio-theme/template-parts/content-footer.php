@@ -132,4 +132,9 @@
       </q-list>
     </div>
   </div>
+  <q-toolbar class="bg-primary text-white q-px-lg" v-if="$q.screen.gt.sm">
+    <q-toolbar-title class="text-body2 text-italic text-center">
+      Ⓒ 2022. City Government of Butuan. All Rights Reserved.
+    </q-toolbar-title>
+  </q-toolbar>
 </q-footer>

@@ -14,6 +14,26 @@ window.vue = new Vue({
   data() {
     return {
       ...Main,
+      barangay_table_columns: [
+        {
+          name: 'title',
+          required: true,
+          label: 'Barangay',
+          align: 'left',
+          field: row => row.title,
+          format: val => `${val}`,
+          sortable: false
+        },
+        {
+          name: 'head',
+          required: true,
+          label: 'Chairman',
+          align: 'left',
+          field: row => row.head,
+          format: val => `${val}`,
+          sortable: false
+        },
+      ],
       offices_table_columns: [
         {
           name: 'title',

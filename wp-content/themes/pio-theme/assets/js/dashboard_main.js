@@ -13,10 +13,36 @@ window.vue = new Vue({
   },
   data() {
     return {
-      recent_posts: Main.recent_posts,
-      flip_cards: Main.flip_cards,
-      carousel_images: Main.carousel_images,
-      template_dir: Main.template_dir,
+      ...Main,
+      offices_table_columns: [
+        {
+          name: 'title',
+          required: true,
+          label: 'OFFICES',
+          align: 'left',
+          field: row => row.title,
+          format: val => `${val}`,
+          sortable: false
+        },
+        {
+          name: 'head',
+          required: true,
+          label: 'DEPARTMENT HEADS',
+          align: 'left',
+          field: row => row.head,
+          format: val => `${val}`,
+          sortable: false
+        },
+        {
+          name: 'assistant',
+          required: true,
+          label: 'ASSISTANT CHIEF',
+          align: 'left',
+          field: row => row.assistant,
+          format: val => `${val}`,
+          sortable: false
+        },
+      ],
       report_pdf: false,
       reportSource: null,
       tab: 'description',
@@ -117,6 +143,16 @@ window.vue = new Vue({
         type: null,
         month: null,
       },
+      form_office:{
+        title: '',
+        logo: null,
+        org_structure: null,
+        services: [],
+        head: '',
+        assistant: '',
+        description: '',
+        forms: [],
+      },
       bid_report_options: [
         {
           label: 'Invitation to Bid',
@@ -173,38 +209,6 @@ window.vue = new Vue({
       reports: [],
       bids: [],
       lorem: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus excepturi quia aliquid doloremque accusantium suscipit vero pariatur expedita esse. Ipsa cumque culpa fugit dolorem eligendi nobis perferendis qui commodi magni.',
-      ds: {
-        id: "1",
-        name: "Lao Lao",
-        title: "Department Head",
-        img: "https://cdn.quasar.dev/img/avatar1.jpg",
-        children: [
-          { 
-            id: "2",
-            name: "Bo Miao",
-            title: "Division Head",
-            img: "https://cdn.quasar.dev/img/avatar2.jpg",
-          },
-          {
-            id: "3",
-            name: "Su Miao",
-            title: "Division Head",
-            img: "https://cdn.quasar.dev/img/avatar3.jpg",
-          },
-          { 
-            id: "8", 
-            name: "Hong Miao", 
-            title: "Division Head",
-            img: "https://cdn.quasar.dev/img/avatar4.jpg",
-          },
-          {
-            id: "9",
-            name: "Chun Miao",
-            title: "Division Head",
-            img: "https://cdn.quasar.dev/img/avatar5.jpg",
-          },
-        ],
-      },
     }
   },
   computed:{
@@ -402,6 +406,9 @@ window.vue = new Vue({
 
     },
     addBidReport(){
+
+    },
+    addOffice(){
 
     },
   },
