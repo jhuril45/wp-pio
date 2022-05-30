@@ -35,9 +35,9 @@
             </a>
           </div>
           <div class="col-shrink q-pl-md">
-            <a :href="office.messenger" class="footer-link text-dark">
+            <a :href="'http://m.me/'+office.messenger" class="footer-link text-dark" target="_blank">
               <q-icon
-                name="fas fa-phone"
+                name="fab fa-facebook-messenger"
                 color="blue"
                 size="xs"></q-icon>
                 <span>Message Us</span>
@@ -73,43 +73,16 @@
             <q-expansion-item
               group="services"
               icon="info"
-              label="Editorial and Communication"
-              header-class=""
-            >
+              :label="service.title"
+              v-for="service in office.services"
+              :key="'service-'+service.id"
+              header-class="">
               <q-card>
                 <q-card-section>
-                  <img src="<?php echo get_template_directory_uri().'/assets/images/PIO 1.jpg'; ?>">
+                  <img :src="service.path">
                 </q-card-section>
               </q-card>
             </q-expansion-item>
-
-            <q-expansion-item
-              group="services"
-              icon="info"
-              label="Video Production"
-              header-class=""
-            >
-              <q-card>
-                <q-card-section>
-                  <img src="<?php echo get_template_directory_uri().'/assets/images/PIO 2.jpg'; ?>">
-                </q-card-section>
-              </q-card>
-            </q-expansion-item>
-
-            <q-expansion-item
-              group="services"
-              icon="info"
-              label="Communication and Transparency"
-              header-class=""
-            >
-              <q-card>
-                <q-card-section>
-                  <img src="<?php echo get_template_directory_uri().'/assets/images/PIO 3.jpg'; ?>">
-                </q-card-section>
-              </q-card>
-            </q-expansion-item>
-
-            
           </q-list>
         </q-tab-panel>
 
@@ -141,21 +114,26 @@
             <div class="col-12 col-md-10">
               <q-list padding separator>
                 <q-item-label class="text-subtitle2 text-bold q-mb-sm">Form List</q-item-label>
-                <q-item v-for="form in 3" :key="'form'+form">
+                <q-item v-for="(form) in office.forms" :key="'form'+form.id">
                   <q-item-section top avatar>
                     <q-avatar color="primary" text-color="white" icon="description" ></q-avatar>
                   </q-item-section>
 
                   <q-item-section class="q-gutter-y-md">
-                    <q-item-label>Form No. 001-2022</q-item-label>
+                    <q-item-label>{{form.title}}</q-item-label>
                     <q-item-label caption lines="2">
                       Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sit nihil eligendi repellendus. Exercitationem excepturi rem nemo culpa veniam, eum, fuga architecto nam soluta delectus, non in nobis ut? Explicabo, repellendus.
                     </q-item-label>
                   </q-item-section>
 
                   <q-item-section side top class="q-gutter-y-md">
-                    <q-item-label caption>5 min ago</q-item-label>
-                    <q-icon name="file_download" color="primary" class="cursor-pointer"></q-icon>
+                    <q-btn
+                      icon="file_download"
+                      color="primary"
+                      round
+                      size="md"
+                      target="_blank"
+                      :href="form.path"></q-btn>
                   </q-item-section>
                 </q-item>
               </q-list>

@@ -14,6 +14,18 @@ window.vue = new Vue({
   data() {
     return {
       ...Main,
+      add_office_dialog: {
+        open: false,
+        is_service: true,
+        service:{
+          image: null,
+          title: '',
+        },
+        form:{
+          file: null,
+          title: '',
+        }
+      },
       offices_table_columns: [
         {
           name: 'title',
@@ -144,13 +156,20 @@ window.vue = new Vue({
         month: null,
       },
       form_office:{
+        id: null,
         title: '',
         logo: null,
         org_structure: null,
+        org_structure_preview: null,
         services: [],
         head: '',
         assistant: '',
         description: '',
+        instagram: '',
+        facebook: '',
+        twitter: '',
+        youtube: '',
+        email: '',
         forms: [],
       },
       bid_report_options: [
@@ -209,6 +228,7 @@ window.vue = new Vue({
       reports: [],
       bids: [],
       lorem: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus excepturi quia aliquid doloremque accusantium suscipit vero pariatur expedita esse. Ipsa cumque culpa fugit dolorem eligendi nobis perferendis qui commodi magni.',
+      add_office_step: 1,
     }
   },
   computed:{
@@ -279,8 +299,13 @@ window.vue = new Vue({
     document.getElementById("q-app").style.display = "block"
   },
   mounted(){
-    console.log('Dash Main')
-    console.log(Main)
+    if(this.office){
+      this.form_office.id = this.office.id
+      this.form_office.title = this.office.title
+      this.form_office.assistant = this.office.assistant
+      this.form_office.description = this.office.description
+      this.form_office.head = this.office.head
+    }
   },
   methods: {
     openPageDialog(data){
@@ -349,6 +374,23 @@ window.vue = new Vue({
         })
       })
     },
+    addOfficeService(is_service){
+      if(is_service){
+        this.form_office.services.push(this.add_office_dialog.service)
+        this.add_office_dialog.service = {
+          image: null,
+          title: '',
+        }
+      }else{
+        this.form_office.forms.push(this.add_office_dialog.form)
+        this.add_office_dialog.form = {
+          file: null,
+          title: '',
+        }
+      }
+      
+      this.add_office_dialog.open = false
+    },
     ///Add Post ///
     resetForm(){
       this.form = {
@@ -365,7 +407,6 @@ window.vue = new Vue({
       this.file_display = null
     },
     addedFile(file,is_attachments=false){
-      console.log(is_attachments)
       if(!is_attachments){
         this.file_display = this.getImageUrl(file)
       }else{
@@ -375,6 +416,10 @@ window.vue = new Vue({
         });
       }
     },
+    addedOrgStructure(file){
+      this.form_office.org_structure_preview = this.getImageUrl(file)
+    },
+    
     getImageUrl(file){
       return URL.createObjectURL(file)
     },

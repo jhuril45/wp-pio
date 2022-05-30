@@ -80,10 +80,16 @@ function cgb_create_tables(){
       assistant varchar(255) DEFAULT NULL,
       description varchar(255) DEFAULT NULL,
       facebook varchar(255) DEFAULT NULL,
+      instagram varchar(255) DEFAULT NULL,
+      youtube varchar(255) DEFAULT NULL,
+      email varchar(255) DEFAULT NULL,
+      contact_no varchar(255) DEFAULT NULL,
       twitter varchar(255) DEFAULT NULL,
       messenger varchar(255) DEFAULT NULL,
       logo varchar(255) DEFAULT NULL,
       org_structure varchar(255) DEFAULT NULL,
+      order_number int(10) DEFAULT NULL,
+      is_published tinyint(1) DEFAULT NULL,
       PRIMARY KEY  (id),
       KEY file_path (logo)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
@@ -93,6 +99,7 @@ function cgb_create_tables(){
     $sql = "CREATE TABLE $office_services (
       id int(10) unsigned NOT NULL AUTO_INCREMENT,
       title varchar(255) NOT NULL,
+      office_id int(10) NOT NULL,
       path varchar(255) NOT NULL,
       PRIMARY KEY  (id),
       KEY file_path (path)
@@ -103,6 +110,7 @@ function cgb_create_tables(){
     $sql = "CREATE TABLE $office_forms (
       id int(10) unsigned NOT NULL AUTO_INCREMENT,
       title varchar(255) NOT NULL,
+      office_id int(10) NOT NULL,
       path varchar(255) NOT NULL,
       PRIMARY KEY  (id),
       KEY file_path (path)

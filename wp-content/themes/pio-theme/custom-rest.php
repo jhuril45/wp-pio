@@ -231,7 +231,7 @@ function submitOffice() {
     }
 
     if($org_file){
-      $temp = explode('.',$logo_file);
+      $temp = explode('.',$org_file);
       $extension = end($temp);
       $file_name = time().'.'.$extension;
       $org_structure = wp_upload_bits( $file_name, null, @file_get_contents( $_FILES['org_structure']['tmp_name'] ) );
@@ -247,8 +247,57 @@ function submitOffice() {
         'head' => $_POST['head'],
         'assistant' => $_POST['assistant'] ? $_POST['assistant'] : null,
         'description' => $_POST['description'] ? $_POST['description'] : null,
+        'facebook' => $_POST['facebook'] ? $_POST['facebook'] : null,
+        'instagram' => $_POST['instagram'] ? $_POST['instagram'] : null,
+        'twitter' => $_POST['twitter'] ? $_POST['twitter'] : null,
+        'youtube' => $_POST['youtube'] ? $_POST['youtube'] : null,
+        'email' => $_POST['email'] ? $_POST['email'] : null,
       ),
     );
+
+    $office_id = $wpdb->insert_id;
+
+    if($_POST['services_length'] > 0){
+      for ($i=1; $i <= intval($_POST['services_length']); $i++) {
+        $service_image = 'service_data-image'.$i;
+        $service_file = basename($_FILES[$service_image]["name"]);
+        $temp = explode('.',$service_file);
+        $extension = end($temp);
+        $file_name = time().'.'.$extension;
+        $service = wp_upload_bits( $file_name, null, @file_get_contents( $_FILES[$service_image]['tmp_name'] ) );
+        
+        global $wpdb;
+        $wpdb->insert(
+          $wpdb->prefix.'office_services',
+          array(
+            'title' => $_POST['service_data-name'.$i],
+            'office_id' => $office_id,
+            'path' => $service['url'],
+          ),
+        );
+      }
+    }
+
+    if($_POST['forms_length'] > 0){
+      for ($i=1; $i <= intval($_POST['forms_length']); $i++) {
+        $form_file_name = 'form_data-file'.$i;
+        $service_file = basename($_FILES[$form_file_name]["name"]);
+        $temp = explode('.',$service_file);
+        $extension = end($temp);
+        $file_name = time().'.'.$extension;
+        $form = wp_upload_bits( $file_name, null, @file_get_contents( $_FILES[$form_file_name]['tmp_name'] ) );
+        
+        global $wpdb;
+        $wpdb->insert(
+          $wpdb->prefix.'office_forms',
+          array(
+            'title' => $_POST['service_data-name'.$i],
+            'office_id' => $office_id,
+            'path' => $form['url'],
+          ),
+        );
+      }
+    }
     return $office;
   }catch(Exception $error){
     return $error;

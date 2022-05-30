@@ -175,19 +175,30 @@ function getOfficeList() {
   return $arr;
 }
 
-function getOffice($office) {
+function getOffice($office_id) {
   global $wpdb;
   $table_name = $wpdb->prefix . "offices";
-  $office = $wpdb->get_row("SELECT * FROM $table_name WHERE id = $office");
+  $office = $wpdb->get_row("SELECT * FROM $table_name WHERE id = $office_id");
+  $office->services = getOfficeServices($office_id);
+  $office->forms = getOfficeForms($office_id);
+  if($office->facebook){
+    $office->messenger = explode('www.facebook.com/',$office->facebook)[1];
+  }
   return $office;
-  return array(
-    'title' => 'Public Information Office',
-    'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscit elit.',
-    'logo' => get_template_directory_uri().'/assets/images/PIO.png',
-    'facebook' => 'https://www.facebook.com/butuancitypioofficial',
-    'twitter' => 'https://www.facebook.com/butuancitypioofficial',
-    'messenger' => 'https://www.facebook.com/butuancitypioofficial',
-  );
+}
+
+function getOfficeServices($office_id) {
+  global $wpdb;
+  $table_name = $wpdb->prefix . "office_services";
+  $services = $wpdb->get_results("SELECT * FROM $table_name WHERE office_id = $office_id");
+  return $services;
+}
+
+function getOfficeForms($office_id) {
+  global $wpdb;
+  $table_name = $wpdb->prefix . "office_forms";
+  $forms = $wpdb->get_results("SELECT * FROM $table_name WHERE office_id = $office_id");
+  return $forms;
 }
 
 

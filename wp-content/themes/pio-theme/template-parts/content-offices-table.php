@@ -59,7 +59,7 @@ global $pagename;
           </q-td>
           <?php if($pagename == 'dashboard'){?>
             <q-td class="text-center" v-if="page_name == 'dashboard'">
-              <q-btn size="sm" round color="primary" icon="edit">  
+              <q-btn size="sm" round color="primary" icon="edit" :href="'<?php echo get_home_url();?>/dashboard?tab=add-office&id='+props.row.id">  
               </q-btn>
             </q-td>
           <?php }?>

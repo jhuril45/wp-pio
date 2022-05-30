@@ -111,16 +111,31 @@ window.vue.addOffice = function(){
   if(window.vue.loading) return
   window.vue.loading = true
   const formData = new FormData()
+  formData.append('id',window.vue.form_office.id)
   formData.append('title',window.vue.form_office.title)
+
+  formData.append('facebook',window.vue.form_office.facebook)
+  formData.append('instagram',window.vue.form_office.instagram)
+  formData.append('twitter',window.vue.form_office.twitter)
+  formData.append('youtube',window.vue.form_office.youtube)
+  formData.append('email',window.vue.form_office.email)
+
+  
   formData.append('logo',window.vue.form_office.logo)
   formData.append('org_structure',window.vue.form_office.org_structure)
   formData.append('head',window.vue.form_office.head)
   formData.append('description',window.vue.form_office.description)
   formData.append('assistant',window.vue.form_office.assistant)
-  // formData.append('attachment_length',window.vue.form_post.attachments.length)
-  // for(var i = 0; i < window.vue.form_post.attachments.length; i++){
-  //   formData.append('attachment-'+parseInt(i+1),window.vue.form_post.attachments[i])
-  // }
+  formData.append('services_length',window.vue.form_office.services.length)
+  for(var i = 0; i < window.vue.form_office.services.length; i++){
+    formData.append('service_data-image'+parseInt(i+1),window.vue.form_office.services[i].image)
+    formData.append('service_data-name'+parseInt(i+1),window.vue.form_office.services[i].title)
+  }
+  formData.append('forms_length',window.vue.form_office.forms.length)
+  for(var i = 0; i < window.vue.form_office.forms.length; i++){
+    formData.append('form_data-file'+parseInt(i+1),window.vue.form_office.forms[i].file)
+    formData.append('form_data-name'+parseInt(i+1),window.vue.form_office.forms[i].title)
+  }
   window.axios.post(settings.API_BASE_PATH+'myplugin/v1/add-office',formData)
   .then((response) => {
     console.log(response.data)

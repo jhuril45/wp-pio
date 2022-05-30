@@ -28,6 +28,7 @@ function add_script()
       'template_dir' => get_template_directory_uri(),
       'page_name' => $pagename,
       'offices' => get_query_var( 'tab' ) && get_query_var( 'tab' ) == 'offices' ? getOfficeList() : [],
+      'office' => get_query_var( 'tab' ) && get_query_var( 'id' ) ? getOffice(get_query_var( 'id' )) : '',
       // 'edit_post' => get_query_var( 'tab' ) && get_query_var( 'tab' ) == 'add-post' && get_query_var( 'id' ) ? fetchPost(get_query_var( 'id' )) : null, 
     ];
   }else{
