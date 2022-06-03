@@ -95,9 +95,9 @@ window.vue.addBidReport = function(attachment){
   .then((response) => {
     console.log(response.data)
     window.vue.loading = false
-    this.$q.notify({
+    window.Quasar.Notify.create({
       type: 'positive',
-      message: 'Report submitted.',
+      message: 'Barangay submitted.',
       position: 'top-right'
     })
     window.vue.resetReportForm()
@@ -111,7 +111,9 @@ window.vue.addOffice = function(){
   if(window.vue.loading) return
   window.vue.loading = true
   const formData = new FormData()
-  formData.append('id',window.vue.form_office.id)
+  if(window.vue.form_office.id) {
+    formData.append('id',window.vue.form_office.id)
+  }
   formData.append('title',window.vue.form_office.title)
 
   formData.append('facebook',window.vue.form_office.facebook)
@@ -184,4 +186,46 @@ let entries = searchParams.entries()
 const params = paramsToObject(entries)
 if(params.tab == 'add-post' && params.id){
   window.vue.getPost(params.id,true)
+}
+
+window.vue.addBarangay = function(){
+  if(window.vue.loading) return
+  window.vue.loading = true
+  const formData = new FormData()
+  if(window.vue.form_barangay.id) {
+    formData.append('id',window.vue.form_barangay.id)
+  }
+  formData.append('title',window.vue.form_barangay.title)
+  formData.append('chairman',window.vue.form_barangay.chairman)
+  formData.append('address',window.vue.form_barangay.address)
+  formData.append('contact_no',window.vue.form_barangay.contact_no)
+  formData.append('population',window.vue.form_barangay.population)
+  formData.append('land_area',window.vue.form_barangay.land_area)
+  formData.append('description',window.vue.form_barangay.description)
+  formData.append('landmark_image',window.vue.form_barangay.landmark_image)
+  formData.append('landmark_name',window.vue.form_barangay.landmark_name)
+  formData.append('officials_length',window.vue.form_barangay.officials.length)
+  formData.append('services_length',window.vue.form_barangay.services.length)
+  for(var i = 0; i < window.vue.form_barangay.officials.length; i++){
+    formData.append('barangay-official-image'+parseInt(i+1),window.vue.form_barangay.officials[i].image)
+    formData.append('barangay-official-name'+parseInt(i+1),window.vue.form_barangay.officials[i].name)
+    formData.append('barangay-official-position'+parseInt(i+1),window.vue.form_barangay.officials[i].position)
+  }
+  for(var i = 0; i < window.vue.form_barangay.services.length; i++){
+    formData.append('barangay-service-image'+parseInt(i+1),window.vue.form_barangay.services[i].image)
+    formData.append('barangay-service-title'+parseInt(i+1),window.vue.form_barangay.services[i].title)
+  }
+  window.axios.post(settings.API_BASE_PATH+'myplugin/v1/add-barangay',formData)
+  .then((response) => {
+    console.log(response.data)
+    window.vue.loading = false
+    window.Quasar.Notify.create({
+      type: 'positive',
+      message: 'Barangay submitted.',
+      position: 'top-right'
+    })
+  })
+  .catch((error) => {
+    window.vue.loading = false
+  })
 }

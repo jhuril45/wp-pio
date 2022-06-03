@@ -202,6 +202,10 @@ body {
   white-space: pre-line;
 }
 
+.text-pre{
+  white-space: pre-line;
+}
+
 .post-time-stamp{
   font-size: 1em;
   font-weight: 400;

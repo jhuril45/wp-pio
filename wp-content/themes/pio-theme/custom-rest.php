@@ -224,47 +224,54 @@ function submitOffice() {
     $org_structure = null;
     
     if($logo_file){
-      $temp = explode('.',$logo_file);
-      $extension = end($temp);
-      $file_name = time().'.'.$extension;
-      $logo = wp_upload_bits( $file_name, null, @file_get_contents( $_FILES['logo']['tmp_name'] ) );
+      $logo = uploadFileSubmitted('logo',false);
     }
 
     if($org_file){
-      $temp = explode('.',$org_file);
-      $extension = end($temp);
-      $file_name = time().'.'.$extension;
-      $org_structure = wp_upload_bits( $file_name, null, @file_get_contents( $_FILES['org_structure']['tmp_name'] ) );
+      $org_structure = uploadFileSubmitted('org_structure',false);
     }
 
     global $wpdb;
-    $office = $wpdb->insert(
-      $wpdb->prefix.'offices',
-      array(
-        'title' => $_POST['title'],
-        'logo' => $logo ? $logo['url'] : null,
-        'org_structure' => $org_structure ? $org_structure['url'] : null,
-        'head' => $_POST['head'],
-        'assistant' => $_POST['assistant'] ? $_POST['assistant'] : null,
-        'description' => $_POST['description'] ? $_POST['description'] : null,
-        'facebook' => $_POST['facebook'] ? $_POST['facebook'] : null,
-        'instagram' => $_POST['instagram'] ? $_POST['instagram'] : null,
-        'twitter' => $_POST['twitter'] ? $_POST['twitter'] : null,
-        'youtube' => $_POST['youtube'] ? $_POST['youtube'] : null,
-        'email' => $_POST['email'] ? $_POST['email'] : null,
-      ),
+    $table_name = $wpdb->prefix.'offices';
+    $data = array(
+      'title' => $_POST['title'],
+      'head' => $_POST['head'],
+      'assistant' => $_POST['assistant'] ? $_POST['assistant'] : '',
+      'description' => $_POST['description'] ? $_POST['description'] : '',
+      'facebook' => $_POST['facebook'] ? $_POST['facebook'] : '',
+      'instagram' => $_POST['instagram'] ? $_POST['instagram'] : '',
+      'twitter' => $_POST['twitter'] ? $_POST['twitter'] : '',
+      'youtube' => $_POST['youtube'] ? $_POST['youtube'] : '',
+      'email' => $_POST['email'] ? $_POST['email'] : '',
     );
+    if($_POST['id']){
+      if($logo){
+        $data['logo'] = $logo['url'];
+      }
+      if($org_structure){
+        $data['org_structure'] = $org_structure['url'];
+      }
+      // return $table_name;
+      $data_where = array('id' => $_POST['id']);
+      $wpdb->update($table_name , $data, $data_where);
+    }else{
+      $data['logo'] = $logo ? $logo['url'] : null;
+      $data['org_structure'] = $org_structure ? $org_structure['url'] : null;
+
+      $office = $wpdb->insert(
+        $table_name,
+        $data,
+      );
+    }
+    
+    
 
     $office_id = $wpdb->insert_id;
 
     if($_POST['services_length'] > 0){
       for ($i=1; $i <= intval($_POST['services_length']); $i++) {
         $service_image = 'service_data-image'.$i;
-        $service_file = basename($_FILES[$service_image]["name"]);
-        $temp = explode('.',$service_file);
-        $extension = end($temp);
-        $file_name = time().'.'.$extension;
-        $service = wp_upload_bits( $file_name, null, @file_get_contents( $_FILES[$service_image]['tmp_name'] ) );
+        $service = uploadFileSubmitted($service_image,false);
         
         global $wpdb;
         $wpdb->insert(
@@ -281,12 +288,8 @@ function submitOffice() {
     if($_POST['forms_length'] > 0){
       for ($i=1; $i <= intval($_POST['forms_length']); $i++) {
         $form_file_name = 'form_data-file'.$i;
-        $service_file = basename($_FILES[$form_file_name]["name"]);
-        $temp = explode('.',$service_file);
-        $extension = end($temp);
-        $file_name = time().'.'.$extension;
-        $form = wp_upload_bits( $file_name, null, @file_get_contents( $_FILES[$form_file_name]['tmp_name'] ) );
-        
+        $form = uploadFileSubmitted($form_file_name,false);
+
         global $wpdb;
         $wpdb->insert(
           $wpdb->prefix.'office_forms',
@@ -299,6 +302,84 @@ function submitOffice() {
       }
     }
     return $office;
+  }catch(Exception $error){
+    return $error;
+  }
+}
+
+function submitBarangay() {
+  try{
+    $user = wp_get_current_user();
+
+    $landmark_file = basename($_FILES["landmark_image"]["name"]);
+    $landmark_image = null;
+
+    if($landmark_file){
+      $landmark_image = uploadFileSubmitted('landmark_image',false,'barangay/');
+    }
+
+    global $wpdb;
+    $table_name = $wpdb->prefix.'barangays';
+    $data = array(
+      'title' => $_POST['title'],
+      'chairman' => $_POST['chairman'],
+      'address' => $_POST['address'],
+      'contact_no' => $_POST['contact_no'],
+      'population' => $_POST['population'],
+      'land_area' => $_POST['land_area'],
+      'description' => $_POST['description'],
+    );
+    if($_POST['id']){
+      if($landmark_image){
+        $data['landmark_img'] = $landmark_image['url'];
+        $data['landmark_name'] = $_POST['landmark_name'];
+      }
+      $data_where = array('id' => $_POST['id']);
+      $wpdb->update($table_name, $data, $data_where);
+    }else{
+      $data['landmark_name'] = $_POST['landmark_name'] ? $_POST['landmark_name'] : null;
+      $data['landmark_img'] = $landmark_image ? $landmark_image['url'] : null;
+      $wpdb->insert($table_name, $data);
+    }
+
+    $barangay_id = $wpdb->insert_id;
+
+    if($_POST['officials_length'] > 0){
+      for ($i=1; $i <= intval($_POST['officials_length']); $i++) {
+        $official_file_name = 'barangay-official-image'.$i;
+        $official_image = uploadFileSubmitted($official_file_name,false,'barangay-official');
+
+        global $wpdb;
+        $wpdb->insert(
+          $wpdb->prefix.'barangay_officials',
+          array(
+            'name' => $_POST['barangay-official-name'.$i],
+            'position' => $_POST['barangay-official-position'.$i],
+            'barangay_id' => $barangay_id,
+            'path' => $official_image['url'],
+          ),
+        );
+      }
+    }
+
+    if($_POST['services_length'] > 0){
+      for ($i=1; $i <= intval($_POST['services_length']); $i++) {
+        $service_file_name = 'barangay-service-image'.$i;
+        $service_image = uploadFileSubmitted($service_file_name,false,'barangay-service');
+
+        global $wpdb;
+        $wpdb->insert(
+          $wpdb->prefix.'barangay_services',
+          array(
+            'title' => $_POST['barangay-service-title'.$i],
+            'barangay_id' => $barangay_id,
+            'path' => $service_image['url'],
+          ),
+        );
+      }
+    }
+    
+    return true;
   }catch(Exception $error){
     return $error;
   }
@@ -333,15 +414,19 @@ function submitBidReport() {
   }
 }
 
-function uploadFileSubmitted($file_name){
+function uploadFileSubmitted($file_name,$is_post=true,$prefix=''){
   $upload_dir = wp_upload_dir();
   $temp = explode('.',basename($_FILES[$file_name]['name']));
   $extension = end($temp);
   $image_data = file_get_contents($_FILES[$file_name]['tmp_name'] );
       
-  $filename = time().'.'.$extension;
-  
-  $file = wp_mkdir_p($upload_dir['path']) ? $upload_dir['path'] . '/' . $filename : $upload_dir['basedir'] . '/' . $filename;
+  $name = $prefix.time().'.'.$extension;
+  $file = null;
+  if($is_post){
+    $file = wp_mkdir_p($upload_dir['path']) ? $upload_dir['path'] . '/' . $name : $upload_dir['basedir'] . '/' . $name;
+  }else{
+    $file = wp_upload_bits( $name, null, @file_get_contents( $_FILES[$file_name]['tmp_name'] ) );
+  }
 
   file_put_contents($file, $image_data);
   return $file;
@@ -455,6 +540,13 @@ add_action( 'rest_api_init', function () {
   register_rest_route( 'myplugin/v1', '/add-office', array(
     'methods' => 'POST',
     'callback' => 'submitOffice',
+  ) );
+} );
+
+add_action( 'rest_api_init', function () {
+  register_rest_route( 'myplugin/v1', '/add-barangay', array(
+    'methods' => 'POST',
+    'callback' => 'submitBarangay',
   ) );
 } );
 

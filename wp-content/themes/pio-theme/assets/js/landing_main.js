@@ -14,6 +14,9 @@ window.vue = new Vue({
   data() {
     return {
       ...Main,
+      biding_type: 1,
+      biding_year: 'All',
+      biding_month: 0,
       barangay_table_columns: [
         {
           name: 'title',
@@ -25,11 +28,11 @@ window.vue = new Vue({
           sortable: false
         },
         {
-          name: 'head',
+          name: 'chairman',
           required: true,
           label: 'Chairman',
           align: 'left',
-          field: row => row.head,
+          field: row => row.chairman,
           format: val => `${val}`,
           sortable: false
         },
@@ -326,6 +329,9 @@ window.vue = new Vue({
   mounted(){
     console.log('Landing Main')
     console.log(Main)
+    if(this.barangay){
+      this.page_tab = 'information'
+    }
   },
   methods: {
     openPageDialog(data){

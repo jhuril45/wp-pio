@@ -30,7 +30,7 @@ function cgb_create_tables(){
 
     require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 
-    $carousel_images = $wpdb->prefix . "carousel_images";  //get the database table prefix to create my new table
+    $carousel_images = $wpdb->prefix . "carousel_images";  
 
     $sql = "CREATE TABLE $carousel_images (
       id int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -43,7 +43,7 @@ function cgb_create_tables(){
 
     dbDelta( $sql );
 
-    $reports = $wpdb->prefix . "reports";  //get the database table prefix to create my new table
+    $reports = $wpdb->prefix . "reports";  
 
     $sql = "CREATE TABLE $reports (
       id int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -57,7 +57,7 @@ function cgb_create_tables(){
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
     dbDelta( $sql );
 
-    $bids = $wpdb->prefix . "bid_reports";  //get the database table prefix to create my new table
+    $bids = $wpdb->prefix . "bid_reports";  
 
     $sql = "CREATE TABLE $bids (
       id int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -71,7 +71,7 @@ function cgb_create_tables(){
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
     dbDelta( $sql );
 
-    $offices = $wpdb->prefix . "offices";  //get the database table prefix to create my new table
+    $offices = $wpdb->prefix . "offices";  
 
     $sql = "CREATE TABLE $offices (
       id int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -95,7 +95,7 @@ function cgb_create_tables(){
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
     dbDelta( $sql );
 
-    $office_services = $wpdb->prefix . "office_services";  //get the database table prefix to create my new table
+    $office_services = $wpdb->prefix . "office_services";  
     $sql = "CREATE TABLE $office_services (
       id int(10) unsigned NOT NULL AUTO_INCREMENT,
       title varchar(255) NOT NULL,
@@ -106,11 +106,40 @@ function cgb_create_tables(){
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
     dbDelta( $sql );
 
-    $office_forms = $wpdb->prefix . "office_forms";  //get the database table prefix to create my new table
+    $office_forms = $wpdb->prefix . "office_forms";  
     $sql = "CREATE TABLE $office_forms (
       id int(10) unsigned NOT NULL AUTO_INCREMENT,
       title varchar(255) NOT NULL,
       office_id int(10) NOT NULL,
+      path varchar(255) NOT NULL,
+      PRIMARY KEY  (id),
+      KEY file_path (path)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+    dbDelta( $sql );
+
+    $barangays = $wpdb->prefix . "barangays";  
+    $sql = "CREATE TABLE $barangays (
+      id int(10) unsigned NOT NULL AUTO_INCREMENT,
+      title varchar(255) NOT NULL,
+      chairman varchar(255) NOT NULL,
+      address varchar(255) DEFAULT NULL,
+      contact_no varchar(255) DEFAULT NULL,
+      description LONGTEXT DEFAULT NULL,
+      land_area varchar(255) DEFAULT NULL,
+      population int(25) DEFAULT NULL,
+      landmark_name varchar(255) DEFAULT NULL,
+      landmark_img varchar(255) DEFAULT NULL,
+      PRIMARY KEY  (id),
+      KEY file_path (landmark_img)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+    dbDelta( $sql );
+
+    $barangays = $wpdb->prefix . "barangay_officials";  
+    $sql = "CREATE TABLE $barangays (
+      id int(10) unsigned NOT NULL AUTO_INCREMENT,
+      barangay_id int(10) NOT NULL,
+      name varchar(255) NOT NULL,
+      position varchar(255) NOT NULL,
       path varchar(255) NOT NULL,
       PRIMARY KEY  (id),
       KEY file_path (path)

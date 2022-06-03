@@ -77,9 +77,15 @@ function add_office_query_var( $vars ){
   return $vars;
 }
 
+function add_barangay_query_var( $vars ){
+  $vars[] = "barangay";
+  return $vars;
+}
+
 add_filter( 'query_vars', 'add_tab_query_var' );
 add_filter( 'query_vars', 'add_id_query_var' );
 add_filter( 'query_vars', 'add_office_query_var' );
+add_filter( 'query_vars', 'add_barangay_query_var' );
 
 function myInit() {
   global $globalUrl;
@@ -125,12 +131,12 @@ function getHeaderMenus() {
           "slug" => "offices",
           "parent_slug" => "government"
         ),
-        array(
-          "title" => "City Issuances",
-          "url" => get_home_url()."/offices",
-          "slug" => "offices",
-          "parent_slug" => "government"
-        ),
+        // array(
+        //   "title" => "City Issuances",
+        //   "url" => get_home_url()."/offices",
+        //   "slug" => "offices",
+        //   "parent_slug" => "government"
+        // ),
         array(
           "title" => "City Barangays",
           "url" => get_home_url()."/barangays",
@@ -156,29 +162,61 @@ function getHeaderMenus() {
   return $arr;
 }
 
+function getTourismPlaces($is_place=true) {
+  if($is_place){
+    $arr = [
+      array(
+        'title' => 'Embassy Hotel',
+        'contact' => '342-5883',
+        'img_path' => 'https://picsum.photos/id/241/400/300',
+      ),
+      array(
+        'title' => 'Royal Plaza Hotel',
+        'contact' => '341-5125',
+        'img_path' => 'https://picsum.photos/id/242/400/300',
+      ),
+      array(
+        'title' => 'Hotel Karaga',
+        'contact' => '342-8387',
+        'img_path' => 'https://picsum.photos/id/243/400/300',
+      ),
+    ];
+  }else{
+    $arr = [
+      array(
+        'title' => 'MASAWA HONG BUTUAN',
+        'address' => 'LUNA COMPOUND, BARANGAY BADING',
+        'img_path' => 'https://picsum.photos/id/238/400/300',
+      ),
+      array(
+        'title' => 'BALANGAY BOAT BUILDING SITE',
+        'address' => 'LUNA COMPOUND, BARANGAY BADING',
+        'img_path' => 'https://picsum.photos/id/239/400/300',
+      ),
+      array(
+        'title' => 'BONBON SHELL MIDDEN',
+        'address' => 'BARANGAY BONBON',
+        'img_path' => 'https://picsum.photos/id/240/400/300',
+      ),
+    ];
+  }
+  return $arr;
+}
+
 function getOfficeList() {
   global $wpdb;
   $table_name = $wpdb->prefix . "offices";
   $offices = $wpdb->get_results("SELECT * FROM $table_name");
   return $offices;
-
-  $arr = [
-    array(
-      'title' => 'CITY MAYOR',
-      'url' => get_home_url().'/offices/?office=pio',
-      'slug' => 'offices-pio',
-      'is_menu' => false,
-      'head' => 'HON. RONNIE VICENTE C. LAGNADA, CE',
-      'assistant' => '',
-    ),
-  ];
-  return $arr;
 }
 
 function getOffice($office_id) {
   global $wpdb;
   $table_name = $wpdb->prefix . "offices";
   $office = $wpdb->get_row("SELECT * FROM $table_name WHERE id = $office_id");
+  if(empty($office)){
+    return null;
+  }
   $office->services = getOfficeServices($office_id);
   $office->forms = getOfficeForms($office_id);
   if($office->facebook){
@@ -203,73 +241,28 @@ function getOfficeForms($office_id) {
 
 
 
-function getCityBarangay(){
-  $arr = [
-    array(
-      'title' => 'AGAO',
-      'url' => get_home_url().'/offices/?office=pio',
-      'slug' => 'offices-pio',
-      'is_menu' => false,
-      'head' => 'HON. EDNA C. GUERERO',
-    ),
-    array(
-      'title' => 'DATU SILONGAN',
-      'url' => get_home_url().'/offices/?office=pio',
-      'slug' => 'offices-pio',
-      'is_menu' => false,
-      'head' => 'HON. ALAIN JAMES G. BOQUE',
-    ),
-    array(
-      'title' => 'DIEGO SILANG',
-      'url' => get_home_url().'/offices/?office=pio',
-      'slug' => 'offices-pio',
-      'is_menu' => false,
-      'head' => 'HON. BONIFACIO L. TORREDES JR.',
-    ),
-    array(
-      'title' => 'HUMABON',
-      'url' => get_home_url().'/offices/?office=pio',
-      'slug' => 'offices-pio',
-      'is_menu' => false,
-      'head' => 'HON. FLORENCE G. SADIASA',
-    ),
-    array(
-      'title' => 'LEON KILAT',
-      'url' => get_home_url().'/offices/?office=pio',
-      'slug' => 'offices-pio',
-      'is_menu' => false,
-      'head' => 'HON. JESUS C. GEMIDA',
-    ),
-    array(
-      'title' => 'SAN IGNACIO',
-      'url' => get_home_url().'/offices/?office=pio',
-      'slug' => 'offices-pio',
-      'is_menu' => false,
-      'head' => 'HON. JOCELYN E. AMADO',
-    ),
-    array(
-      'title' => 'SIKATUNA',
-      'url' => get_home_url().'/offices/?office=pio',
-      'slug' => 'offices-pio',
-      'is_menu' => false,
-      'head' => 'HON. NORBERTO A. HERNANDEZ JR.',
-    ),
-    array(
-      'title' => 'RAJAH SOLIMAN',
-      'url' => get_home_url().'/offices/?office=pio',
-      'slug' => 'offices-pio',
-      'is_menu' => false,
-      'head' => 'HON. JANX C. AVERGONZADO',
-    ),
-    array(
-      'title' => 'URDUJA',
-      'url' => get_home_url().'/offices/?office=pio',
-      'slug' => 'offices-pio',
-      'is_menu' => false,
-      'head' => 'HON. MARIO A. TIU',
-    ),
-  ];
-  return $arr;
+function getCityBarangay($id=null){
+  if($id){
+    global $wpdb;
+    $table_name = $wpdb->prefix . "barangays";
+    $barangay = $wpdb->get_row("SELECT * FROM $table_name WHERE id = $id");
+    if(empty($barangay)){
+      return null;
+    }
+    $barangay->official_list = array(
+      'chairman' => array(
+        'name' => 'HON. EDNA C. GUERERO',
+        'position' => 'Chairman',
+        'image' => get_template_directory_uri().'/assets/images/school.jpg',
+      ),
+    );
+    return $barangay;
+  }else{
+    global $wpdb;
+    $table_name = $wpdb->prefix . "barangays";
+    $barangays = $wpdb->get_results("SELECT * FROM $table_name");
+    return $barangays;
+  }
 }
 
 function getCityOfficials(){

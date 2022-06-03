@@ -20,9 +20,9 @@
             <q-tab-panels v-model="tourism_tab" animated class="q-px-md">
               <q-tab-panel name="place_to_go">
                 <div class="row">
-                  <div class="col-12 col-md-4 q-pa-sm" v-for="i in 3" :key="i">
+                  <div class="col-12 col-md-4 q-pa-sm" v-for="(place,index) in places_to_go" :key="'place'+index">
                     <q-card class="my-card">
-                      <q-img src="<?php echo get_template_directory_uri().'/assets/images/tourism1.webp' ?>"
+                      <q-img :src="place.img_path"
                       height="250px"
                       contain></q-img>
 
@@ -33,21 +33,23 @@
                           icon="place"
                           class="absolute"
                           style="top: 0; right: 12px; transform: translateY(-50%);"
+                          href="https://goo.gl/maps/FThLwV21GEiyTRsH8"
+                          target="_blank"
                         ></q-btn>
 
                         <div class="row no-wrap items-center">
                           <div class="col text-h6 ellipsis" :class="$q.screen.lt.md ? 'q-pt-md' : ''">
-                            MASAWA HONG BUTUAN
+                            {{place.title}}
                           </div>
                         </div>
                       </q-card-section>
 
                       <q-card-section class="q-pt-none">
                         <div class="text-subtitle1">
-                          LUNA COMPOUND, BARANGAY BADING
+                          {{place.address}}
                         </div>
                         <div class="text-caption text-grey">
-                          An exact reproduction of an ancient balangay boat, the earliest evidence of Philippines maritime heritage, was built in Butuan in 2009 using centuries-old technology.
+                          {{lorem}}
                         </div>
                       </q-card-section>
                     </q-card>
@@ -57,9 +59,9 @@
 
               <q-tab-panel name="place_to_stay">
                 <div class="row">
-                  <div class="col-12 col-md-4 q-pa-sm" v-for="i in 3" :key="i">
+                  <div class="col-12 col-md-4 q-pa-sm" v-for="(place_go,index) in places_to_stay" :key="'place_go'+index">
                     <q-card class="my-card">
-                      <q-img src="<?php echo get_template_directory_uri().'/assets/images/tourism2.jpg' ?>"
+                      <q-img :src="place_go.img_path"
                       height="250px"
                       cover></q-img>
 
@@ -70,21 +72,23 @@
                           icon="place"
                           class="absolute"
                           style="top: 0; right: 12px; transform: translateY(-50%);"
+                          href="https://goo.gl/maps/FThLwV21GEiyTRsH8"
+                          target="_blank"
                         ></q-btn>
 
                         <div class="row no-wrap items-center">
                           <div class="col text-h6 ellipsis" :class="$q.screen.lt.md ? 'q-pt-md' : ''">
-                            Embassy Hotel
+                            {{place_go.title}}
                           </div>
                         </div>
                       </q-card-section>
 
                       <q-card-section class="q-pt-none">
                         <div class="text-subtitle1">
-                          LUNA COMPOUND, BARANGAY BADING
+                          {{place_go.title}}
                         </div>
                         <div class="text-caption text-grey">
-                          Contact Number 342-5883
+                          Contact Number {{place_go.contact}}
                         </div>
                       </q-card-section>
                     </q-card>

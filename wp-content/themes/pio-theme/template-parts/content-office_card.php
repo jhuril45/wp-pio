@@ -1,5 +1,6 @@
 <q-card class="page-card">
-  <q-card-section class="bg-grey-3 relative-position">
+  <q-card-section class="relative-position" :style="$q.screen.gt.sm ? { 'background-image': 'url(' + header_logo + ')' } : {}"
+    style="background-size: 100px 100px;background-repeat: no-repeat;background-position:98% 50%;">
     <div class="row q-gutter-x-md ">
       <div class="col-12 col-md-shrink row justify-center ">
         <q-avatar size="100px" class="shadow-9">
@@ -14,7 +15,7 @@
           {{office.description}}
         </q-item-label>
         <q-item-label class="text-body2 q-pt-md row">
-          <div class="col-shrink">
+          <div class="col-shrink" v-if="office.facebook">
             <a :href="office.facebook" class="footer-link text-dark">
               <q-icon
                 name="fab fa-facebook-f"
@@ -25,7 +26,7 @@
                 <span>Facebook</span>
             </a>
           </div>
-          <div class="col-shrink q-pl-md">
+          <div class="col-shrink q-pl-md" v-if="office.twitter">
             <a :href="office.twitter" class="footer-link text-dark">
               <q-icon
                 name="fab fa-twitter"
@@ -34,7 +35,7 @@
                 <span>Twitter</span>
             </a>
           </div>
-          <div class="col-shrink q-pl-md">
+          <div class="col-shrink q-pl-md" v-if="office.messenger">
             <a :href="'http://m.me/'+office.messenger" class="footer-link text-dark" target="_blank">
               <q-icon
                 name="fab fa-facebook-messenger"

@@ -23,29 +23,29 @@
                 <q-select
                   dense
                   outlined
-                  v-model="transparency_type"
-                  :options="report_options"
+                  v-model="biding_type"
+                  :options="bid_report_options"
                   label="Report type"
                   emit-value
-                  map-options/>
+                  map-options></q-select>
               </div>
               <div class="col-4 q-px-sm">
                 <q-select
                   dense
                   outlined
-                  v-model="transparency_year"
+                  v-model="biding_year"
                   :options="['All',...year_options]"
-                  label="Year" />
+                  label="Year"></q-select>
               </div>
-              <div class="col-4 q-px-sm" v-if="transparency_type == 2">
+              <div class="col-4 q-px-sm">
                 <q-select
                   dense
                   outlined
-                  v-model="transparency_quarter"
-                  :options="quarter_options"
-                  label="Quarter"
+                  v-model="biding_month"
+                  :options="[{label:'All',value:0},...month_options]"
+                  label="Month"
                   emit-value
-                  map-options/>
+                  map-options></q-select>
               </div>
             </div>
           </template>

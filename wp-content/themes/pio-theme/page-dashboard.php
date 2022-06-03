@@ -22,6 +22,15 @@ if(!is_user_logged_in()){
     else if(get_query_var( 'tab' ) == 'add-office'){
       get_template_part('template-parts/content', 'add_office');
     }
+    else if(get_query_var( 'tab' ) == 'barangays'){
+      get_template_part('template-parts/content', 'barangays-table');
+    }
+    else if(get_query_var( 'tab' ) == 'add-barangay'){
+      get_template_part('template-parts/content', 'add_barangay');
+    }
+    else if(get_query_var( 'tab' ) == 'tourism'){
+      get_template_part('template-parts/content', 'tourism-table');
+    }
     else{?>
       <div class="row justify-center">
         <div class="col-12 col-md-6 q-py-lg">

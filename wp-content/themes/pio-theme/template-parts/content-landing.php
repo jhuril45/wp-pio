@@ -13,7 +13,7 @@
           :src="carousel.path"
           style="max-height:100%;width:100%;height:100%"
           >
-          <div v-if="index >= 3" class="text-body1" style="left:35%;top:50%;transform: translate(-50%,-50%);background:rgba(33, 150, 243,0.7)">
+          <div v-if="index >= 3" :class="$q.screen.lt.sm ? '' : 'text-body1'" style="left:35%;top:50%;transform: translate(-50%,-50%);background:rgba(33, 150, 243,0.7)">
             {{lorem}}
           </div>
         </q-img>

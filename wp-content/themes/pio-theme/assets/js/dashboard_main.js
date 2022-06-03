@@ -55,6 +55,26 @@ window.vue = new Vue({
           sortable: false
         },
       ],
+      barangay_table_columns: [
+        {
+          name: 'title',
+          required: true,
+          label: 'Barangay',
+          align: 'left',
+          field: row => row.title,
+          format: val => `${val}`,
+          sortable: false
+        },
+        {
+          name: 'chairman',
+          required: true,
+          label: 'Chairman',
+          align: 'left',
+          field: row => row.chairman,
+          format: val => `${val}`,
+          sortable: false
+        },
+      ],
       report_pdf: false,
       reportSource: null,
       tab: 'description',
@@ -159,6 +179,7 @@ window.vue = new Vue({
         id: null,
         title: '',
         logo: null,
+        logo_preview: null,
         org_structure: null,
         org_structure_preview: null,
         services: [],
@@ -171,6 +192,33 @@ window.vue = new Vue({
         youtube: '',
         email: '',
         forms: [],
+      },
+      form_barangay:{
+        id: null,
+        title: '',
+        chairman: '',
+        address: '',
+        contact_no: '',
+        land_area: '',
+        description: '',
+        landmark_image: null,
+        landmark_name: '',
+        landmark_preview: null,
+        officials: [],
+        services: [],
+      },
+      add_barangay_dialog: {
+        open: false,
+        is_service: false,
+        service:{
+          image: null,
+          title: '',
+        },
+        official:{
+          image: null,
+          name: '',
+          position: null,
+        }
       },
       bid_report_options: [
         {
@@ -228,7 +276,7 @@ window.vue = new Vue({
       reports: [],
       bids: [],
       lorem: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus excepturi quia aliquid doloremque accusantium suscipit vero pariatur expedita esse. Ipsa cumque culpa fugit dolorem eligendi nobis perferendis qui commodi magni.',
-      add_office_step: 1,
+      form_step: 1,
     }
   },
   computed:{
@@ -293,21 +341,87 @@ window.vue = new Vue({
           value: 12,
         },
       ]
+    },
+    barangay_positions(){
+      return [
+        {
+          label: 'Chairman',
+          value: 'Chairman',
+        },
+        {
+          label: 'Kagawad',
+          value: 'Kagawad',
+        },
+        {
+          label: 'SK Chairman',
+          value: 'SK Chairman',
+        },
+        {
+          label: 'SK Kagawad',
+          value: 'SK Kagawad',
+        },
+        {
+          label: 'Secretary',
+          value: 'Secretary',
+        },
+        {
+          label: 'Treasurer',
+          value: 'Treasurer',
+        },
+      ]
+    },
+    form_barangay_positions(){
+      return this.barangay_positions;
     }
   },
   created(){
     document.getElementById("q-app").style.display = "block"
   },
   mounted(){
+    console.log(Main)
+    this.form_office.logo_preview = Main.template_dir + '/assets/images/Butuan_Logo_Transparent.png'
+    this.form_office.org_structure_preview = Main.template_dir + '/assets/images/Butuan_Logo_Transparent.png'
+    this.form_barangay.landmark_preview = Main.template_dir + '/assets/images/Butuan_Logo_Transparent.png'
     if(this.office){
       this.form_office.id = this.office.id
       this.form_office.title = this.office.title
       this.form_office.assistant = this.office.assistant
       this.form_office.description = this.office.description
       this.form_office.head = this.office.head
+      this.form_office.facebook = this.office.facebook
+      this.form_office.email = this.office.email
+      this.form_office.twitter = this.office.twitter
+      this.form_office.instagram = this.office.instagram
+      this.form_office.youtube = this.office.youtube
+      this.form_office.logo_preview = this.office.logo.length ? this.office.logo : this.form_office.logo_preview
+      this.form_office.org_structure_preview = this.office.org_structure.length ? this.office.org_structure : this.form_office.org_structure_preview
+      this.form_office.services = this.office.services;
+      this.form_office.forms = this.office.forms;
+    }
+    if(this.barangay){
+      this.form_barangay = {
+        ...this.form_barangay,
+        ...this.barangay,
+        landmark_preview: this.barangay.landmark_img && this.barangay.landmark_img.length ? this.barangay.landmark_img : this.form_barangay.landmark_preview
+      }
+      if(this.$refs.add_barangay_form){
+        this.$nextTick(() => {
+          this.form_step = 4
+          this.$refs.add_barangay_form.resetValidation()
+        })
+      }
+      console.log(this.form_barangay)
     }
   },
   methods: {
+    getBarangayPosition(value){
+      var index = this.barangay_positions.findIndex(x => x.value == value)
+      return index >= 0 ? this.barangay_positions[index] : null
+    },
+    async validForm(form_name,form_step){
+      var is_valid = this.$refs[form_name] ? await this.$refs[form_name].validate() : false
+      is_valid ? this[form_step]++ : this[form_step] = this[form_step];
+    },
     openPageDialog(data){
       console.log(data)
     },
@@ -391,6 +505,34 @@ window.vue = new Vue({
       
       this.add_office_dialog.open = false
     },
+    addBarangayDialog(is_service){
+      if(is_service){
+        this.form_barangay.services.push(
+          {
+            ...this.add_barangay_dialog.service,
+            img_preview : this.getImageUrl(this.add_barangay_dialog.service.image)
+          }
+        )
+        this.add_barangay_dialog.service = {
+          image: null,
+          title: '',
+        }
+      }else{
+        this.form_barangay.officials.push(
+          {
+            ...this.add_barangay_dialog.official,
+            img_preview : this.getImageUrl(this.add_barangay_dialog.official.image)
+          }
+        )
+        this.add_barangay_dialog.official = {
+          image: null,
+          name: '',
+          position: null,
+        }
+      }
+      
+      this.add_barangay_dialog.open = false
+    },
     ///Add Post ///
     resetForm(){
       this.form = {
@@ -456,5 +598,8 @@ window.vue = new Vue({
     addOffice(){
 
     },
+    addBarangay(){
+
+    }
   },
 })

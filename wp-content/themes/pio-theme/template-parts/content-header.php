@@ -53,8 +53,8 @@
         <a href="<?php echo get_home_url() ?>">
           <q-img
             cover
-            height="70px"
-            width="70px"
+            :height="$q.screen.lt.sm ? '50px' : '70px'"
+            :width="$q.screen.lt.sm ? '50px' : '70px'"
             contain
             :src="header_logo" />
         </a>
@@ -75,7 +75,8 @@
                   clickable
                   v-close-popup
                   :href="sub_menu.url"
-                  v-for="(sub_menu,index2) in link.sub_menu">
+                  v-for="(sub_menu,index2) in link.sub_menu"
+                  :key="'submenu'+index2">
                   <q-item-section class="header-links">
                     <q-item-label class="link-item">{{sub_menu.title}}</q-item-label>
                   </q-item-section>

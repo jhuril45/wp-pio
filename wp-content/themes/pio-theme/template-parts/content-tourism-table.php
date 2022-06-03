@@ -1,7 +1,7 @@
 <div class="row justify-center">
   <div class="col-12 col-md-8 " :class="$q.screen.lt.md ? 'q-pa-md' : 'q-pa-xl'">
     <q-table
-      title="CITY BARANGAYS"
+      title="CITY TOURISM"
       :data="city_barangays"
       :columns="barangay_table_columns"
       row-key="name"
@@ -44,9 +44,12 @@
       <template v-slot:body="props">
         <q-tr :props="props" no-hover>
           <q-td key="title" :props="props">
-            <a :href="'<?php echo get_home_url();?>/barangays?barangay='+props.row.id" class="text-primary text-weight-bold" style="text-decoration: none;">
+            <span class="text-primary text-weight-bold">
               {{ props.row.title }}
-            </a>
+            </span>
+            <!-- <a :href="props.row.url" class="text-primary text-weight-bold" style="text-decoration: none;">
+              {{ props.row.title }}
+            </a> -->
           </q-td>
           <q-td key="chairman" :props="props">
             {{ props.row.chairman }}
