@@ -72,12 +72,12 @@ function cgb_create_tables(){
     dbDelta( $sql );
 
     $offices = $wpdb->prefix . "offices";  
-
     $sql = "CREATE TABLE $offices (
       id int(10) unsigned NOT NULL AUTO_INCREMENT,
       title varchar(255) NOT NULL,
       head varchar(255) NOT NULL,
       assistant varchar(255) DEFAULT NULL,
+      mandate varchar(255) DEFAULT NULL,
       description varchar(255) DEFAULT NULL,
       facebook varchar(255) DEFAULT NULL,
       instagram varchar(255) DEFAULT NULL,
@@ -140,6 +140,17 @@ function cgb_create_tables(){
       barangay_id int(10) NOT NULL,
       name varchar(255) NOT NULL,
       position varchar(255) NOT NULL,
+      path varchar(255) NOT NULL,
+      PRIMARY KEY  (id),
+      KEY file_path (path)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+    dbDelta( $sql );
+
+    $barangay_services = $wpdb->prefix . "barangay_services";  
+    $sql = "CREATE TABLE $barangay_services (
+      id int(10) unsigned NOT NULL AUTO_INCREMENT,
+      title varchar(255) NOT NULL,
+      barangay_id int(10) NOT NULL,
       path varchar(255) NOT NULL,
       PRIMARY KEY  (id),
       KEY file_path (path)

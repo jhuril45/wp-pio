@@ -8,7 +8,7 @@
       <div class="col-12">
         <q-table
           flat
-          title="Bids"
+          title="Bids and Awards"
           :data="bids_data"
           :columns="columns_report"
           row-key="name"
@@ -25,7 +25,7 @@
                   outlined
                   v-model="biding_type"
                   :options="bid_report_options"
-                  label="Report type"
+                  label="Type"
                   emit-value
                   map-options></q-select>
               </div>

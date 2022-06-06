@@ -239,6 +239,20 @@ function getOfficeForms($office_id) {
   return $forms;
 }
 
+function getBarangayOfficials($barangay_id) {
+  global $wpdb;
+  $table_name = $wpdb->prefix . "barangay_officials";
+  $services = $wpdb->get_results("SELECT * FROM $table_name WHERE barangay_id = $barangay_id");
+  return $services;
+}
+
+function getBarangayServices($barangay_id) {
+  global $wpdb;
+  $table_name = $wpdb->prefix . "barangay_services";
+  $services = $wpdb->get_results("SELECT * FROM $table_name WHERE barangay_id = $barangay_id");
+  return $services;
+}
+
 
 
 function getCityBarangay($id=null){
@@ -249,18 +263,37 @@ function getCityBarangay($id=null){
     if(empty($barangay)){
       return null;
     }
+    $officials = getBarangayOfficials($id);
+    $barangay->services = getBarangayServices($id);
     $barangay->official_list = array(
-      'chairman' => array(
-        'name' => 'HON. EDNA C. GUERERO',
-        'position' => 'Chairman',
-        'image' => get_template_directory_uri().'/assets/images/school.jpg',
-      ),
+      'kagawad' => [],
+      'sk_kagawad' => [],
     );
+    foreach ($officials as $key => $value) {
+      if($value->position == 'Kagawad'){
+        array_push($barangay->official_list[strtolower($value->position)],$value);
+      }
+      else if($value->position == 'SK Kagawad'){
+        array_push($barangay->official_list['sk_kagawad'],$value);
+      }
+      else if($value->position == 'SK Chairman'){
+        $barangay->official_list['sk_chairman'] = $value;
+      }
+      else{
+        $barangay->official_list[strtolower($value->position)] = $value;
+      }
+    }
     return $barangay;
   }else{
     global $wpdb;
     $table_name = $wpdb->prefix . "barangays";
-    $barangays = $wpdb->get_results("SELECT * FROM $table_name");
+    $table_name2 = $wpdb->prefix . "barangay_officials";
+    $barangays = $wpdb->get_results("
+    SELECT * FROM $table_name as barangay 
+    LEFT JOIN $table_name2 as barangay_officials 
+    ON barangay.id = barangay_officials.barangay_id 
+    WHERE barangay_officials.position = 'Chairman'
+    ");
     return $barangays;
   }
 }

@@ -75,6 +75,37 @@ window.vue = new Vue({
           sortable: false
         },
       ],
+      tourism_table_columns: [
+        {
+          name: 'title',
+          required: true,
+          label: 'Title',
+          align: 'left',
+          field: row => row.title,
+          format: val => `${val}`,
+          sortable: false
+        },
+        {
+          name: 'type',
+          required: true,
+          label: 'Type',
+          align: 'left',
+          field: row => row.type,
+          format: val => `${val}`,
+          sortable: false
+        },
+      ],
+      tourism_type_options: [
+        {
+          label: 'To Go',
+          value: 1,
+        },
+        {
+          label: 'To Stay',
+          value: 2,
+        },
+      ],
+      tourism_type: 0,
       report_pdf: false,
       reportSource: null,
       tab: 'description',
@@ -183,6 +214,7 @@ window.vue = new Vue({
         org_structure: null,
         org_structure_preview: null,
         services: [],
+        mandate: '',
         head: '',
         assistant: '',
         description: '',
@@ -206,6 +238,17 @@ window.vue = new Vue({
         landmark_preview: null,
         officials: [],
         services: [],
+      },
+      form_tourism:{
+        id: null,
+        title: '',
+        type: null,
+        img: null,
+        img_preview: null,
+        description: '',
+        contact_no: '',
+        address: '',
+        map_link: '',
       },
       add_barangay_dialog: {
         open: false,
@@ -599,6 +642,9 @@ window.vue = new Vue({
 
     },
     addBarangay(){
+
+    },
+    addTourism(){
 
     }
   },

@@ -11,16 +11,16 @@
         <q-item-label class="text-h6 text-bold" :class="$q.screen.lt.md ? 'text-center q-mt-sm' : 'text-left'">
           Brgy. {{barangay.title}}
         </q-item-label>
-        <q-item-label class="text-caption" :class="$q.screen.lt.md ? 'text-center' : 'text-left'" v-if="barangay.chairman">
+        <q-item-label class="text-caption" :class="$q.screen.lt.md ? 'text-center' : 'text-left'">
           Contact number: {{barangay.contact_no}}
         </q-item-label>
-        <q-item-label class="text-caption" :class="$q.screen.lt.md ? 'text-center' : 'text-left'" v-if="barangay.chairman">
+        <q-item-label class="text-caption" :class="$q.screen.lt.md ? 'text-center' : 'text-left'">
           Population: {{barangay.population}}
         </q-item-label>
-        <q-item-label class="text-caption" :class="$q.screen.lt.md ? 'text-center' : 'text-left'" v-if="barangay.chairman">
+        <q-item-label class="text-caption" :class="$q.screen.lt.md ? 'text-center' : 'text-left'">
           Land area: {{barangay.land_area}}
         </q-item-label>
-        <q-item-label class="text-caption" :class="$q.screen.lt.md ? 'text-center' : 'text-left'" v-if="barangay.chairman">
+        <q-item-label class="text-caption" :class="$q.screen.lt.md ? 'text-center' : 'text-left'">
           <q-btn
             flat
             color="primary"
@@ -46,8 +46,7 @@
         indicator-color="white"
         align="justify"
         :dense="$q.screen.lt.md"
-        :mobile-arrows="$q.screen.lt.md"
-      >
+        :mobile-arrows="$q.screen.lt.md">
         <q-tab name="information" label="Information"></q-tab>
         <q-tab name="mission_vision" label="Mission & Vision"></q-tab>
         <q-tab name="officials" label="Officials"></q-tab>
@@ -91,28 +90,157 @@
           </div>
         </q-tab-panel>
         <q-tab-panel name="officials">
-          <div class="row justify-center">
-            <div class="col-12 col-md-3 q-pa-sm">
-              <q-card class="my-card" flat bordered>
-                <q-img
-                  cover
-                  height="200px"
-                  :src="barangay.official_list.chairman.image"
-                >
-                </q-img>
+          <template v-if="barangay.official_list.chairman">
+            <div class="row justify-center">
+              <div class="col-12 col-md-3 q-pa-sm">
+                <q-card class="my-card" flat bordered>
+                  <q-img
+                    cover
+                    height="200px"
+                    :src="barangay.official_list.chairman.path"
+                  >
+                  </q-img>
 
-                <q-card-section>
-                  <div class="text-body1 q-mt-sm q-mb-xs">{{barangay.official_list.chairman.name}}</div>
-                  <div class="text-body2 text-grey">
-                    {{barangay.official_list.chairman.position}}
-                  </div>
-                </q-card-section>
-              </q-card>
+                  <q-card-section>
+                    <div class="text-body1 q-mt-sm q-mb-xs">{{barangay.official_list.chairman.name}}</div>
+                    <div class="text-body2 text-grey">
+                      {{barangay.official_list.chairman.position}}
+                    </div>
+                  </q-card-section>
+                </q-card>
+              </div>
             </div>
-          </div>
+            <div class="row justify-center" style="height:110px;">
+              <q-separator
+                vertical
+                inset
+                size="3px"></q-separator>
+            </div>
+            <div class="row justify-center">
+              <div
+                class="col-12 col-md-3 q-pa-sm"
+                v-for="(kagawad,index) in barangay.official_list.kagawad">
+                <q-card class="my-card" flat bordered>
+                  <q-img
+                    cover
+                    height="200px"
+                    :src="kagawad.path"
+                  >
+                  </q-img>
+
+                  <q-card-section>
+                    <div class="text-body1 q-mt-sm q-mb-xs">{{kagawad.name}}</div>
+                    <div class="text-body2 text-grey">
+                      {{kagawad.position}}
+                    </div>
+                  </q-card-section>
+                </q-card>
+              </div>
+            </div>
+            <div class="row justify-center" style="height:110px;">
+              <q-separator
+                vertical
+                inset
+                size="3px"></q-separator>
+            </div>
+            <div class="row justify-center">
+              <div class="col-12 col-md-3 q-pa-sm">
+                <q-card class="my-card" flat bordered>
+                  <q-img
+                    cover
+                    height="200px"
+                    :src="barangay.official_list.sk_chairman.path"
+                  >
+                  </q-img>
+
+                  <q-card-section>
+                    <div class="text-body1 q-mt-sm q-mb-xs">{{barangay.official_list.sk_chairman.name}}</div>
+                    <div class="text-body2 text-grey">
+                      {{barangay.official_list.sk_chairman.position}}
+                    </div>
+                  </q-card-section>
+                </q-card>
+              </div>
+              <div class="col-12 col-md-3 q-pa-sm">
+                <q-card class="my-card" flat bordered>
+                  <q-img
+                    cover
+                    height="200px"
+                    :src="barangay.official_list.secretary.path"
+                  >
+                  </q-img>
+
+                  <q-card-section>
+                    <div class="text-body1 q-mt-sm q-mb-xs">{{barangay.official_list.secretary.name}}</div>
+                    <div class="text-body2 text-grey">
+                      {{barangay.official_list.secretary.position}}
+                    </div>
+                  </q-card-section>
+                </q-card>
+              </div>
+              <div class="col-12 col-md-3 q-pa-sm">
+                <q-card class="my-card" flat bordered>
+                  <q-img
+                    cover
+                    height="200px"
+                    :src="barangay.official_list.treasurer.path"
+                  >
+                  </q-img>
+
+                  <q-card-section>
+                    <div class="text-body1 q-mt-sm q-mb-xs">{{barangay.official_list.treasurer.name}}</div>
+                    <div class="text-body2 text-grey">
+                      {{barangay.official_list.treasurer.position}}
+                    </div>
+                  </q-card-section>
+                </q-card>
+              </div>
+            </div>
+            <div class="row justify-center" style="height:110px;">
+              <q-separator
+                vertical
+                inset
+                size="3px"></q-separator>
+            </div>
+            <div class="row justify-center">
+              <div
+                class="col-12 col-md-3 q-pa-sm"
+                v-for="(kagawad,index) in barangay.official_list.sk_kagawad">
+                <q-card class="my-card" flat bordered>
+                  <q-img
+                    cover
+                    height="200px"
+                    :src="kagawad.path"
+                  >
+                  </q-img>
+
+                  <q-card-section>
+                    <div class="text-body1 q-mt-sm q-mb-xs">{{kagawad.name}}</div>
+                    <div class="text-body2 text-grey">
+                      {{kagawad.position}}
+                    </div>
+                  </q-card-section>
+                </q-card>
+              </div>
+            </div>
+          </template>
         </q-tab-panel>
         <q-tab-panel name="services">
-          services
+          <q-list bordered separator>
+            <q-expansion-item
+              group="services"
+              icon="info"
+              :label="service.title"
+              v-for="service in barangay.services"
+              :key="'service-'+service.id"
+              header-class="">
+              <q-card>
+                <q-card-section>
+                  <img :src="service.path">
+                </q-card-section>
+              </q-card>
+            </q-expansion-item>
+          </q-list>
         </q-tab-panel>
       </q-tab-panels>
     </div>

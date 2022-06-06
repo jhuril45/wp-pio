@@ -115,6 +115,7 @@ window.vue.addOffice = function(){
     formData.append('id',window.vue.form_office.id)
   }
   formData.append('title',window.vue.form_office.title)
+  formData.append('mandate',window.vue.form_office.mandate)
 
   formData.append('facebook',window.vue.form_office.facebook)
   formData.append('instagram',window.vue.form_office.instagram)
@@ -196,7 +197,6 @@ window.vue.addBarangay = function(){
     formData.append('id',window.vue.form_barangay.id)
   }
   formData.append('title',window.vue.form_barangay.title)
-  formData.append('chairman',window.vue.form_barangay.chairman)
   formData.append('address',window.vue.form_barangay.address)
   formData.append('contact_no',window.vue.form_barangay.contact_no)
   formData.append('population',window.vue.form_barangay.population)

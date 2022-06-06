@@ -3,22 +3,49 @@
     <q-table
       title="CITY TOURISM"
       :data="city_barangays"
-      :columns="barangay_table_columns"
+      :columns="tourism_table_columns"
       row-key="name"
       :title-class="'text-primary text-h5 text-weight-medium'"
       :filter="filter"
     >
-      <template v-slot:top-right>
-        <div class="row q-gutter-x-sm">
+      <template v-slot:top>
+        <div class="row full-width justify-end">
+          <div class="col-grow text-start text-h5 text-primary">
+            City Tourism
+          </div>
+          <div class="col-3 q-px-md">
+            <q-select
+              outlined
+              v-model="tourism_type"
+              :options="[{label:'All',value:0},...tourism_type_options]"
+              label="Type"
+              dense
+              emit-value
+              map-options></q-select>
+          </div>
+          <div class="col-4 q-px-md">
+            <q-input
+              outlined
+              dense
+              debounce="300"
+              v-model="filter"
+              placeholder="Search">
+              <template v-slot:append>
+                <q-icon name="search"></q-icon>
+              </template>
+            </q-input>
+          </div>
           <?php if($pagename == 'dashboard'){?>
-            <q-btn size="sm" color="primary" padding="0 15px" icon="add" href="<?php echo get_home_url().'/dashboard?tab=add-barangay';?>"></q-btn>
-            </q-btn>
+            <div class="col-shrink q-px-md">
+              <q-btn
+                size="sm"
+                color="primary"
+                padding="10px 15px"
+                icon="add"
+                href="<?php echo get_home_url().'/dashboard?tab=add-tourism';?>"></q-btn>
+            </div>
           <?php }?>
-          <q-input class="col-auto" outlined dense debounce="300" v-model="filter" placeholder="Search">
-            <template v-slot:append>
-              <q-icon name="search"></q-icon>
-            </template>
-          </q-input>
+          
         </div>
       </template>
       <template v-slot:header="props">

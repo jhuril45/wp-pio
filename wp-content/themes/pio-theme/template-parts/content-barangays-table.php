@@ -49,7 +49,7 @@
             </a>
           </q-td>
           <q-td key="chairman" :props="props">
-            {{ props.row.chairman }}
+            {{ props.row.name }}
           </q-td>
           <?php if($pagename == 'dashboard'){?>
             <q-td class="text-center" v-if="page_name == 'dashboard'">

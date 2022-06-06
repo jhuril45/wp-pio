@@ -79,11 +79,13 @@ window.vue = new Vue({
         data: {},
       },
       slide: 1,
+      about_slide: '1',
       menus: [],
       page_menus: [],
       timer: '1',
       date: '2022/03/23',
       page_tab: 'mission_vision',
+      about_page: 'about',
       login_form: {
         username: '',
         password: '',
@@ -182,6 +184,14 @@ window.vue = new Vue({
           label: 'Minutes of Pre Bid',
           value: 3,
         },
+        {
+          label: 'Notice to Proceed',
+          value: 4,
+        },
+        {
+          label: 'Notice of Award',
+          value: 5,
+        },
       ],
       report_options: [
         {
@@ -268,7 +278,11 @@ window.vue = new Vue({
       )
     },
     bids_data(){
-      return this.bids
+      return this.bids.filter(x => 
+        x.type == this.biding_type && 
+        (this.biding_year != 'All' ? (x.year == this.biding_year) : true) && 
+        (this.biding_month != 0 ? (x.month == this.biding_month) : true)
+      )
     },
     month_options(){
       return [

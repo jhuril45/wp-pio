@@ -26,6 +26,7 @@
           <span>Twitter</span>
       </a>
     </div>
+    <q-separator vertical inset color="white"></q-separator>
     <div class="q-px-sm">
       <a href="https://www.m.me/butuancitypioofficial" class="footer-link text-white">
         <q-icon

@@ -31,6 +31,9 @@ if(!is_user_logged_in()){
     else if(get_query_var( 'tab' ) == 'tourism'){
       get_template_part('template-parts/content', 'tourism-table');
     }
+    else if(get_query_var( 'tab' ) == 'add-tourism'){
+      get_template_part('template-parts/content', 'add_tourism');
+    }
     else{?>
       <div class="row justify-center">
         <div class="col-12 col-md-6 q-py-lg">

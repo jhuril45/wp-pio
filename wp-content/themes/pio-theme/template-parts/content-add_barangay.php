@@ -50,15 +50,6 @@
                 <div class="col-12">
                   <q-input
                     no-error-icon
-                    v-model="form_barangay.chairman"
-                    label="Chairman"
-                    hide-bottom-space
-                    :rules="[val => !!val || 'Invalid Barangay Chairman']">
-                  </q-input>
-                </div>
-                <div class="col-12">
-                  <q-input
-                    no-error-icon
                     v-model="form_barangay.address"
                     label="Address"
                     hide-bottom-space
@@ -286,40 +277,6 @@
               </q-stepper-navigation>
             </q-step>
           </q-stepper>
-        </q-form>
-      </q-card-section>
-      <q-card-section v-if="false">
-        <q-form
-          class="row q-gutter-y-lg"
-          greedy
-          ref="add_barangay_form"
-          @submit="addBarangay">
-          <div class="col-12">
-            <q-input
-              no-error-icon
-              v-model="form_barangay.title"
-              label="Title"
-              hide-bottom-space
-              :rules="[val => !!val || 'Invalid Barangay Title']">
-            </q-input>
-          </div>
-          <div class="col-12">
-            <q-input
-              no-error-icon
-              v-model="form_barangay.chairman"
-              label="Chairman"
-              hide-bottom-space
-              :rules="[val => !!val || 'Invalid Barangay Chairman']">
-            </q-input>
-          </div>
-          
-          <div class="col-12 row justify-start q-gutter-x-md">
-            <q-btn class="col-12" color="primary" type="submit" :loading="loading">
-              <span>
-                Submit
-              </span>
-            </q-btn>
-          </div>
         </q-form>
       </q-card-section>
     </q-card>

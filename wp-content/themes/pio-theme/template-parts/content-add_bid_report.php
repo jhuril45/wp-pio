@@ -53,7 +53,7 @@
               :rules="[val => !!val || 'Invalid Report Year']">
             </q-select>
           </div>
-          <div class="col-12" v-if="form_bid_report.type == '2'">
+          <div class="col-12">
             <q-select
               no-error-icon
               v-model="form_bid_report.month"
@@ -62,7 +62,7 @@
               hide-bottom-space
               emit-value
               map-options
-              :rules="[val => !!val || 'Invalid Report Month']">
+              :rules="[val => !!val && val > 0 || 'Invalid Report Month']">
             </q-select>
           </div>
           <div class="col-12">

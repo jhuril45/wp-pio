@@ -238,6 +238,7 @@ function submitOffice() {
       'head' => $_POST['head'],
       'assistant' => $_POST['assistant'] ? $_POST['assistant'] : '',
       'description' => $_POST['description'] ? $_POST['description'] : '',
+      'mandate' => $_POST['mandate'] ? $_POST['mandate'] : '',
       'facebook' => $_POST['facebook'] ? $_POST['facebook'] : '',
       'instagram' => $_POST['instagram'] ? $_POST['instagram'] : '',
       'twitter' => $_POST['twitter'] ? $_POST['twitter'] : '',
@@ -322,7 +323,6 @@ function submitBarangay() {
     $table_name = $wpdb->prefix.'barangays';
     $data = array(
       'title' => $_POST['title'],
-      'chairman' => $_POST['chairman'],
       'address' => $_POST['address'],
       'contact_no' => $_POST['contact_no'],
       'population' => $_POST['population'],

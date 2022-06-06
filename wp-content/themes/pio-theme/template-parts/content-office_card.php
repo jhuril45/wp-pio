@@ -59,8 +59,7 @@
         indicator-color="white"
         align="justify"
         :dense="$q.screen.lt.md"
-        :mobile-arrows="$q.screen.lt.md"
-      >
+        :mobile-arrows="$q.screen.lt.md">
         <q-tab name="mission_vision" label="Mission & Vision"></q-tab>
         <q-tab name="services" label="Services"></q-tab>
         <q-tab name="organization" label="Organizational Structure"></q-tab>
@@ -102,6 +101,30 @@
               <div class="text-h6">Vision</div>
               <div>
                 Making Butuan a great hub city of opportunities for all that spurs and supports CARAGA's sustainable growth and development.
+              </div>
+            </div>
+            <div class="col-12">
+              <q-separator></q-separator>
+            </div>
+            <div class="col-12">
+              <div class="text-h6">Mandate</div>
+              <div>
+              Formulate measures for the consideration of the Sanggunian and provide technical assistance and support to the mayor, as the case may be, in providing the information and research data required for the delivery of basic services and provision of adequate facilities so that the public becomes aware of said services and may fully avail of the same;
+              Develop plans and strategies and, upon approval thereof by the mayor, as the case may be, implement the same, particularly those which have to do with public information and research data to support programs and projects which the mayor is empowered to implement and which the sanggunian is empowered to provide for;
+              Provide relevant, adequate, and timely information to the local government unit and its residents;
+              Furnish information and data on local government units to government agencies or office as may be required by law or ordinance, and non-governmental organizations to be furnished to said agencies and organizations;
+              Maintain effective liaison with the various sectors of the community on the matters and issues that affected the livelihood and the quality of life of the inhabitants and encourage support for programs of the local and national government;
+              Be in the frontline in providing information during and in the aftermath of manmade and natural calamities and disasters with special attention to the victims thereof, to help minimize injuries and casualties during and after the emergency, and to accelerate relief and rehabilitation;
+              Recommend to the sanggunian and advise the mayor, as the case may be, on all other matters relative to public information and research data as it relates to the total socio-economic development of the LGU
+              </div>
+            </div>
+            <div class="col-12">
+              <q-separator></q-separator>
+            </div>
+            <div class="col-12">
+              <div class="text-h6">Quality Policy</div>
+              <div>
+                {{lorem}}
               </div>
             </div>
           </div>
