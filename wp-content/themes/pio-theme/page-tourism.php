@@ -22,20 +22,24 @@
                 <div class="row">
                   <div class="col-12 col-md-4 q-pa-sm" v-for="(place,index) in places_to_go" :key="'place'+index">
                     <q-card class="my-card">
-                      <q-img :src="place.img_path"
+                      <q-img :src="place.path"
                       height="250px"
-                      contain></q-img>
-
-                      <q-card-section class="q-pb-none" >
+                      cover>
                         <q-btn
+                          v-if="place.map_link"
                           fab
+                          size="md"
                           color="primary"
                           icon="place"
-                          class="absolute"
-                          style="top: 0; right: 12px; transform: translateY(-50%);"
-                          href="https://goo.gl/maps/FThLwV21GEiyTRsH8"
+                          class="absolute-bottom-right q-mb-sm"
+                          style="right: 12px;"
+                          :href="place.map_link"
                           target="_blank"
                         ></q-btn>
+                      </q-img>
+
+                      <q-card-section class="q-pb-none" >
+                        
 
                         <div class="row no-wrap items-center">
                           <div class="col text-h6 ellipsis" :class="$q.screen.lt.md ? 'q-pt-md' : ''">
@@ -49,7 +53,10 @@
                           {{place.address}}
                         </div>
                         <div class="text-caption text-grey">
-                          {{lorem}}
+                          {{place.description}}
+                        </div>
+                        <div class="text-caption text-grey">
+                          Contact Number {{place.contact_no}}
                         </div>
                       </q-card-section>
                     </q-card>
@@ -59,36 +66,41 @@
 
               <q-tab-panel name="place_to_stay">
                 <div class="row">
-                  <div class="col-12 col-md-4 q-pa-sm" v-for="(place_go,index) in places_to_stay" :key="'place_go'+index">
+                  <div class="col-12 col-md-4 q-pa-sm" v-for="(place_stay,index) in places_to_stay" :key="'place_stay'+index">
                     <q-card class="my-card">
-                      <q-img :src="place_go.img_path"
+                      <q-img :src="place_stay.path"
                       height="250px"
-                      cover></q-img>
-
-                      <q-card-section class="q-pb-none" >
+                      cover>
                         <q-btn
+                          v-if="place_stay.map_link"
                           fab
+                          size="md"
                           color="primary"
                           icon="place"
-                          class="absolute"
-                          style="top: 0; right: 12px; transform: translateY(-50%);"
-                          href="https://goo.gl/maps/FThLwV21GEiyTRsH8"
+                          class="absolute-bottom-right q-mb-sm"
+                          style="right: 12px;"
+                          :href="place_stay.map_link"
                           target="_blank"
                         ></q-btn>
+                      </q-img>
 
+                      <q-card-section class="q-pb-none" >
                         <div class="row no-wrap items-center">
                           <div class="col text-h6 ellipsis" :class="$q.screen.lt.md ? 'q-pt-md' : ''">
-                            {{place_go.title}}
+                            {{place_stay.title}}
                           </div>
                         </div>
                       </q-card-section>
 
                       <q-card-section class="q-pt-none">
                         <div class="text-subtitle1">
-                          {{place_go.title}}
+                          {{place_stay.address}}
                         </div>
                         <div class="text-caption text-grey">
-                          Contact Number {{place_go.contact}}
+                          {{place_stay.description}}
+                        </div>
+                        <div class="text-caption text-grey">
+                          Contact Number {{place_stay.contact_no}}
                         </div>
                       </q-card-section>
                     </q-card>

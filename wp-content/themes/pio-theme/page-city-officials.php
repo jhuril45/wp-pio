@@ -21,23 +21,33 @@
               <q-tab-panel name="officials">
                 <!-- City Mayor -->
                 <div class="row justify-center">
-                  <div class="col-12 col-md-3 q-pa-sm">
-                    <q-card class="my-card" flat bordered>
+                  <div class="official-card q-pa-sm">
+                    <q-card class="" bordered>
                       <q-img
-                        contain
-                        height="200px"
+                        cover
+                        height="150px"
                         :src="city_officials.mayor.image"
                       >
+                        <q-btn
+                          round
+                          size="sm"
+                          color="primary"
+                          icon="more_horiz"
+                          class="absolute-bottom-right q-mb-sm"
+                          style="right: 12px;"
+                        ></q-btn>
                       </q-img>
 
-                      <q-card-section>
-                        <div class="text-body1 q-mt-sm q-mb-xs">{{city_officials.mayor.name}}</div>
-                        <div class="text-body2 text-grey">
+                      <q-card-section class="q-px-sm">
+                        <div class="official-name q-mb-xs">
+                          {{city_officials.mayor.name}}
+                        </div>
+                        <div class="official-position text-grey">
                           {{city_officials.mayor.position}}
                         </div>
                       </q-card-section>
 
-                      <q-card-section>
+                      <q-card-section v-if="false">
                         <q-expansion-item
                           header-class="q-px-xs text-subtitle1"
                           label="Affiliations">

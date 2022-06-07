@@ -14,6 +14,7 @@ window.vue = new Vue({
   data() {
     return {
       ...Main,
+      office_dialog: false,
       biding_type: 1,
       biding_year: 'All',
       biding_month: 0,
@@ -191,6 +192,10 @@ window.vue = new Vue({
         {
           label: 'Notice of Award',
           value: 5,
+        },
+        {
+          label: 'Approved Contract',
+          value: 6,
         },
       ],
       report_options: [

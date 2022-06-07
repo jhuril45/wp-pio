@@ -162,43 +162,23 @@ function getHeaderMenus() {
   return $arr;
 }
 
-function getTourismPlaces($is_place=true) {
-  if($is_place){
-    $arr = [
-      array(
-        'title' => 'Embassy Hotel',
-        'contact' => '342-5883',
-        'img_path' => 'https://picsum.photos/id/241/400/300',
-      ),
-      array(
-        'title' => 'Royal Plaza Hotel',
-        'contact' => '341-5125',
-        'img_path' => 'https://picsum.photos/id/242/400/300',
-      ),
-      array(
-        'title' => 'Hotel Karaga',
-        'contact' => '342-8387',
-        'img_path' => 'https://picsum.photos/id/243/400/300',
-      ),
-    ];
+function getTourismPlaces($is_place=true,$id=null,$all=false) {
+  global $wpdb;
+  if($all){
+    $table_name = $wpdb->prefix . "city_tourism";
+    $arr = $wpdb->get_results("SELECT * FROM $table_name");
+  }
+  else if($id){
+    $table_name = $wpdb->prefix . "city_tourism";
+    $tourism = $wpdb->get_row("SELECT * FROM $table_name WHERE id = $id");
+    return $tourism;
+  }
+  else if($is_place){
+    $table_name = $wpdb->prefix . "city_tourism";
+    $arr = $wpdb->get_results("SELECT * FROM $table_name WHERE type = 2");
   }else{
-    $arr = [
-      array(
-        'title' => 'MASAWA HONG BUTUAN',
-        'address' => 'LUNA COMPOUND, BARANGAY BADING',
-        'img_path' => 'https://picsum.photos/id/238/400/300',
-      ),
-      array(
-        'title' => 'BALANGAY BOAT BUILDING SITE',
-        'address' => 'LUNA COMPOUND, BARANGAY BADING',
-        'img_path' => 'https://picsum.photos/id/239/400/300',
-      ),
-      array(
-        'title' => 'BONBON SHELL MIDDEN',
-        'address' => 'BARANGAY BONBON',
-        'img_path' => 'https://picsum.photos/id/240/400/300',
-      ),
-    ];
+    $table_name = $wpdb->prefix . "city_tourism";
+    $arr = $wpdb->get_results("SELECT * FROM $table_name WHERE type = 1");
   }
   return $arr;
 }

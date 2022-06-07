@@ -31,7 +31,6 @@ function cgb_create_tables(){
     require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 
     $carousel_images = $wpdb->prefix . "carousel_images";  
-
     $sql = "CREATE TABLE $carousel_images (
       id int(10) unsigned NOT NULL AUTO_INCREMENT,
       path varchar(255) NOT NULL,
@@ -44,7 +43,6 @@ function cgb_create_tables(){
     dbDelta( $sql );
 
     $reports = $wpdb->prefix . "reports";  
-
     $sql = "CREATE TABLE $reports (
       id int(10) unsigned NOT NULL AUTO_INCREMENT,
       title varchar(255) NOT NULL,
@@ -125,6 +123,7 @@ function cgb_create_tables(){
       address varchar(255) DEFAULT NULL,
       contact_no varchar(255) DEFAULT NULL,
       description LONGTEXT DEFAULT NULL,
+      mandate LONGTEXT DEFAULT NULL,
       land_area varchar(255) DEFAULT NULL,
       population int(25) DEFAULT NULL,
       landmark_name varchar(255) DEFAULT NULL,
@@ -156,6 +155,23 @@ function cgb_create_tables(){
       KEY file_path (path)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
     dbDelta( $sql );
+
+    $city_tourism = $wpdb->prefix . "city_tourism";  
+    $sql = "CREATE TABLE $city_tourism (
+      id int(10) unsigned NOT NULL AUTO_INCREMENT,
+      title varchar(255) NOT NULL,
+      type int(10) NOT NULL,
+      description LONGTEXT DEFAULT NULL,
+      address varchar(255) DEFAULT NULL,
+      contact_no varchar(255) DEFAULT NULL,
+      map_link varchar(255) DEFAULT NULL,
+      path varchar(255) NOT NULL,
+      PRIMARY KEY  (id),
+      KEY file_path (path)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+    dbDelta( $sql );
+
+
 }
 
 function cgb_create_pages(){

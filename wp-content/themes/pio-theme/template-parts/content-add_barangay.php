@@ -85,6 +85,18 @@
                     :rules="[val => !!val && val > 0 || 'Invalid Barangay Land area']">
                   </q-input>
                 </div>
+                <div class="col-12">
+                  <q-editor
+                    ref="editor_mandate_ref"
+                    v-model="form_barangay.mandate"
+                    @paste.native="evt => pasteCapture(evt)"
+                    placeholder="Mandate"
+                    :toolbar="[
+                      ['bold', 'italic', 'underline']
+                    ]"
+                    height="20vh">
+                  </q-editor>
+                </div>
               </div>
 
               <q-stepper-navigation>
@@ -130,7 +142,6 @@
                   </q-input>
                 </div>
                 <div class="col-12">
-                  </q-input>
                   <q-editor
                     ref="editor_ref"
                     v-model="form_barangay.description"

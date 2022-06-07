@@ -276,6 +276,18 @@ window.vue = new Vue({
           label: 'Minutes of Pre Bid',
           value: 3,
         },
+        {
+          label: 'Notice to Proceed',
+          value: 4,
+        },
+        {
+          label: 'Notice of Award',
+          value: 5,
+        },
+        {
+          label: 'Approved Contract',
+          value: 6,
+        },
       ],
       report_options: [
         {
@@ -425,6 +437,7 @@ window.vue = new Vue({
     this.form_office.logo_preview = Main.template_dir + '/assets/images/Butuan_Logo_Transparent.png'
     this.form_office.org_structure_preview = Main.template_dir + '/assets/images/Butuan_Logo_Transparent.png'
     this.form_barangay.landmark_preview = Main.template_dir + '/assets/images/Butuan_Logo_Transparent.png'
+    this.form_tourism.img_preview = Main.template_dir + '/assets/images/Butuan_Logo_Transparent.png'
     if(this.office){
       this.form_office.id = this.office.id
       this.form_office.title = this.office.title
@@ -454,6 +467,13 @@ window.vue = new Vue({
         })
       }
       console.log(this.form_barangay)
+    }
+    if(this.tourism){
+      this.form_tourism = {
+        ...this.tourism,
+        type: parseInt(this.tourism.type),
+        img_preview : this.tourism.path ? this.tourism.path : this.form_tourism.img_preview
+      }
     }
   },
   methods: {
@@ -578,7 +598,7 @@ window.vue = new Vue({
     },
     ///Add Post ///
     resetForm(){
-      this.form = {
+      this.form_post = {
         title: null,
         featured_image: null,
         content: '',
@@ -646,6 +666,25 @@ window.vue = new Vue({
     },
     addTourism(){
 
+    },
+    resetTourismForm(){
+      this.form_tourism = {
+        id: null,
+        title: '',
+        type: null,
+        img: null,
+        img_preview: null,
+        description: '',
+        contact_no: '',
+        address: '',
+        map_link: '',
+      }
+      this.$nextTick(() => {
+        this.$refs.add_tourism_form.resetValidation()
+      })
+    },
+    removeTourism(){
+      
     }
   },
 })

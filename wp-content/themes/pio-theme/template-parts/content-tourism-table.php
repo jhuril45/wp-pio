@@ -1,8 +1,18 @@
+<?php 
+  wp_localize_script('vue-main', 'Rest', [
+    'nonce' => wp_create_nonce('wp_rest'),
+  ]);
+  if(is_user_logged_in()){
+    wp_register_script('add-post-script', get_template_directory_uri() . '/assets/js/add_post.js',array ( 'jquery' ), 1.1, true);
+    wp_enqueue_script( 'add-post-script');
+  }
+?>
+
 <div class="row justify-center">
   <div class="col-12 col-md-8 " :class="$q.screen.lt.md ? 'q-pa-md' : 'q-pa-xl'">
     <q-table
       title="CITY TOURISM"
-      :data="city_barangays"
+      :data="city_tourism"
       :columns="tourism_table_columns"
       row-key="name"
       :title-class="'text-primary text-h5 text-weight-medium'"
@@ -74,16 +84,15 @@
             <span class="text-primary text-weight-bold">
               {{ props.row.title }}
             </span>
-            <!-- <a :href="props.row.url" class="text-primary text-weight-bold" style="text-decoration: none;">
-              {{ props.row.title }}
-            </a> -->
           </q-td>
-          <q-td key="chairman" :props="props">
-            {{ props.row.chairman }}
+          <q-td key="type" :props="props">
+            {{ props.row.type == 1 ? 'Place to Go' : 'Place to Stay' }}
           </q-td>
           <?php if($pagename == 'dashboard'){?>
             <q-td class="text-center" v-if="page_name == 'dashboard'">
-              <q-btn size="sm" round color="primary" icon="edit" :href="'<?php echo get_home_url();?>/dashboard?tab=add-barangay&id='+props.row.id">  
+              <q-btn size="sm" round color="primary" icon="edit" :href="'<?php echo get_home_url();?>/dashboard?tab=add-tourism&id='+props.row.id">  
+              </q-btn>
+              <q-btn size="sm" round color="red" icon="delete" @click="removeTourism(props.row)">  
               </q-btn>
             </q-td>
           <?php }?>

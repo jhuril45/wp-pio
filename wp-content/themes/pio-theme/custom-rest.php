@@ -119,7 +119,7 @@ function fetchPost() {
       'posts_per_page' => -1,
       'post_status' => 'published',
       'post_parent' => $id)
-      );
+    );
 
     foreach ( $attachments as $attachment ) {
       $src = wp_get_attachment_url( $attachment->ID, 'full');
@@ -170,6 +170,23 @@ function submitPost() {
     $featured_image = basename($_FILES["featured_image"]["name"]);
 
     if($featured_image){
+      if($_POST['id']){
+        $featured_image_url = get_the_post_thumbnail_url($_POST['id']);
+        
+        $attachments = get_posts( array( 
+          'post_type' => 'attachment',
+          'post_mime_type'=>'image',
+          'posts_per_page' => -1,
+          'post_status' => 'published',
+          'post_parent' => $_POST['id'])
+        );
+        foreach ( $attachments as $attachment ) {
+          $src = wp_get_attachment_url( $attachment->ID, 'full');
+          if($featured_image_url == $src){
+            $attachment = wp_delete_attachment($attachment->ID);
+          }
+        }
+      }
       $featured_image = uploadFileSubmitted('featured_image');
       $attachment_image = insertAttachment($featured_image,$post,true);
     }
@@ -179,7 +196,10 @@ function submitPost() {
         $attachment = insertAttachment($attachment_file,$post,true);
       }
     }
-    return $post;
+    return array(
+      'success' => true,
+      'id' => $post,
+    );
   }catch(Exception $error){
     return $error;
   }
@@ -328,6 +348,7 @@ function submitBarangay() {
       'population' => $_POST['population'],
       'land_area' => $_POST['land_area'],
       'description' => $_POST['description'],
+      'mandate' => $_POST['mandate'],
     );
     if($_POST['id']){
       if($landmark_image){
@@ -414,6 +435,62 @@ function submitBidReport() {
   }
 }
 
+function submitTourism() {
+  try{
+    $user = wp_get_current_user();
+
+    $tourism_file = basename($_FILES["img"]["name"]);
+    $tourism_image = null;
+    $id = (int)$_POST['id'];
+
+    if($tourism_file){
+      $tourism_image = uploadFileSubmitted('img',false,'tourism/');
+    }
+
+    global $wpdb;
+    $table_name = $wpdb->prefix.'city_tourism';
+    $data = array(
+      'title' => $_POST['title'],
+      'type' => $_POST['type'],
+      'description' => $_POST['description'],
+      'address' => $_POST['address'],
+      'contact_no' => $_POST['contact_no'],
+      'map_link' => $_POST['map_link'],
+    );
+    if($_POST['id']){
+      if($tourism_image){
+        $data['path'] = $tourism_image['url'];
+      }
+      $data_where = array('id' => $_POST['id']);
+      $wpdb->update($table_name, $data, $data_where);
+    }else{
+      $data['path'] = $tourism_image ? $tourism_image['url'] : null;
+      $wpdb->insert($table_name, $data);
+      $id = $wpdb->insert_id;
+    }
+
+    
+    return array(
+      'success' => true,
+      'id' => $id,
+    );
+  }catch(Exception $error){
+    return $error;
+  }
+}
+
+function removeTourism() {
+  try{
+    global $wpdb;
+    $table_name = $wpdb->prefix.'city_tourism';
+    $id = $_POST['id'];
+    $wpdb->delete( $table_name, array( 'id' => intval($id) ) );
+    return array( 'success' => true);
+  }catch(Exception $error){
+    return $error;
+  }
+}
+
 function uploadFileSubmitted($file_name,$is_post=true,$prefix=''){
   $upload_dir = wp_upload_dir();
   $temp = explode('.',basename($_FILES[$file_name]['name']));
@@ -446,8 +523,8 @@ function insertAttachment($file,$post_id,$is_featured=false){
   require_once(ABSPATH . 'wp-admin/includes/image.php'); 
 
   $attach_data = wp_generate_attachment_metadata( $attach_id, $file );
-  $res1= wp_update_attachment_metadata( $attach_id, $attach_data );
-  $res2= $is_featured ? set_post_thumbnail( $post_id, $attach_id ) : null;
+  $res1 = wp_update_attachment_metadata( $attach_id, $attach_data );
+  $res2 = $is_featured ? set_post_thumbnail( $post_id, $attach_id ) : null;
   
   return $res2;
 }
@@ -547,6 +624,20 @@ add_action( 'rest_api_init', function () {
   register_rest_route( 'myplugin/v1', '/add-barangay', array(
     'methods' => 'POST',
     'callback' => 'submitBarangay',
+  ) );
+} );
+
+add_action( 'rest_api_init', function () {
+  register_rest_route( 'myplugin/v1', '/add-tourism', array(
+    'methods' => 'POST',
+    'callback' => 'submitTourism',
+  ) );
+} );
+
+add_action( 'rest_api_init', function () {
+  register_rest_route( 'myplugin/v1', '/remove-tourism', array(
+    'methods' => 'POST',
+    'callback' => 'removeTourism',
   ) );
 } );
 

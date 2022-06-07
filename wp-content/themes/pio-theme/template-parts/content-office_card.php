@@ -131,8 +131,12 @@
         </q-tab-panel>
 
         <q-tab-panel name="organization">
-          <img :src="office.org_structure">
+          <img
+            class="cursor-pointer"
+            :src="office.org_structure"
+            @click="office_dialog=true">
         </q-tab-panel>
+
         <q-tab-panel name="forms">
           <div class="row justify-center">
             <div class="col-12 col-md-10">
@@ -168,3 +172,19 @@
     </div>
   </q-card-section>
 </q-card>
+
+<q-dialog
+  v-model="office_dialog"
+  full-height
+  full-width>
+  <q-card>
+    <q-card-section class="row items-center q-pb-none">
+      <q-space></q-space>
+      <q-btn icon="close" flat round dense v-close-popup></q-btn>
+    </q-card-section>
+
+    <q-card-section class="q-pt-none">
+      <img :src="office.org_structure" style="width:100%;height:100%">
+    </q-card-section>
+  </q-card>
+</q-dialog>

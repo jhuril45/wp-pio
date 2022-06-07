@@ -24,6 +24,7 @@ function add_script()
   if($pagename == 'dashboard'){
     wp_register_script('vue-main', get_template_directory_uri() . '/assets/js/dashboard_main.js',array ( 'jquery' ), 1.1, true);
     $page_data = [
+      'home_url' => get_home_url(),
       'nonce' => wp_create_nonce('wp_rest'),
       'template_dir' => get_template_directory_uri(),
       'page_name' => $pagename,
@@ -33,11 +34,14 @@ function add_script()
       'barangay' => get_query_var( 'tab' ) && get_query_var( 'id' ) && get_query_var( 'tab' ) == 'add-barangay' ? getCityBarangay(get_query_var( 'id' )) : '',
       'places_to_stay' => getTourismPlaces(),
       'places_to_go' => getTourismPlaces(false),
+      'city_tourism' => get_query_var( 'tab' ) && get_query_var( 'tab' ) == 'tourism' ? getTourismPlaces(false,0,true) : [],
+      'tourism' => get_query_var( 'tab' ) && get_query_var( 'id' ) && get_query_var( 'tab' ) == 'add-tourism' ? getTourismPlaces(true,get_query_var( 'id' )) : '',
       // 'edit_post' => get_query_var( 'tab' ) && get_query_var( 'tab' ) == 'add-post' && get_query_var( 'id' ) ? fetchPost(get_query_var( 'id' )) : null, 
     ];
   }else{
     wp_register_script('vue-main', get_template_directory_uri() . '/assets/js/landing_main.js',array ( 'jquery' ), 1.1, true);
     $page_data = [
+      'home_url' => get_home_url(),
       'nonce' => wp_create_nonce('wp_rest'),
       'carousel_images' => is_front_page() ? fetchCarouselImages() : [],
       'flip_cards' => is_front_page() ? getFlipCards() : [],

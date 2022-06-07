@@ -18,7 +18,15 @@ window.vue.addPost = function(attachment){
   .then((response) => {
     console.log(response.data)
     window.vue.loading = false
-    window.vue.resetForm()
+    window.Quasar.Notify.create({
+      type: 'positive',
+      message: 'Success.',
+      position: 'top-right'
+    })
+    if(!window.vue.form_post.id){
+      window.vue.resetForm()
+    }
+    
   })
   .catch((error) => {
     window.vue.loading = false
@@ -227,5 +235,75 @@ window.vue.addBarangay = function(){
   })
   .catch((error) => {
     window.vue.loading = false
+  })
+}
+
+window.vue.addTourism = function(attachment){
+  if(window.vue.loading) return
+  window.vue.loading = true
+  const formData = new FormData()
+  if(window.vue.form_tourism.id) formData.append('id',window.vue.form_tourism.id)
+  formData.append('title',window.vue.form_tourism.title)
+  formData.append('type',window.vue.form_tourism.type)
+  formData.append('img',window.vue.form_tourism.img)
+  formData.append('description',window.vue.form_tourism.description)
+  formData.append('address',window.vue.form_tourism.address)
+  formData.append('contact_no',window.vue.form_tourism.contact_no)
+  formData.append('map_link',window.vue.form_tourism.map_link)
+  window.axios.post(settings.API_BASE_PATH+'myplugin/v1/add-tourism',formData)
+  .then((response) => {
+    console.log(response.data)
+    window.vue.loading = false
+    window.Quasar.Notify.create({
+      type: 'positive',
+      message: 'Succesfully submitted.',
+      position: 'top-right'
+    })
+    window.vue.resetTourismForm()
+    // window.vue.form_tourism.id = response.data.success ? response.data.id : null
+  })
+  .catch((error) => {
+    window.vue.loading = false
+  })
+}
+
+window.vue.removeTourism = function(tourism){
+  window.Quasar
+  .plugins.Dialog
+  .create({
+    title: 'Confirm',
+    message: 'Remove ' + tourism.title + '?',
+    ok: {
+      color: 'primary'
+    },
+    cancel: {
+      color: 'negative'
+    },
+    persistent: true,
+  }).onOk(() => {
+    if(window.vue.loading) return
+    window.vue.loading = true
+    const formData = new FormData()
+    formData.append('id',tourism.id)
+    window.axios.post(settings.API_BASE_PATH+'myplugin/v1/remove-tourism',formData)
+    .then((response) => {
+      
+      console.log(index)
+      var index = this.city_tourism.findIndex(x => x.id == tourism.id)
+      if(index >= 0) this.city_tourism.splice(index,1)
+      window.vue.loading = false
+      window.Quasar.Notify.create({
+        type: 'positive',
+        message: 'Success.',
+        position: 'top-right'
+      })
+    })
+    .catch((error) => {
+      window.vue.loading = false
+    })
+  }).onCancel(() => {
+    // console.log('>>>> Cancel')
+  }).onDismiss(() => {
+    // console.log('I am triggered on both OK and Cancel')
   })
 }
