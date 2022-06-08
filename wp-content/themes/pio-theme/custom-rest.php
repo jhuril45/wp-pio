@@ -244,11 +244,11 @@ function submitOffice() {
     $org_structure = null;
     
     if($logo_file){
-      $logo = uploadFileSubmitted('logo',false);
+      $logo = uploadFileSubmitted('logo',false,'office');
     }
 
     if($org_file){
-      $org_structure = uploadFileSubmitted('org_structure',false);
+      $org_structure = uploadFileSubmitted('org_structure',false,'office');
     }
 
     global $wpdb;
@@ -287,39 +287,48 @@ function submitOffice() {
     
     
 
-    $office_id = $wpdb->insert_id;
+    $office_id = $_POST['id'] ? intval($_POST['id']) : $wpdb->insert_id;
 
     if($_POST['services_length'] > 0){
       for ($i=1; $i <= intval($_POST['services_length']); $i++) {
         $service_image = 'service_data-image'.$i;
-        $service = uploadFileSubmitted($service_image,false);
-        
-        global $wpdb;
-        $wpdb->insert(
-          $wpdb->prefix.'office_services',
-          array(
-            'title' => $_POST['service_data-name'.$i],
-            'office_id' => $office_id,
-            'path' => $service['url'],
-          ),
-        );
+        if(strlen(basename($_FILES[$service_image]['name'])) > 0){
+          $service = uploadFileSubmitted($service_image,false,'office');
+          if(!$service['error']){
+            global $wpdb;
+            $wpdb->insert(
+              $wpdb->prefix.'office_services',
+              array(
+                'title' => $_POST['service_data-name'.$i],
+                'office_id' => $office_id,
+                'path' => $service['url'],
+              ),
+            );
+          }else{
+            return $service;
+          }
+          
+        }
       }
     }
 
     if($_POST['forms_length'] > 0){
       for ($i=1; $i <= intval($_POST['forms_length']); $i++) {
         $form_file_name = 'form_data-file'.$i;
-        $form = uploadFileSubmitted($form_file_name,false);
+        if(strlen(basename($_FILES[$form_file_name]['name'])) > 0){
+          $form = uploadFileSubmitted($form_file_name,false,'office');
 
-        global $wpdb;
-        $wpdb->insert(
-          $wpdb->prefix.'office_forms',
-          array(
-            'title' => $_POST['service_data-name'.$i],
-            'office_id' => $office_id,
-            'path' => $form['url'],
-          ),
-        );
+          global $wpdb;
+          $wpdb->insert(
+            $wpdb->prefix.'office_forms',
+            array(
+              'title' => $_POST['service_data-name'.$i],
+              'office_id' => $office_id,
+              'path' => $form['url'],
+            ),
+          );
+        }
+        
       }
     }
     return $office;
@@ -348,7 +357,6 @@ function submitBarangay() {
       'population' => $_POST['population'],
       'land_area' => $_POST['land_area'],
       'description' => $_POST['description'],
-      'mandate' => $_POST['mandate'],
     );
     if($_POST['id']){
       if($landmark_image){
@@ -490,6 +498,21 @@ function removeTourism() {
     return $error;
   }
 }
+
+function removeOfficeAttachment() {
+  try{
+    global $wpdb;
+    $name = $_POST['type'] == 'service' ? 'office_services' : 'office_forms';
+    $table_name = $wpdb->prefix.$name;
+    $id = $_POST['id'];
+    $wpdb->delete( $table_name, array( 'id' => intval($id) ) );
+    return array( 'success' => true);
+  }catch(Exception $error){
+    return $error;
+  }
+}
+
+
 
 function uploadFileSubmitted($file_name,$is_post=true,$prefix=''){
   $upload_dir = wp_upload_dir();
@@ -638,6 +661,13 @@ add_action( 'rest_api_init', function () {
   register_rest_route( 'myplugin/v1', '/remove-tourism', array(
     'methods' => 'POST',
     'callback' => 'removeTourism',
+  ) );
+} );
+
+add_action( 'rest_api_init', function () {
+  register_rest_route( 'myplugin/v1', '/remove-office-attachment', array(
+    'methods' => 'POST',
+    'callback' => 'removeOfficeAttachment',
   ) );
 } );
 

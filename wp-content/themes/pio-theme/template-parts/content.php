@@ -42,7 +42,7 @@
     array_push($recent_posts,$value);
   }
 ?>
-<div class="row justify-end">
+<div class="row" :class="<?php echo(count($recent_posts))?> > 0 ? 'justify-end' : 'justify-center'">
   <div class="col-md-7 col-12" :class="$q.screen.lt.sm ? 'q-py-sm q-px-md' : 'q-py-lg q-px-xl'">
     <q-card flat :class="$q.screen.lt.sm ? '' : ''">
       <q-card-section class="">
@@ -71,12 +71,11 @@
               @click="post_attachments=true">
             </q-carousel-slide>
           <?php }?>
-          <template v-slot:control>
+          <template v-slot:control v-if="<?php echo(count($attachments))?> > 1">
             <q-carousel-control
               position="bottom-right"
               :offset="[18, 18]"
-              class="q-gutter-xs"
-            >
+              class="q-gutter-xs">
               <q-btn
                 push round dense color="primary" text-color="white" icon="arrow_left"
                 @click="$refs.carousel.previous()"

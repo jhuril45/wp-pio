@@ -37,7 +37,7 @@
                 </a>
               </div>
               <div class="col-shrink">
-                <a href="https://www.facebook.com/butuancitypioofficial" class="footer-link text-dark">
+                <a href="tel:123-456-7890" class="footer-link text-dark">
                   <q-icon
                     name="fas fa-phone"
                     color="blue"

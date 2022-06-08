@@ -24,6 +24,7 @@ require get_template_directory() . '/custom-rest.php';
 
 add_action("after_switch_theme", "cgb_create_tables");
 add_action("after_switch_theme", "cgb_create_pages");
+add_action("after_switch_theme", "cgb_create_roles");
 
 function cgb_create_tables(){
     global $wpdb;
@@ -75,7 +76,7 @@ function cgb_create_tables(){
       title varchar(255) NOT NULL,
       head varchar(255) NOT NULL,
       assistant varchar(255) DEFAULT NULL,
-      mandate varchar(255) DEFAULT NULL,
+      mandate LONGTEXT DEFAULT NULL,
       description varchar(255) DEFAULT NULL,
       facebook varchar(255) DEFAULT NULL,
       instagram varchar(255) DEFAULT NULL,
@@ -197,6 +198,9 @@ function cgb_create_pages(){
     array(
       'title' => 'Barangays',
     ),
+    array(
+      'title' => 'About',
+    ),
   ];
   
   foreach ($arr as $key => $value) {
@@ -216,4 +220,13 @@ function cgb_create_pages(){
       );
     }
   }
+}
+
+function cgb_create_roles(){
+  global $wp_roles;
+  if ( ! isset( $wp_roles ) )
+      $wp_roles = new WP_Roles();
+
+  $subscriber = $wp_roles->get_role('subscriber');
+  $wp_roles->add_role('pio', 'Pio', $subscriber->capabilities);
 }

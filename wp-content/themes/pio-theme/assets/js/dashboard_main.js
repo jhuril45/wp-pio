@@ -238,6 +238,7 @@ window.vue = new Vue({
         landmark_preview: null,
         officials: [],
         services: [],
+        kagawad_count: 0,
       },
       form_tourism:{
         id: null,
@@ -426,7 +427,24 @@ window.vue = new Vue({
       ]
     },
     form_barangay_positions(){
-      return this.barangay_positions;
+      var arr = []
+      this.barangay_positions.map((data) => {
+        if(data.value == 'Chairman' || data.value == 'SK Chairman'){
+          var index = this.form_barangay.officials.findIndex(x => x.position == data.value)
+          if(index < 0){
+            arr.push(data)
+          }
+        }else{
+          if(data.value == 'Kagawad'){
+            if(this.form_barangay.kagawad_count < 10){
+              arr.push(data)
+            }
+          }else{
+            arr.push(data)
+          }
+        }
+      })
+      return arr;
     }
   },
   created(){
@@ -443,6 +461,7 @@ window.vue = new Vue({
       this.form_office.title = this.office.title
       this.form_office.assistant = this.office.assistant
       this.form_office.description = this.office.description
+      this.form_office.mandate = this.office.mandate
       this.form_office.head = this.office.head
       this.form_office.facebook = this.office.facebook
       this.form_office.email = this.office.email
@@ -587,29 +606,52 @@ window.vue = new Vue({
             img_preview : this.getImageUrl(this.add_barangay_dialog.official.image)
           }
         )
+        if(this.add_barangay_dialog.official.position == 'Kagawad'){
+          this.form_barangay.kagawad_count++
+        }
         this.add_barangay_dialog.official = {
           image: null,
           name: '',
           position: null,
         }
+        
       }
       
       this.add_barangay_dialog.open = false
     },
     ///Add Post ///
-    resetForm(){
-      this.form_post = {
-        title: null,
-        featured_image: null,
-        content: '',
-        attachments: [],
+    resetForm(type){
+      if(type == 'form_post'){
+        this.form_post = {
+          title: null,
+          featured_image: null,
+          content: '',
+          attachments: [],
+        }
+        this.$nextTick(() => {
+          this.$refs.add_post_form.resetValidation()
+        })
+  
+        this.images = []
+        this.file_display = null
       }
-      this.$nextTick(() => {
-        this.$refs.add_post_form.resetValidation()
-      })
-
-      this.images = []
-      this.file_display = null
+      else if(type == 'barangay'){
+        this.form_barangay = {
+          id: null,
+          title: '',
+          chairman: '',
+          address: '',
+          contact_no: '',
+          land_area: '',
+          description: '',
+          landmark_image: null,
+          landmark_name: '',
+          landmark_preview: null,
+          officials: [],
+          services: [],
+          kagawad_count: 0,
+        }
+      }
     },
     addedFile(file,is_attachments=false){
       if(!is_attachments){
@@ -685,6 +727,10 @@ window.vue = new Vue({
     },
     removeTourism(){
       
+    },
+    removeOfficeAttachments(){
+      console.log(type)
+      console.log(id)
     }
   },
 })

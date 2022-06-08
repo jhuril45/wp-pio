@@ -71,6 +71,17 @@
                       hide-bottom-space>
                     </q-input>
                   </div>
+                  <div class="col-12">
+                  <q-editor
+                    ref="editor_mandate_ref"
+                    v-model="form_office.mandate"
+                    placeholder="Mandate"
+                    :toolbar="[
+                      ['bold', 'italic', 'underline']
+                    ]"
+                    height="20vh">
+                  </q-editor>
+                </div>
                 </div>
                 <q-stepper-navigation>
                   <q-btn type="submit" color="primary" label="Continue"></q-btn>
@@ -231,9 +242,7 @@
                   <q-card-section>
                     <q-list separator>
                       <q-separator></q-separator>
-                      <q-item 
-                        clickable 
-                        v-ripple 
+                      <q-item
                         v-for="(service,index) in form_office.services"
                         :key="'service-'+index">
                         <q-item-section thumbnail class="q-px-sm">
@@ -245,10 +254,10 @@
                         <q-item-section side>
                           <q-btn
                             round
-                            size="sm"
+                            size="xs"
                             color="red"
-                            icon="cancel"
-                            @click="service.id ? '' : form_office.services.splice(index,1)"></q-btn>
+                            icon="clear"
+                            @click="service.id ? removeOfficeAttachments('service',service) : form_office.services.splice(index,1)"></q-btn>
                         </q-item-section>
                       </q-item>
                       <q-item v-if="form_office.services.length == 0">
@@ -321,7 +330,7 @@
                 </q-card>
 
                 <q-stepper-navigation>
-                  <q-btn type="submit" color="primary" label="Continue"></q-btn>
+                  <q-btn type="submit" color="primary" label="Submit" :loading="loading"></q-btn>
                   <q-btn flat @click="form_step--" color="primary" label="Back" class="q-ml-sm"></q-btn>
                 </q-stepper-navigation>
               </q-step>

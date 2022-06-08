@@ -24,7 +24,7 @@ window.vue.addPost = function(attachment){
       position: 'top-right'
     })
     if(!window.vue.form_post.id){
-      window.vue.resetForm()
+      window.vue.resetForm('form_post')
     }
     
   })
@@ -157,6 +157,48 @@ window.vue.addOffice = function(){
   })
 }
 
+window.vue.removeOfficeAttachments = function(type,data){
+  window.Quasar
+  .plugins.Dialog
+  .create({
+    title: 'Confirm',
+    message: 'Remove '+data.title+'?',
+    ok: {
+      color: 'primary'
+    },
+    cancel: {
+      color: 'negative'
+    },
+    persistent: true,
+  }).onOk(() => {
+    console.log(data)
+    if(window.vue.loading) return
+    window.vue.loading = true
+    const formData = new FormData()
+    formData.append('id',data.id)
+    formData.append('type',type)
+    window.axios.post(settings.API_BASE_PATH+'myplugin/v1/remove-office-attachment',formData)
+    .then((response) => {
+      console.log(response.data)
+      window.vue.loading = false
+      if(type == 'service'){
+        var index = this.form_office.services.findIndex(x => x.id == data.id)
+        if(index >= 0) this.form_office.services.splice(index,1)
+      }else{
+        var index = this.form_office.forms.findIndex(x => x.id == data.id)
+        if(index >= 0) this.form_office.forms.splice(index,1)
+      }
+    })
+    .catch((error) => {
+      window.vue.loading = false
+    })
+  }).onCancel(() => {
+    // console.log('>>>> Cancel')
+  }).onDismiss(() => {
+    // console.log('I am triggered on both OK and Cancel')
+  })
+}
+
 window.vue.addReport = function(attachment){
   if(window.vue.loading) return
   window.vue.loading = true
@@ -232,6 +274,7 @@ window.vue.addBarangay = function(){
       message: 'Barangay submitted.',
       position: 'top-right'
     })
+    window.vue.resetForm('barangay')
   })
   .catch((error) => {
     window.vue.loading = false

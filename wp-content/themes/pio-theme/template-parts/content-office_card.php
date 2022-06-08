@@ -142,24 +142,26 @@
             <div class="col-12 col-md-10">
               <q-list padding separator>
                 <q-item-label class="text-subtitle2 text-bold q-mb-sm">Form List</q-item-label>
-                <q-item v-for="(form) in office.forms" :key="'form'+form.id">
-                  <q-item-section top avatar>
-                    <q-avatar color="primary" text-color="white" icon="description" ></q-avatar>
+                <q-item
+                  v-for="(form) in office.forms"
+                  :key="'form'+form.id">
+                  <q-item-section
+                    side>
+                    <q-item-label>
+                      <q-icon color="primary" name="description" ></q-icon>
+                    </q-item-label>
                   </q-item-section>
 
                   <q-item-section class="q-gutter-y-md">
                     <q-item-label>{{form.title}}</q-item-label>
-                    <q-item-label caption lines="2">
-                      Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sit nihil eligendi repellendus. Exercitationem excepturi rem nemo culpa veniam, eum, fuga architecto nam soluta delectus, non in nobis ut? Explicabo, repellendus.
-                    </q-item-label>
                   </q-item-section>
 
-                  <q-item-section side top class="q-gutter-y-md">
+                  <q-item-section side class="q-gutter-y-md">
                     <q-btn
                       icon="file_download"
                       color="primary"
                       round
-                      size="md"
+                      size="sm"
                       target="_blank"
                       :href="form.path"></q-btn>
                   </q-item-section>
