@@ -27,13 +27,24 @@
         </q-item-section>
       </q-item>
       <q-separator></q-separator>
-      <q-item clickable v-ripple href="<?php echo get_home_url().'/dashboard?tab=add-post';?>">
+      <q-item clickable v-ripple href="<?php echo get_home_url().'/dashboard';?>">
         <q-item-section side>
           <q-icon :name="'add'"></q-icon>
         </q-item-section>
         <q-item-section>
           <q-item-label class="text-body2 text-bold">
-            Add Post
+            Posts
+          </q-item-label>
+        </q-item-section>
+      </q-item>
+      <q-separator></q-separator>
+      <q-item clickable v-ripple href="<?php echo get_home_url().'/dashboard?tab=reports';?>">
+        <q-item-section side>
+          <q-icon :name="'add'"></q-icon>
+        </q-item-section>
+        <q-item-section>
+          <q-item-label class="text-body2 text-bold">
+            Transparency Report
           </q-item-label>
         </q-item-section>
       </q-item>

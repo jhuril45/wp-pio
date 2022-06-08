@@ -452,6 +452,7 @@ window.vue = new Vue({
   },
   mounted(){
     console.log(Main)
+    console.log(window.Quasar)
     this.form_office.logo_preview = Main.template_dir + '/assets/images/Butuan_Logo_Transparent.png'
     this.form_office.org_structure_preview = Main.template_dir + '/assets/images/Butuan_Logo_Transparent.png'
     this.form_barangay.landmark_preview = Main.template_dir + '/assets/images/Butuan_Logo_Transparent.png'
@@ -666,7 +667,6 @@ window.vue = new Vue({
     addedOrgStructure(file){
       this.form_office.org_structure_preview = this.getImageUrl(file)
     },
-    
     getImageUrl(file){
       return URL.createObjectURL(file)
     },
@@ -731,6 +731,20 @@ window.vue = new Vue({
     removeOfficeAttachments(){
       console.log(type)
       console.log(id)
+    },
+    copyToClipBoard(text){
+      window.Quasar.copyToClipboard(text)
+      .then(() => {
+        window.Quasar.Notify.create({
+          type: 'positive',
+          message: 'Text copied to clipboard.',
+          position: 'top-right'
+        })
+      })
+      .catch(() => {
+        // fail
+      })
+
     }
   },
 })

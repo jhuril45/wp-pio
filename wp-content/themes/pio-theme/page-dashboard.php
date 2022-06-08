@@ -10,7 +10,11 @@ if(!is_user_logged_in()){
   if(get_query_var( 'tab' )){
     if(get_query_var( 'tab' ) == 'add-post'){
       get_template_part('template-parts/content', 'add_post');
-    }else if(get_query_var( 'tab' ) == 'add-report'){
+    }
+    else if(get_query_var( 'tab' ) == 'reports'){
+      get_template_part('template-parts/content', 'reports-table');
+    }
+    else if(get_query_var( 'tab' ) == 'add-report'){
       get_template_part('template-parts/content', 'add_report');
     }
     else if(get_query_var( 'tab' ) == 'add-bid-report'){

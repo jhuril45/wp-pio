@@ -30,7 +30,7 @@
     <div class="q-px-sm">
       <a href="https://www.m.me/butuancitypioofficial" class="footer-link text-white">
         <q-icon
-          name="fas fa-phone"
+          name="fab fa-facebook-messenger"
           color="white"
           size="xs"></q-icon>
           <span>Message Us</span>

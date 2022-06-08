@@ -293,7 +293,7 @@ function submitOffice() {
       for ($i=1; $i <= intval($_POST['services_length']); $i++) {
         $service_image = 'service_data-image'.$i;
         if(strlen(basename($_FILES[$service_image]['name'])) > 0){
-          $service = uploadFileSubmitted($service_image,false,'office');
+          $service = uploadFileSubmitted($service_image,false,$_POST['service_data-name'.$i]);
           if(!$service['error']){
             global $wpdb;
             $wpdb->insert(
@@ -316,13 +316,13 @@ function submitOffice() {
       for ($i=1; $i <= intval($_POST['forms_length']); $i++) {
         $form_file_name = 'form_data-file'.$i;
         if(strlen(basename($_FILES[$form_file_name]['name'])) > 0){
-          $form = uploadFileSubmitted($form_file_name,false,'office');
+          $form = uploadFileSubmitted($form_file_name,false,$_POST['form_data-name'.$i]);
 
           global $wpdb;
           $wpdb->insert(
             $wpdb->prefix.'office_forms',
             array(
-              'title' => $_POST['service_data-name'.$i],
+              'title' => $_POST['form_data-name'.$i],
               'office_id' => $office_id,
               'path' => $form['url'],
             ),

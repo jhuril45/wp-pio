@@ -212,7 +212,7 @@ window.vue.addReport = function(attachment){
   .then((response) => {
     console.log(response.data)
     window.vue.loading = false
-    this.$q.notify({
+    window.Quasar.Notify.create({
       type: 'positive',
       message: 'Report submitted.',
       position: 'top-right'

@@ -43,9 +43,10 @@ function add_script()
     $page_data = [
       'home_url' => get_home_url(),
       'nonce' => wp_create_nonce('wp_rest'),
-      'carousel_images' => is_front_page() ? fetchCarouselImages() : [],
-      'flip_cards' => is_front_page() ? getFlipCards() : [],
-      'recent_posts' => is_front_page() ? getRecentPosts() : [],
+      'carousel_images' => fetchCarouselImages(),
+      'flip_cards' => getFlipCards(),
+      // 'recent_posts' => is_front_page() ? getRecentPosts() : [],
+      'recent_posts' => getRecentPosts(),
       'header_menus' => getHeaderMenus(),
       'template_dir' => get_template_directory_uri(),
       'page_name' => $pagename,

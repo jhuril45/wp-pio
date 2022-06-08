@@ -44,6 +44,15 @@
                 <span>Message Us</span>
             </a>
           </div>
+          <div class="col-shrink q-pl-md" v-if="office.messenger">
+            <a :href="'mailto:'+office.email" class="footer-link text-dark" target="_blank">
+              <q-icon
+                name="email"
+                color="blue"
+                size="xs"></q-icon>
+                <span>Email Us</span>
+            </a>
+          </div>
         </q-item-label>
       </div>
     </div>
