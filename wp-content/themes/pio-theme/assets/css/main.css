@@ -194,6 +194,10 @@ body {
   line-height: 1.2;
 }
 
+.tourism-card{
+  height: 350px;
+}
+
 .official-card{
   width: 190px;
 }

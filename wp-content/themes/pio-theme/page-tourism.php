@@ -20,15 +20,15 @@
             <q-tab-panels v-model="tourism_tab" animated class="q-px-md">
               <q-tab-panel name="place_to_go">
                 <div class="row">
-                  <div class="col-12 col-md-4 q-pa-sm" v-for="(place,index) in places_to_go" :key="'place'+index">
-                    <q-card class="my-card">
+                  <div class="col-12 col-md-3 q-pa-sm" v-for="(place,index) in places_to_go" :key="'place'+index">
+                    <q-card class="tourism-card">
                       <q-img :src="place.path"
-                      height="250px"
-                      cover>
+                        height="200px"
+                        cover>
                         <q-btn
                           v-if="place.map_link"
-                          fab
-                          size="md"
+                          round
+                          size="sm"
                           color="primary"
                           icon="place"
                           class="absolute-bottom-right q-mb-sm"
@@ -38,25 +38,20 @@
                         ></q-btn>
                       </q-img>
 
-                      <q-card-section class="q-pb-none" >
-                        
-
+                      <q-card-section class="q-pb-none">
                         <div class="row no-wrap items-center">
-                          <div class="col text-h6 ellipsis" :class="$q.screen.lt.md ? 'q-pt-md' : ''">
+                          <div class="col text-caption text-bold ellipsis" :class="$q.screen.lt.md ? 'q-pt-md' : ''">
                             {{place.title}}
                           </div>
                         </div>
                       </q-card-section>
 
                       <q-card-section class="q-pt-none">
-                        <div class="text-subtitle1">
+                        <div class="text-caption">
                           {{place.address}}
                         </div>
                         <div class="text-caption text-grey">
-                          {{place.description}}
-                        </div>
-                        <div class="text-caption text-grey">
-                          Contact Number {{place.contact_no}}
+                          Contact Number: {{place.contact_no}}
                         </div>
                       </q-card-section>
                     </q-card>
@@ -66,15 +61,15 @@
 
               <q-tab-panel name="place_to_stay">
                 <div class="row">
-                  <div class="col-12 col-md-4 q-pa-sm" v-for="(place_stay,index) in places_to_stay" :key="'place_stay'+index">
-                    <q-card class="my-card">
+                  <div class="col-12 col-md-3 q-pa-sm" v-for="(place_stay,index) in places_to_stay" :key="'place_stay'+index">
+                    <q-card class="tourism-card">
                       <q-img :src="place_stay.path"
-                      height="250px"
-                      cover>
+                        height="200px"
+                        cover>
                         <q-btn
                           v-if="place_stay.map_link"
-                          fab
-                          size="md"
+                          round
+                          size="sm"
                           color="primary"
                           icon="place"
                           class="absolute-bottom-right q-mb-sm"
@@ -86,21 +81,21 @@
 
                       <q-card-section class="q-pb-none" >
                         <div class="row no-wrap items-center">
-                          <div class="col text-h6 ellipsis" :class="$q.screen.lt.md ? 'q-pt-md' : ''">
+                          <div class="col text-caption text-bold ellipsis" :class="$q.screen.lt.md ? 'q-pt-md' : ''">
                             {{place_stay.title}}
                           </div>
                         </div>
                       </q-card-section>
 
                       <q-card-section class="q-pt-none">
-                        <div class="text-subtitle1">
+                        <div class="text-caption">
                           {{place_stay.address}}
                         </div>
                         <div class="text-caption text-grey">
                           {{place_stay.description}}
                         </div>
                         <div class="text-caption text-grey">
-                          Contact Number {{place_stay.contact_no}}
+                          Contact Number: {{place_stay.contact_no}}
                         </div>
                       </q-card-section>
                     </q-card>

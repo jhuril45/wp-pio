@@ -35,7 +35,8 @@
                           icon="more_horiz"
                           class="absolute-bottom-right q-mb-sm"
                           style="right: 12px;"
-                        ></q-btn>
+                        >
+                        </q-btn>
                       </q-img>
 
                       <q-card-section class="q-px-sm">
@@ -46,14 +47,6 @@
                           {{city_officials.mayor.position}}
                         </div>
                       </q-card-section>
-
-                      <q-card-section v-if="false">
-                        <q-expansion-item
-                          header-class="q-px-xs text-subtitle1"
-                          label="Affiliations">
-                          {{lorem}}
-                        </q-expansion-item>
-                      </q-card-section>
                     </q-card>
                   </div>
                 </div>
@@ -63,28 +56,31 @@
                 </div>
                 <!-- City Vice Mayor -->
                 <div class="row justify-center">
-                  <div class="col-12 col-md-3 q-pa-sm">
-                    <q-card class="my-card" flat bordered>
+                  <div class="official-card q-pa-sm">
+                    <q-card class="" bordered>
                       <q-img
-                        contain
-                        height="200px"
+                        cover
+                        height="150px"
                         :src="city_officials.vice_mayor.image"
                       >
+                        <q-btn
+                          round
+                          size="sm"
+                          color="primary"
+                          icon="more_horiz"
+                          class="absolute-bottom-right q-mb-sm"
+                          style="right: 12px;"
+                        >
+                        </q-btn>
                       </q-img>
 
                       <q-card-section>
-                        <div class="text-body1 q-mt-sm q-mb-xs">{{city_officials.vice_mayor.name}}</div>
-                        <div class="text-body2 text-grey">
+                        <div class="official-name q-mt-sm q-mb-xs">
+                          {{city_officials.vice_mayor.name}}
+                        </div>
+                        <div class="official-position text-grey">
                           {{city_officials.vice_mayor.position}}
                         </div>
-                      </q-card-section>
-
-                      <q-card-section>
-                        <q-expansion-item
-                          header-class="q-px-xs text-subtitle1"
-                          label="Affiliations">
-                          {{lorem}}
-                        </q-expansion-item>
                       </q-card-section>
                     </q-card>
                   </div>
@@ -96,25 +92,63 @@
                 <!-- City SP Members -->
                 <div class="row justify-center">
                   <div
-                    class="col-12 col-md-3 q-pa-sm"
+                    class="official-card q-pa-sm"
                     v-for="(sp,index) in city_officials.sp_members"
                     :key="'sp'+index">
-                    <q-card class="my-card" flat bordered>
+                    <q-card class="" bordered>
                       <q-img
                         contain
-                        height="200px"
+                        height="150px"
                         :src="sp.image"
                       >
+                        <q-btn
+                          round
+                          size="sm"
+                          color="primary"
+                          icon="more_horiz"
+                          class="absolute-bottom-right q-mb-sm"
+                          style="right: 12px;"
+                        >
+                          <q-menu
+                            anchor="bottom left" 
+                            self="top left"
+                            v-if="sp.positions && sp.positions.length">
+                            <div
+                              class="q-gutter-y-md q-mt-md">
+                              <template v-for="(position,index2) in sp.positions">
+                                <q-list class="q-px-sm" :key="'pos-t-'+index2">
+                                  <q-item-label class="text-subtitle1 q-mb-sm">
+                                    {{position.title}}
+                                  </q-item-label>
+                                  <q-item
+                                    dense
+                                    class="q-px-none"
+                                    v-for="(position_title,index3) in position.list"
+                                    :key="'post-n-'+index3">
+                                    <q-item-section top class="q-px-none">
+                                      - {{position_title}}
+                                    </q-item-section>
+                                  </q-item>
+                                </q-list>
+                                <q-separator
+                                  v-if="(index2+1) < sp.positions.length"></q-separator>
+                              </template>
+                            </div>
+                          </q-menu>
+                        </q-btn>
+                        
                       </q-img>
 
-                      <q-card-section style="height:100px">
-                        <div class="text-body1 q-mt-sm q-mb-xs">{{sp.name}}</div>
-                        <div class="text-body2 text-grey">
+                      <q-card-section style="height:110px">
+                        <div class="official-name q-mt-sm q-mb-xs">
+                          {{sp.name}}
+                        </div>
+                        <div class="official-position text-grey">
                           {{sp.position}}
                         </div>
                       </q-card-section>
 
-                      <q-card-section>
+                      <q-card-section v-if="false">
                         <q-expansion-item
                           header-class="q-px-xs text-subtitle1"
                           label="Affiliations">

@@ -256,10 +256,12 @@ window.vue = new Vue({
         is_service: false,
         service:{
           image: null,
+          image_preview: null,
           title: '',
         },
         official:{
           image: null,
+          image_preview: null,
           name: '',
           position: null,
         }
@@ -598,6 +600,7 @@ window.vue = new Vue({
         )
         this.add_barangay_dialog.service = {
           image: null,
+          image_preview: null,
           title: '',
         }
       }else{
@@ -612,6 +615,7 @@ window.vue = new Vue({
         }
         this.add_barangay_dialog.official = {
           image: null,
+          image_preview: null,
           name: '',
           position: null,
         }

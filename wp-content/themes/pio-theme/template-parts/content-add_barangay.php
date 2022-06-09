@@ -340,7 +340,7 @@
         @submit="addBarangayDialog()">
         <div class="col-12">
           <q-img
-            :src="add_barangay_dialog.official.image ? getImageUrl(add_barangay_dialog.official.image) : '<?php echo get_template_directory_uri().'/assets/images/Butuan_Logo_Transparent.png';?>'"
+            :src="add_barangay_dialog.official.image_preview ? add_barangay_dialog.official.image_preview : '<?php echo get_template_directory_uri().'/assets/images/Butuan_Logo_Transparent.png';?>'"
             height="180px"
             class="cursor-pointer"
             @click="$refs.featured_image.$el.click()"

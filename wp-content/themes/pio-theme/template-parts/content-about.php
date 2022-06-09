@@ -206,28 +206,28 @@
                   <q-carousel-slide name="1">
                     <q-video
                       class="absolute-full"
-                      src="https://www.youtube.com/embed/k3_tw44QsZQ"></q-video>
+                      src="https://www.youtube.com/embed/AGHvIvD5E6U"></q-video>
                   </q-carousel-slide>
 
                   <q-carousel-slide name="2">
                     <q-video
                       class="absolute-full"
-                      src="https://www.youtube.com/embed/kOkQ4T5WO9E"></q-video>
+                      src="https://www.youtube.com/embed/gtRYKvE2Peo"></q-video>
                   </q-carousel-slide>
 
                   <q-carousel-slide name="3">
                     <q-video
                       class="absolute-full"
-                      src="https://www.youtube.com/embed/p87miJIYEEk"></q-video>
+                      src="https://www.youtube.com/embed/PrXJ2q3Zgds"></q-video>
                   </q-carousel-slide>
                 </q-carousel>
                 <div class="row justify-center">
                   <q-btn-toggle
                     v-model="about_slide"
                     :options="[
-                      { label: 'Soft Jazz', value: '1' },
-                      { label: 'Rihanna', value: '2' },
-                      { label: 'Ibiza Mix', value: '3' }
+                      { label: 'A City Ascending', value: '1' },
+                      { label: 'Switch ON', value: '2' },
+                      { label: 'Spot ON', value: '3' }
                     ]"
                   ></q-btn-toggle>
                 </div>

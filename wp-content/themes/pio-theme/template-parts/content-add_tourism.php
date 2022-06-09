@@ -82,8 +82,7 @@
               no-error-icon
               v-model="form_tourism.description"
               label="Description"
-              hide-bottom-space
-              :rules="[val => !!val || 'Invalid Description']">
+              hide-bottom-space>
             </q-input>
           </div>
           <div class="col-12">
