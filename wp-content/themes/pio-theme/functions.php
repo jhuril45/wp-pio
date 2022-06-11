@@ -20,7 +20,8 @@ require get_template_directory() . '/load-styles.php';
  * Custom functions.
  */
 require get_template_directory() . '/custom-functions.php';
-require get_template_directory() . '/custom-rest.php';
+require get_template_directory() . '/rest-functions.php';
+require get_template_directory() . '/rest-routes.php';
 
 add_action("after_switch_theme", "cgb_create_tables");
 add_action("after_switch_theme", "cgb_create_pages");
@@ -63,8 +64,10 @@ function cgb_create_tables(){
       title varchar(255) NOT NULL,
       year int(10) NOT NULL,
       month int(10) DEFAULT NULL,
+      date_posted DATE DEFAULT NULL,
       path varchar(255) NOT NULL,
       type int(5) NOT NULL,
+      mode int(5) DEFAULT NULL,
       PRIMARY KEY  (id),
       KEY file_path (path)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";

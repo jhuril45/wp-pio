@@ -656,6 +656,14 @@ window.vue = new Vue({
           services: [],
           kagawad_count: 0,
         }
+      }else if(type == 'bid_report'){
+        this.form_bid_report = {
+          title: '',
+          attachment: null,
+          year: null,
+          type: null,
+          month: null,
+        }
       }
     },
     addedFile(file,is_attachments=false){

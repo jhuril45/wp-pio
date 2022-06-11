@@ -108,7 +108,7 @@ window.vue.addBidReport = function(attachment){
       message: 'Barangay submitted.',
       position: 'top-right'
     })
-    window.vue.resetReportForm()
+    window.vue.resetForm('bid_report')
   })
   .catch((error) => {
     window.vue.loading = false

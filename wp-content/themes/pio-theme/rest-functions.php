@@ -227,6 +227,18 @@ function submitReport() {
           'quarter' => $_POST['quarter'] ? $_POST['quarter'] : null,
         ),
       );
+
+      $post = wp_insert_post(
+        array(
+          'ID' => $_POST['id'] ? $_POST['id'] : 0,
+          'post_title' => $_POST['title'],
+          'post_content' => '',
+          'post_status' => 'publish',
+          // 'post_category' => array($term->term_id),
+          'post_type' => 'bids',
+        )
+      );
+
       return $report;
     }
   }catch(Exception $error){
@@ -420,11 +432,7 @@ function submitBidReport() {
     $attachment = basename($_FILES["attachment"]["name"]);
 
     if($attachment){
-      $temp = explode('.',basename($_FILES["attachment"]["name"]));
-      $extension = end($temp);
-      $file_name = time().'.'.$extension;
-      $file = wp_upload_bits( $file_name, null, @file_get_contents( $_FILES['attachment']['tmp_name'] ) );
-
+      $file = uploadFileSubmitted('attachment',false,$_POST['title']);
       global $wpdb;
       $report = $wpdb->insert(
         $wpdb->prefix.'bid_reports',
@@ -436,7 +444,7 @@ function submitBidReport() {
           'month' => $_POST['month'] ? $_POST['month'] : null,
         ),
       );
-      return $file;
+      return $report;
     }
   }catch(Exception $error){
     return $error;
@@ -551,123 +559,3 @@ function insertAttachment($file,$post_id,$is_featured=false){
   
   return $res2;
 }
-
-add_action( 'rest_api_init', function () {
-  register_rest_route( 'myplugin/v1', '/delete-carousel-display', array(
-    'methods' => 'POST',
-    'callback' => 'deleteCarouselImage',
-  ));
-} );
-
-add_action( 'rest_api_init', function () {
-  register_rest_route( 'myplugin/v1', '/update-carousel-display', array(
-    'methods' => 'POST',
-    'callback' => 'updateCarouselImage',
-  ));
-} );
-
-add_action( 'rest_api_init', function () {
-  register_rest_route( 'myplugin/v1', '/get-carousel', array(
-    'methods' => 'GET',
-    'callback' => 'fetchCarouselImages',
-  ) );
-} );
-
-add_action( 'rest_api_init', function () {
-  register_rest_route( 'myplugin/v1', '/add-carousel', array(
-    'methods' => 'POST',
-    'callback' => 'submitCarouselImage',
-  ) );
-} );
-
-add_action( 'rest_api_init', function () {
-  register_rest_route( 'myplugin/v1', '/add-post', array(
-    'methods' => 'POST',
-    'callback' => 'submitPost',
-  ) );
-} );
-
-add_action( 'rest_api_init', function () {
-  register_rest_route( 'myplugin/v1', '/add-report', array(
-    'methods' => 'POST',
-    'callback' => 'submitReport',
-  ) );
-} );
-
-add_action( 'rest_api_init', function () {
-  register_rest_route( 'myplugin/v1', '/get-posts', array(
-    'methods' => 'GET',
-    'callback' => 'fetchPosts',
-  ) );
-} );
-
-add_action( 'rest_api_init', function () {
-  register_rest_route( 'myplugin/v1', '/get-post', array(
-    'methods' => 'GET',
-    'callback' => 'fetchPost',
-  ) );
-} );
-
-add_action( 'rest_api_init', function () {
-  register_rest_route( 'myplugin/v1', '/get-reports', array(
-    'methods' => 'GET',
-    'callback' => 'fetchReports',
-  ) );
-} );
-
-add_action( 'rest_api_init', function () {
-  register_rest_route( 'myplugin/v1', '/get-bids', array(
-    'methods' => 'GET',
-    'callback' => 'fetchBids',
-  ) );
-} );
-
-add_action( 'rest_api_init', function () {
-  register_rest_route( 'myplugin/v1', '/remove-post-attachment', array(
-    'methods' => 'POST',
-    'callback' => 'removePostAttachment',
-  ) );
-} );
-
-add_action( 'rest_api_init', function () {
-  register_rest_route( 'myplugin/v1', '/add-bid-report', array(
-    'methods' => 'POST',
-    'callback' => 'submitBidReport',
-  ) );
-} );
-
-add_action( 'rest_api_init', function () {
-  register_rest_route( 'myplugin/v1', '/add-office', array(
-    'methods' => 'POST',
-    'callback' => 'submitOffice',
-  ) );
-} );
-
-add_action( 'rest_api_init', function () {
-  register_rest_route( 'myplugin/v1', '/add-barangay', array(
-    'methods' => 'POST',
-    'callback' => 'submitBarangay',
-  ) );
-} );
-
-add_action( 'rest_api_init', function () {
-  register_rest_route( 'myplugin/v1', '/add-tourism', array(
-    'methods' => 'POST',
-    'callback' => 'submitTourism',
-  ) );
-} );
-
-add_action( 'rest_api_init', function () {
-  register_rest_route( 'myplugin/v1', '/remove-tourism', array(
-    'methods' => 'POST',
-    'callback' => 'removeTourism',
-  ) );
-} );
-
-add_action( 'rest_api_init', function () {
-  register_rest_route( 'myplugin/v1', '/remove-office-attachment', array(
-    'methods' => 'POST',
-    'callback' => 'removeOfficeAttachment',
-  ) );
-} );
-
