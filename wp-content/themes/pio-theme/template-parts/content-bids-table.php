@@ -1,7 +1,3 @@
-<?php
-  wp_register_script('load-bids-script', get_template_directory_uri() . '/assets/js/load_bids.js',array ( 'jquery' ), 1.1, true);
-  wp_enqueue_script( 'load-bids-script');
-?>
 <q-card>
   <q-card-section class="q-px-sm q-py-md">
     <div class="row q-gutter-y-md">
@@ -13,11 +9,20 @@
           :columns="columns_report"
           row-key="name"
           :filter="filter"
-          :pagination.sync="pagination"
-          :rows-per-page-options="[0]"
-          hide-header
         >
           <template v-slot:top>
+            <?php if($pagename == 'dashboard'){?>
+              <div class="row full-width q-py-sm justify-end q-mb-sm">
+                <div class="col-shrink q-px-md">
+                  <q-btn
+                    size="sm"
+                    color="primary"
+                    padding="10px 15px"
+                    icon="add"
+                    href="<?php echo get_home_url().'/dashboard?tab=add-bid-report';?>"></q-btn>
+                </div>
+              </div>
+            <?php }?>
             <div class="row full-width">
               <div class="col-4 q-px-sm">
                 <q-select
@@ -50,8 +55,60 @@
             </div>
           </template>
 
+          <template v-slot:header="props">
+            <q-tr :props="props">
+              <q-th
+                v-for="col in props.cols"
+                :key="col.name"
+                :props="props"
+              >
+                <span class="text-body2">
+                  {{ col.label }}
+                </span>
+              </q-th>
+              <q-th>
+                <span class="text-body2">
+                  Actions
+                </span>
+              </q-th>
+            </q-tr>
+          </template>
+
           <template v-slot:body="props">
-            <q-item :props="props" clickable>
+            <q-tr :props="props">
+              <q-td key="title" :props="props" class="text-primary text-weight-bold">
+                <q-icon
+                  size="sm"
+                  color="primary"
+                  name="description"></q-icon>
+                <span class="q-pl-sm">
+                  {{ props.row.title }} ({{ props.row.year }})
+                </span>
+              </q-td>
+              
+              <q-td class="text-center" >
+                <?php if($pagename == 'dashboard'){?>
+                 <q-btn
+                    v-if="page_name == 'dashboard'"
+                    size="sm"
+                    round
+                    color="primary"
+                    icon="edit"
+                    :href="'<?php echo get_home_url();?>/dashboard?tab=add-bid-report&id='+props.row.id">  
+                  </q-btn>
+                <?php }?>
+                <q-btn
+                  round
+                  color="primary"
+                  size="sm"
+                  icon="download"
+                  :href="props.row.path"
+                  :target="'_blank'">
+                </q-btn>
+              </q-td>
+              
+            </q-tr>
+            <q-item :props="props" clickable v-if="false">
               <q-item-section side top>
                 <q-icon
                   size="sm"

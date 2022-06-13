@@ -1,13 +1,3 @@
-<?php 
-  wp_localize_script('vue-main', 'Rest', [
-    'nonce' => wp_create_nonce('wp_rest'),
-  ]);
-  if(is_user_logged_in()){
-    wp_register_script('add-post-script', get_template_directory_uri() . '/assets/js/add_post.js',array ( 'jquery' ), 1.1, true);
-    wp_enqueue_script( 'add-post-script');
-  }
-?>
-
 <div class="row q-py-lg q-gutter-y-md">
   <div class="col-12 row justify-center">
     <q-card class="add-post-card col-10 col-md-5">

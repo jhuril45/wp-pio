@@ -1,4 +1,62 @@
 <?php
+function checkUser($role){
+  if(!is_user_logged_in()) return false;
+  $user = wp_get_current_user();
+  return in_array($role,$user->roles);
+}
+
+function getDashboardDrawerMenu(){
+  global $pagename;
+  if(!is_user_logged_in()) return [];
+  if(checkUser('pio')){
+    
+  }
+  return $arr = [
+    array(
+      'title' => 'Posts',
+      'url' => get_home_url().'/dashboard?tab=posts',
+      'icon' => 'rss_feed',
+      'is_page' => $pagename == 'dashboard' && (get_query_var( 'tab' ) == 'post' || get_query_var( 'tab' ) == 'posts' || get_query_var( 'tab' ) == ''),
+    ),
+    array(
+      'title' => 'Reports',
+      'url' => get_home_url().'/dashboard?tab=reports',
+      'icon' => 'summarize',
+      'is_page' => $pagename == 'dashboard' && (get_query_var( 'tab' ) == 'reports' || get_query_var( 'tab' ) == 'add-report'),
+    ),
+    array(
+      'title' => 'Bid Reports',
+      'url' => get_home_url().'/dashboard?tab=bid-reports',
+      'icon' => 'receipt_long',
+      'is_page' => $pagename == 'dashboard' && (get_query_var( 'tab' ) == 'bid-reports' || get_query_var( 'tab' ) == 'add-bid-report'),
+    ),
+    array(
+      'title' => 'Offices',
+      'url' => get_home_url().'/dashboard?tab=offices',
+      'icon' => 'business',
+      'is_page' => $pagename == 'dashboard' && (get_query_var( 'tab' ) == 'offices' || get_query_var( 'tab' ) == 'add-office'),
+    ),
+    array(
+      'title' => 'Barangays',
+      'url' => get_home_url().'/dashboard?tab=barangays',
+      'icon' => 'foundation',
+      'is_page' => $pagename == 'dashboard' && (get_query_var( 'tab' ) == 'barangays' || get_query_var( 'tab' ) == 'add-barangay'),
+    ),
+    array(
+      'title' => 'Tourism',
+      'url' => get_home_url().'/dashboard?tab=tourism',
+      'icon' => 'tour',
+      'is_page' => $pagename == 'dashboard' && (get_query_var( 'tab' ) == 'tourism' || get_query_var( 'tab' ) == 'add-tourism'),
+    ),
+    array(
+      'title' => 'Logout',
+      'url' => wp_logout_url(),
+      'icon' => 'logout',
+      'is_page' => false,
+    ),
+  ];
+}
+
 function getRecentPosts(){
   $data = get_posts( array( 
     'post_type' => 'post',
@@ -9,7 +67,6 @@ function getRecentPosts(){
   foreach ($data as $key => $value) {
     $post_thumbnail_id = get_post_thumbnail_id($value->ID);
     if ( $post_thumbnail_id ) {
-      $src = wp_get_attachment_url( $attachment->ID, 'full');
       $recent_src = wp_get_attachment_url( $post_thumbnail_id, 'full');
       $value->fimg_url = $recent_src;
     }else{
@@ -43,6 +100,10 @@ function get_rest_featured_image( $object, $field_name, $request ) {
 function check_news_category() {
 	$is_term = term_exists('News');
   wp_create_category('News');
+  wp_create_category('Bids');
+  wp_create_category('Tourism');
+  wp_create_category('Barangay');
+  wp_create_category('Offices');
 }
 add_action( 'admin_init', 'check_news_category' );
 
@@ -203,6 +264,17 @@ function getOffice($office_id) {
     $office->messenger = explode('www.facebook.com/',$office->facebook)[1];
   }
   return $office;
+}
+
+function getReport($id,$is_bid=false) {
+  global $wpdb;
+  $table_name = $wpdb->prefix . ($is_bid  ? 'bid_reports' : 'reports');
+  $report = $wpdb->get_row("SELECT * FROM $table_name WHERE id = $id");
+  
+  if(empty($report)){
+    return null;
+  }
+  return $report;
 }
 
 function getOfficeServices($office_id) {

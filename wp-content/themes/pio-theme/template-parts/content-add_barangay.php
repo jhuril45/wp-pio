@@ -11,10 +11,18 @@
 <div class="row q-py-lg q-gutter-y-md">
   <div class="col-12 row justify-center">
     <q-card class="add-post-card col-10 col-md-6">
-      <q-card-section class="text-bold text-h5">
+      <q-card-section class="text-bold text-h5 row">
         <span>
           {{form_barangay.id ? 'Edit Barangay' : 'Add Barangay'}}
         </span>
+        <q-space></q-space>
+        <q-btn
+          size="sm"
+          round
+          color="red"
+          icon="delete"
+          v-if="form_barangay.id"
+          @click="deleteBarangay(barangay,true)"></q-btn>
       </q-card-section>
       <q-card-section
         class="q-pa-none">
@@ -256,7 +264,7 @@
                           size="sm"
                           color="red"
                           icon="cancel"
-                          @click="service.id ? '' : form_barangay.services.splice(index,1)"></q-btn>
+                          @click="service.id ? removeBarangayAttachments('service',service) : form_barangay.services.splice(index,1)"></q-btn>
                       </q-item-section>
                     </q-item>
                     <q-item v-if="form_barangay.services.length == 0">

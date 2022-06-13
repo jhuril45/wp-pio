@@ -11,12 +11,23 @@ if(!is_user_logged_in()){
     if(get_query_var( 'tab' ) == 'add-post'){
       get_template_part('template-parts/content', 'add_post');
     }
-    else if(get_query_var( 'tab' ) == 'reports'){
-      get_template_part('template-parts/content', 'reports-table');
-    }
+    else if(get_query_var( 'tab' ) == 'reports'){?>
+      <div class="row justify-center">
+        <div class="col-12 col-md-6 q-py-lg">
+          <?php get_template_part('template-parts/content', 'reports-table');?>
+        </div>
+      </div>
+    <?php }
     else if(get_query_var( 'tab' ) == 'add-report'){
       get_template_part('template-parts/content', 'add_report');
     }
+    else if(get_query_var( 'tab' ) == 'bid-reports'){?>
+      <div class="row justify-center">
+        <div class="col-12 col-md-6 q-py-lg">
+          <?php get_template_part('template-parts/content', 'bids-table');?>
+        </div>
+      </div>
+    <?php }
     else if(get_query_var( 'tab' ) == 'add-bid-report'){
       get_template_part('template-parts/content', 'add_bid_report');
     }

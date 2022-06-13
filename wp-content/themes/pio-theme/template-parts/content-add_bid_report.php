@@ -1,26 +1,24 @@
-<?php 
-  wp_localize_script('vue-main', 'Rest', [
-    'nonce' => wp_create_nonce('wp_rest'),
-  ]);
-  if(is_user_logged_in()){
-    wp_register_script('add-post-script', get_template_directory_uri() . '/assets/js/add_post.js',array ( 'jquery' ), 1.1, true);
-    wp_enqueue_script( 'add-post-script');
-  }
-?>
-
 <div class="row q-py-lg q-gutter-y-md">
   <div class="col-12 row justify-center">
     <q-card class="add-post-card col-10 col-md-4">
-      <q-card-section class="text-bold text-h5">
+      <q-card-section class="text-bold text-h5 row">
         <span>
           Add Bid Report
         </span>
+        <q-space></q-space>
+        <q-btn
+          size="sm"
+          round
+          color="red"
+          icon="delete"
+          v-if="form_bid_report.id"
+          @click="deleteReport(bid,true)"></q-btn>
       </q-card-section>
       <q-card-section>
         <q-form
           class="row q-gutter-y-lg"
           greedy
-          ref="add_report_form"
+          ref="add_bid_report_form"
           @submit="addBidReport">
           <div class="col-12">
             <q-input
@@ -71,9 +69,9 @@
               ref="attachments"
               v-model="form_bid_report.attachment"
               accept=".txt, .pdf, .doc, .xls, .xlsx"
-              label="Attachment"
+              :label="form_bid_report.id ? 'Change Attachment' : 'Attachment'"
               hide-bottom-space
-              :rules="[val => !!val || 'Invalid Report Attachment']">
+              :rules="[val => (!!val || !!form_bid_report.id) || 'Invalid Report Attachment']">
             </q-file>
           </div>
           

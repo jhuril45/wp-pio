@@ -102,11 +102,11 @@ window.vue = new Vue({
         {
           name: 'title',
           required: true,
-          label: '',
+          label: 'Title',
           align: 'left',
           field: row => row.title,
           format: val => `${val}`,
-          sortable: true
+          sortable: false
         },
       ],
       columns: [
@@ -237,8 +237,6 @@ window.vue = new Vue({
       ],
       file_display: null,
       images: [],
-      reports: [],
-      bids: [],
       lorem: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus excepturi quia aliquid doloremque accusantium suscipit vero pariatur expedita esse. Ipsa cumque culpa fugit dolorem eligendi nobis perferendis qui commodi magni.',
       ds: {
         id: "1",
@@ -398,16 +396,6 @@ window.vue = new Vue({
     redirectPage(url){
       console.log(url)
       window.location.href = url
-    },
-    getReports(){
-      return new Promise((resolve, reject) => {
-        window.axios.get(settings.API_BASE_PATH+'myplugin/v1/get-reports')
-        .then((response) => {
-          console.log(response.data)
-          this.reports = response.data ? response.data : []
-          resolve()
-        })
-      })
     },
     getBids(){
       return new Promise((resolve, reject) => {

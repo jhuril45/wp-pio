@@ -232,4 +232,6 @@ function cgb_create_roles(){
 
   $subscriber = $wp_roles->get_role('subscriber');
   $wp_roles->add_role('pio', 'Pio', $subscriber->capabilities);
+  $wp_roles->add_role('bac', 'Bac', $subscriber->capabilities);
+  $wp_roles->add_role('tourism', 'Tourism', $subscriber->capabilities);
 }

@@ -27,88 +27,19 @@
         </q-item-section>
       </q-item>
       <q-separator></q-separator>
-      <q-item clickable v-ripple href="<?php echo get_home_url().'/dashboard';?>">
-        <q-item-section side>
-          <q-icon :name="'add'"></q-icon>
-        </q-item-section>
-        <q-item-section>
-          <q-item-label class="text-body2 text-bold">
-            Posts
-          </q-item-label>
-        </q-item-section>
-      </q-item>
-      <q-separator></q-separator>
-      <q-item clickable v-ripple href="<?php echo get_home_url().'/dashboard?tab=reports';?>">
-        <q-item-section side>
-          <q-icon :name="'add'"></q-icon>
-        </q-item-section>
-        <q-item-section>
-          <q-item-label class="text-body2 text-bold">
-            Transparency Report
-          </q-item-label>
-        </q-item-section>
-      </q-item>
-      <q-separator></q-separator>
-      <q-item clickable v-ripple href="<?php echo get_home_url().'/dashboard?tab=add-report';?>">
-        <q-item-section side>
-          <q-icon :name="'picture_as_pdf'"></q-icon>
-        </q-item-section>
-        <q-item-section>
-          <q-item-label class="text-body2 text-bold">
-            Add Report
-          </q-item-label>
-        </q-item-section>
-      </q-item>
-      <q-item clickable v-ripple href="<?php echo get_home_url().'/dashboard?tab=add-bid-report';?>">
-        <q-item-section side>
-          <q-icon :name="'picture_as_pdf'"></q-icon>
-        </q-item-section>
-        <q-item-section>
-          <q-item-label class="text-body2 text-bold">
-            Add Bid Report
-          </q-item-label>
-        </q-item-section>
-      </q-item>
-      <q-item clickable v-ripple href="<?php echo get_home_url().'/dashboard?tab=offices';?>">
-        <q-item-section side>
-          <q-icon :name="'picture_as_pdf'"></q-icon>
-        </q-item-section>
-        <q-item-section>
-          <q-item-label class="text-body2 text-bold">
-            Offices
-          </q-item-label>
-        </q-item-section>
-      </q-item>
-      <q-item clickable v-ripple href="<?php echo get_home_url().'/dashboard?tab=barangays';?>">
-        <q-item-section side>
-          <q-icon :name="'picture_as_pdf'"></q-icon>
-        </q-item-section>
-        <q-item-section>
-          <q-item-label class="text-body2 text-bold">
-            Barangays
-          </q-item-label>
-        </q-item-section>
-      </q-item>
-      <q-item clickable v-ripple href="<?php echo get_home_url().'/dashboard?tab=tourism';?>">
-        <q-item-section side>
-          <q-icon :name="'picture_as_pdf'"></q-icon>
-        </q-item-section>
-        <q-item-section>
-          <q-item-label class="text-body2 text-bold">
-            Tourism
-          </q-item-label>
-        </q-item-section>
-      </q-item>
-      <q-item clickable v-ripple href="<?php echo wp_logout_url();?>">
-        <q-item-section side>
-          <q-icon :name="'picture_as_pdf'"></q-icon>
-        </q-item-section>
-        <q-item-section>
-          <q-item-label class="text-body2 text-bold">
-            Logout
-          </q-item-label>
-        </q-item-section>
-      </q-item>
+      <template v-for="(menu,index) in dashboard_drawer_menu">
+        <q-item clickable v-ripple :href="menu.url" :key="'dashboard-menu-'+index">
+          <q-item-section side>
+            <q-icon :name="menu.icon" :class=" menu.is_page ? 'text-primary' : ''"></q-icon>
+          </q-item-section>
+          <q-item-section>
+            <q-item-label class="text-body2 text-bold" :class=" menu.is_page ? 'text-primary' : ''">
+              {{menu.title}}
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+        <q-separator></q-separator>
+      </template>
     </q-list>
   </q-scroll-area>
 </q-drawer>

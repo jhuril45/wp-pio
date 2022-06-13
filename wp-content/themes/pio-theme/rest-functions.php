@@ -79,7 +79,6 @@ function fetchPosts() {
 
 function fetchReports() {
   try{
-    $user = wp_get_current_user();
     global $wpdb;
     $table_name = $wpdb->prefix . "reports";
     $results = $wpdb->get_results("SELECT * FROM $table_name");
@@ -97,7 +96,6 @@ function fetchBids() {
     $table_name = $wpdb->prefix . "bid_reports";
     $results = $wpdb->get_results("SELECT * FROM $table_name");
     return $results;
-
   }catch(Exception $error){
     return $error;
   }
@@ -207,40 +205,96 @@ function submitPost() {
 
 function submitReport() {
   try{
-    $user = wp_get_current_user();
+    global $wpdb;
+    $id = is_numeric($_POST['id']) ? intval($_POST['id']) : null;
     $attachment = basename($_FILES["attachment"]["name"]);
+    $table_name = $wpdb->prefix.'reports';
+
+    $data = array(
+      'title' => $_POST['title'],
+      'year' => $_POST['year'],
+      'type' => $_POST['type'],
+      'quarter' => $_POST['quarter'] ? $_POST['quarter'] : null,
+    );
 
     if($attachment){
-      $temp = explode('.',basename($_FILES["attachment"]["name"]));
-      $extension = end($temp);
-      $file_name = time().'.'.$extension;
-      $file = wp_upload_bits( $file_name, null, @file_get_contents( $_FILES['attachment']['tmp_name'] ) );
-
-      global $wpdb;
-      $report = $wpdb->insert(
-        $wpdb->prefix.'reports',
-        array(
-          'title' => $_POST['title'],
-          'year' => $_POST['year'],
-          'path' => $file['url'],
-          'type' => $_POST['type'],
-          'quarter' => $_POST['quarter'] ? $_POST['quarter'] : null,
-        ),
-      );
-
-      $post = wp_insert_post(
-        array(
-          'ID' => $_POST['id'] ? $_POST['id'] : 0,
-          'post_title' => $_POST['title'],
-          'post_content' => '',
-          'post_status' => 'publish',
-          // 'post_category' => array($term->term_id),
-          'post_type' => 'bids',
-        )
-      );
-
-      return $report;
+      $file = uploadFileSubmitted('attachment',false,$_POST['title']);
+      $data['path'] = $file['url'];
     }
+    // $post = wp_insert_post(
+    //   array(
+    //     'ID' => $_POST['id'] ? $_POST['id'] : 0,
+    //     'post_title' => $_POST['title'],
+    //     'post_content' => '',
+    //     'post_status' => 'publish',
+    //     // 'post_category' => array($term->term_id),
+    //     'post_type' => 'bids',
+    //   )
+    // );
+    if($id){
+      $data_where = array('id' => $_POST['id']);
+      $report = $wpdb->update($table_name,$data,$data_where);
+    }else{
+      $report = $wpdb->insert($table_name,$data);
+    }
+
+    return $report;
+  }catch(Exception $error){
+    return $error;
+  }
+}
+
+function deleteReport() {
+  try{
+    global $wpdb;
+    $table_name = $wpdb->prefix.'reports';
+    $id = is_numeric($_POST['id']) ? intval($_POST['id']) : null;
+    if($id){
+      $wpdb->delete( $table_name, array( 'id' => $id ) );
+    }
+    return array( 'success' => true);
+  }catch(Exception $error){
+    return $error;
+  }
+}
+
+function deleteBidReport() {
+  try{
+    global $wpdb;
+    $table_name = $wpdb->prefix.'bid_reports';
+    $id = is_numeric($_POST['id']) ? intval($_POST['id']) : null;
+    if($id){
+      $wpdb->delete( $table_name, array( 'id' => $id ) );
+    }
+    return array( 'success' => true);
+  }catch(Exception $error){
+    return $error;
+  }
+}
+
+function submitBidReport() {
+  try{
+    global $wpdb;
+    $id = is_numeric($_POST['id']) ? intval($_POST['id']) : null;
+    $attachment = basename($_FILES["attachment"]["name"]);
+    $table_name = $wpdb->prefix.'bid_reports';
+    $data = array(
+      'title' => $_POST['title'],
+      'year' => $_POST['year'],
+      'type' => $_POST['type'],
+      'month' => $_POST['month'] ? $_POST['month'] : null,
+    );
+    if($attachment){
+      $file = uploadFileSubmitted('attachment',false,$_POST['title']);
+      $data['path'] = $file['url'];
+    }
+    if($id){
+      $data_where = array('id' => $_POST['id']);
+      $report = $wpdb->update($table_name,$data,$data_where);
+    }else{
+      $report = $wpdb->insert($table_name,$data);
+    }
+    return $report;
   }catch(Exception $error){
     return $error;
   }
@@ -340,7 +394,6 @@ function submitOffice() {
             ),
           );
         }
-        
       }
     }
     return $office;
@@ -360,6 +413,8 @@ function submitBarangay() {
       $landmark_image = uploadFileSubmitted('landmark_image',false,'barangay/');
     }
 
+    $id = is_numeric($_POST['id']) ? intval($_POST['id']) : null;
+    
     global $wpdb;
     $table_name = $wpdb->prefix.'barangays';
     $data = array(
@@ -370,12 +425,12 @@ function submitBarangay() {
       'land_area' => $_POST['land_area'],
       'description' => $_POST['description'],
     );
-    if($_POST['id']){
+    if($id){
       if($landmark_image){
         $data['landmark_img'] = $landmark_image['url'];
         $data['landmark_name'] = $_POST['landmark_name'];
       }
-      $data_where = array('id' => $_POST['id']);
+      $data_where = array('id' => $id);
       $wpdb->update($table_name, $data, $data_where);
     }else{
       $data['landmark_name'] = $_POST['landmark_name'] ? $_POST['landmark_name'] : null;
@@ -383,7 +438,7 @@ function submitBarangay() {
       $wpdb->insert($table_name, $data);
     }
 
-    $barangay_id = $wpdb->insert_id;
+    $barangay_id = $id ? $id : $wpdb->insert_id;
 
     if($_POST['officials_length'] > 0){
       for ($i=1; $i <= intval($_POST['officials_length']); $i++) {
@@ -421,31 +476,6 @@ function submitBarangay() {
     }
     
     return true;
-  }catch(Exception $error){
-    return $error;
-  }
-}
-
-function submitBidReport() {
-  try{
-    $user = wp_get_current_user();
-    $attachment = basename($_FILES["attachment"]["name"]);
-
-    if($attachment){
-      $file = uploadFileSubmitted('attachment',false,$_POST['title']);
-      global $wpdb;
-      $report = $wpdb->insert(
-        $wpdb->prefix.'bid_reports',
-        array(
-          'title' => $_POST['title'],
-          'year' => $_POST['year'],
-          'path' => $file['url'],
-          'type' => $_POST['type'],
-          'month' => $_POST['month'] ? $_POST['month'] : null,
-        ),
-      );
-      return $report;
-    }
   }catch(Exception $error){
     return $error;
   }
@@ -511,6 +541,35 @@ function removeOfficeAttachment() {
   try{
     global $wpdb;
     $name = $_POST['type'] == 'service' ? 'office_services' : 'office_forms';
+    $table_name = $wpdb->prefix.$name;
+    $id = $_POST['id'];
+    $wpdb->delete( $table_name, array( 'id' => intval($id) ) );
+    return array( 'success' => true);
+  }catch(Exception $error){
+    return $error;
+  }
+}
+
+function removeBarangay() {
+  try{
+    global $wpdb;
+    $table_name = $wpdb->prefix.'barangays';
+    $table_name2 = $wpdb->prefix.'barangay_services';
+    $table_name3 = $wpdb->prefix.'barangay_officials';
+    $id = $_POST['id'];
+    $wpdb->delete( $table_name, array( 'id' => intval($id) ) );
+    $wpdb->delete( $table_name2, array( 'barangay_id' => intval($id) ) );
+    $wpdb->delete( $table_name3, array( 'barangay_id' => intval($id) ) );
+    return array( 'success' => true);
+  }catch(Exception $error){
+    return $error;
+  }
+}
+
+function removeBarangayAttachment() {
+  try{
+    global $wpdb;
+    $name = $_POST['type'] == 'service' ? 'barangay_services' : 'barangay_forms';
     $table_name = $wpdb->prefix.$name;
     $id = $_POST['id'];
     $wpdb->delete( $table_name, array( 'id' => intval($id) ) );
