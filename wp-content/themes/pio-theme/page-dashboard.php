@@ -8,7 +8,14 @@ if(!is_user_logged_in()){
   
   get_header();
   if(get_query_var( 'tab' )){
-    if(get_query_var( 'tab' ) == 'add-post'){
+    if(get_query_var( 'tab' ) == 'carousel'){?>
+      <div class="row justify-center">
+        <div class="col-12 col-md-10 q-py-lg">
+          <?php get_template_part('template-parts/content', 'carousel-list');?>
+        </div>
+      </div>
+    <?php }
+    else if(get_query_var( 'tab' ) == 'add-post'){
       get_template_part('template-parts/content', 'add_post');
     }
     else if(get_query_var( 'tab' ) == 'reports'){?>

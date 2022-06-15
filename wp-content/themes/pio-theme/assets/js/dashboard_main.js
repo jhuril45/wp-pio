@@ -338,9 +338,21 @@ window.vue = new Vue({
       images: [],
       lorem: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus excepturi quia aliquid doloremque accusantium suscipit vero pariatur expedita esse. Ipsa cumque culpa fugit dolorem eligendi nobis perferendis qui commodi magni.',
       form_step: 1,
+      carousel_dialog: false,
+      form_carousel: {
+        file: null,
+        caption: '',
+      }
     }
   },
   computed:{
+    carousel_numbers(){
+      var arr = []
+      this.carousel_images.map((x,index) => {
+        arr.push(index+1)
+      })
+      return arr
+    },
     reports_data(){
       return this.reports.filter(x => 
         x.type == this.transparency_type && 
@@ -456,6 +468,17 @@ window.vue = new Vue({
       return arr;
     }
   },
+  watch: {
+    carousel_dialog(val){
+      if(!val && this.form_carousel.id){
+        this.form_carousel= {
+          file: null,
+          caption: '',
+        }
+        this.file_display=null
+      }
+    }
+  },
   created(){
     document.getElementById("q-app").style.display = "block"
   },
@@ -525,6 +548,56 @@ window.vue = new Vue({
     }
   },
   methods: {
+    editCarouselImage(image){
+      this.file_display = image.path
+      this.form_carousel = {
+        id: image.id,
+        caption: image.caption,
+        placement_number: parseInt(image.placement_number)
+      }
+      this.carousel_dialog = true
+    },
+    getCarouselImages(evt){
+      window.axios.get(settings.API_BASE_PATH+'myplugin/v1/get-carousel')
+      .then((response) => {
+        this.carousel_images = response.data
+      })
+    },
+    submitCarouselImage(evt){
+      if(this.loading) return
+      this.loading = true
+      const formData = new FormData()
+      formData.append('file',this.form_carousel.file)
+      formData.append('caption',this.form_carousel.caption)
+      if(this.form_carousel.id){
+        formData.append('id',this.form_carousel.id)
+        formData.append('placement_number',this.form_carousel.placement_number)
+      }
+      window.axios.post(settings.API_BASE_PATH+'myplugin/v1/add-carousel',formData)
+      .then((response) => {
+        console.log(response.data)
+        this.getCarouselImages()
+        this.loading = false
+        this.carousel_dialog = false
+        this.form_carousel = {
+          file: null,
+          caption: '',
+        }
+        this.file_display = null
+      })
+      .catch((error) => {
+        this.loading = false
+      })
+    },
+    deleteImage(image){
+      const formData = new FormData()
+      formData.append('id',image.id)
+      window.axios.post(settings.API_BASE_PATH+'myplugin/v1/delete-carousel-display',formData)
+      .then((response) => {
+        console.log(response.data)
+        this.getCarouselImages()
+      })
+    },
     getBarangayPosition(value){
       var index = this.barangay_positions.findIndex(x => x.value == value)
       return index >= 0 ? this.barangay_positions[index] : null

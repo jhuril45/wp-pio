@@ -42,6 +42,7 @@ function add_script()
       'city_tourism' => get_query_var( 'tab' ) && get_query_var( 'tab' ) == 'tourism' ? getTourismPlaces(false,0,true) : [],
       'tourism' => get_query_var( 'tab' ) && get_query_var( 'id' ) && get_query_var( 'tab' ) == 'add-tourism' ? getTourismPlaces(true,get_query_var( 'id' )) : '',
       'dashboard_drawer_menu' => getDashboardDrawerMenu(),
+      'carousel_images' => fetchCarouselImages(),
       // 'edit_post' => get_query_var( 'tab' ) && get_query_var( 'tab' ) == 'add-post' && get_query_var( 'id' ) ? fetchPost(get_query_var( 'id' )) : null, 
     ];
   }else{

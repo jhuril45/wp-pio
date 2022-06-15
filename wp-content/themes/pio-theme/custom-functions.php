@@ -13,6 +13,12 @@ function getDashboardDrawerMenu(){
   }
   return $arr = [
     array(
+      'title' => 'Carousel',
+      'url' => get_home_url().'/dashboard?tab=carousel',
+      'icon' => 'collections',
+      'is_page' => $pagename == 'dashboard' && (get_query_var( 'tab' ) == 'carousel'),
+    ),
+    array(
       'title' => 'Posts',
       'url' => get_home_url().'/dashboard?tab=posts',
       'icon' => 'rss_feed',

@@ -35,7 +35,9 @@ function cgb_create_tables(){
     $carousel_images = $wpdb->prefix . "carousel_images";  
     $sql = "CREATE TABLE $carousel_images (
       id int(10) unsigned NOT NULL AUTO_INCREMENT,
+      caption varchar(255) DEFAULT NULL,
       path varchar(255) NOT NULL,
+      url varchar(255) DEFAULT NULL,
       is_display tinyint(1) DEFAULT NULL,
       placement_number int(10) NOT NULL,
       PRIMARY KEY  (id),

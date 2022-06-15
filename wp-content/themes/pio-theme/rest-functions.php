@@ -1,23 +1,38 @@
 <?php
 function submitCarouselImage() {
   try{
-    $user = wp_get_current_user();
-    $temp= explode('.',basename($_FILES["file"]["name"]));
-    $extension = end($temp);
-    $file_name = time().'.'.$extension;
-    $file = wp_upload_bits( $file_name, null, @file_get_contents( $_FILES['file']['tmp_name'] ) );
-
     global $wpdb;
-    $image = $wpdb->insert(
-      'wp_carousel_images',
-      array(
-        'path' => $file['url'],
-        'is_display' => true,
-        'placement_number' => 0,
-      ),
+    $carousel_image = basename($_FILES["file"]["name"]);
+    $id = is_numeric($_POST['id']) ? intval($_POST['id']) : null;
+    $table_name = $wpdb->prefix . 'carousel_images';
+    $data = array(
+      'caption' => $_POST['caption'],
+      'is_display' => true,
     );
+    if($carousel_image){
+      $file = uploadFileSubmitted('file',false,'carousel-image');
+      $data['path'] = $file['url'];
+      $data['url'] = $file['file'];
+    }
 
-    return $image;
+    if($id){
+      $data_where = array('id' => $id);
+      $prev_image = $wpdb->get_row("SELECT * FROM $table_name WHERE id = $id");
+      // $data['placement_number'] = $_POST['placement_number'] ? $_POST['placement_number'] : $prev_image->placement_number;
+      $image = $wpdb->update($table_name,$data,$data_where);
+      if($carousel_image){
+        if(isset($prev_image)){
+          wp_delete_file($prev_image->url);
+        }
+      }
+    }else{
+      $count = $wpdb->get_var("SELECT COUNT(*) FROM $table_name");
+      $data['placement_number'] = intval($count)+1;
+      $image = $wpdb->insert($table_name,$data);
+    }
+
+
+    
   }catch(Exception $error){
     return $error;
   }
@@ -39,10 +54,16 @@ function updateCarouselImage() {
 function deleteCarouselImage() {
   try{
     global $wpdb;
-    $table='wp_carousel_images';
+    $table_name = $wpdb->prefix . 'carousel_images';
     $id = $_POST['id'];
-    $wpdb->delete( $table, array( 'id' => intval($id) ) );
-    return array( 'success' => true);
+    $image = $wpdb->get_row("SELECT * FROM $table_name WHERE id = $id");
+    
+    // unlink($image['url']);
+    $wpdb->delete( $table_name, array( 'id' => intval($id) ) );
+    if(isset($image)){
+      wp_delete_file($image->url);
+      return array( 'success' => true,'image' => $image->url);
+    }
   }catch(Exception $error){
     return $error;
   }
@@ -53,7 +74,7 @@ function fetchCarouselImages() {
     $user = wp_get_current_user();
     global $wpdb;
     $table_name = $wpdb->prefix . "carousel_images";
-    $results = $wpdb->get_results("SELECT * FROM $table_name");
+    $results = $wpdb->get_results("SELECT * FROM $table_name ORDER BY placement_number ASC");
     return $results;
   }catch(Exception $error){
     return $error;
