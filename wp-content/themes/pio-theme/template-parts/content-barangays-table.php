@@ -44,7 +44,7 @@
       <template v-slot:body="props">
         <q-tr :props="props" no-hover>
           <q-td key="title" :props="props">
-            <a :href="'<?php echo get_home_url();?>/barangays?barangay='+props.row.id" class="text-primary text-weight-bold" style="text-decoration: none;">
+            <a :href="'<?php echo get_home_url();?>/barangays?barangay='+props.row.barangay_id" class="text-primary text-weight-bold" style="text-decoration: none;">
               {{ props.row.title }}
             </a>
           </q-td>
@@ -52,8 +52,8 @@
             {{ props.row.name }}
           </q-td>
           <?php if($pagename == 'dashboard'){?>
-            <q-td class="text-center" v-if="page_name == 'dashboard'">
-              <q-btn size="sm" round color="primary" icon="edit" :href="'<?php echo get_home_url();?>/dashboard?tab=add-barangay&id='+props.row.id">  
+            <q-td class="text-center">
+              <q-btn size="sm" round color="primary" icon="edit" :href="'<?php echo get_home_url();?>/dashboard?tab=add-barangay&id='+props.row.barangay_id">  
               </q-btn>
             </q-td>
           <?php }?>

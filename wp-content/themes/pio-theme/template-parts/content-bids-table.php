@@ -23,7 +23,7 @@
                 </div>
               </div>
             <?php }?>
-            <div class="row full-width">
+            <div class="row full-width q-gutter-y-md">
               <div class="col-4 q-px-sm">
                 <q-select
                   dense
@@ -51,6 +51,13 @@
                   label="Month"
                   emit-value
                   map-options></q-select>
+              </div>
+              <div class="col-4 q-px-sm">
+                <q-input outlined dense debounce="300" v-model="filter" placeholder="Search">
+                  <template v-slot:append>
+                    <q-icon name="search"></q-icon>
+                  </template>
+                </q-input>
               </div>
             </div>
           </template>

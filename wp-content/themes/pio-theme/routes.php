@@ -184,3 +184,13 @@ add_action( 'rest_api_init', function () {
     },
   ) );
 } );
+
+add_action( 'rest_api_init', function () {
+  register_rest_route( 'myplugin/v1', '/remove-office', array(
+    'methods' => 'POST',
+    'callback' => 'removeOffice',
+    'permission_callback' => function($request){
+      return checkUser('pio');
+    },
+  ) );
+} );

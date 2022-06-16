@@ -1,10 +1,18 @@
 <div class="row q-py-lg q-gutter-y-md">
   <div class="col-12 row justify-center">
     <q-card class="add-post-card col-10 col-md-5">
-      <q-card-section class="text-bold text-h5">
+      <q-card-section class="text-bold text-h5 row">
         <span>
           {{form_office.id ? 'Edit Office' : 'Add Office'}}
         </span>
+        <q-space></q-space>
+        <q-btn
+          size="sm"
+          round
+          color="red"
+          icon="delete"
+          v-if="form_office.id"
+          @click="deleteOffice(office,true)"></q-btn>
       </q-card-section>
       <q-card-section>
         <q-form
@@ -140,15 +148,15 @@
                 :done="form_step > 3"
                 :header-nav="form_step > 3">
                 <div class="row q-gutter-y-md">
-                  <div class="col-12">
+                  <div class="col-12 relative-position">
                     <q-img
-                      :src="form_office.logo ? getImageUrl(form_office.logo) : form_office.logo_preview"
+                      :src="form_office.logo_preview"
                       height="180px"
                       class="cursor-pointer"
                       @click="$refs.featured_image.$el.click()"
                       contain>
-                      <div class="absolute-center full-height full-width text-subtitle1 row justify-center items-center">
-                        <span>
+                      <div class=" full-height full-width text-subtitle1 row justify-center items-center">
+                        <span class="absolute-center">
                           Click to change
                         </span>
                       </div>
@@ -157,10 +165,18 @@
                       ref="featured_image"
                       v-model="form_office.logo"
                       accept=".jpg, image/*"
-                      @input="addedFile"
+                      @input="() => {form.office.logo_preview = getImageUrl(form_office.logo)}"
                       label="Office Logo"
                       :rules="[val => (!!val || !!form_office.id) || 'Invalid Office Logo']">
                     </q-file>
+                    <q-btn
+                      class="absolute-top-right"
+                      size="sm"
+                      round
+                      color="red"
+                      icon="close"
+                      v-if="form_office.id && form_office.logo"
+                      @click="form_office.logo=null;form_office.logo_preview=office.logo"></q-btn>
                   </div>
                 </div>
 
@@ -177,9 +193,9 @@
                 :done="form_step > 4"
                 :header-nav="form_step > 4">
                 <div class="row q-gutter-y-md">
-                  <div class="col-12">
+                  <div class="col-12 relative-position">
                     <q-img
-                      :src="form_office.org_structure ? getImageUrl(form_office.org_structure) : form_office.org_structure_preview"
+                      :src="form_office.org_structure_preview"
                       height="180px"
                       class="cursor-pointer"
                       @click="$refs.org_structure.$el.click()"
@@ -196,9 +212,18 @@
                       ref="attachments"
                       v-model="form_office.org_structure"
                       accept=".jpg, image/*"
+                      @input="() => {form.office.org_structure_preview = getImageUrl(form_office.logo)}"
                       label="Org Structure"
                       :rules="[val => (!!val || !!form_office.id) || 'Invalid Office Logo']">
                     </q-file>
+                    <q-btn
+                      class="absolute-top-right"
+                      size="sm"
+                      round
+                      color="red"
+                      icon="close"
+                      v-if="form_office.id && form_office.org_structure"
+                      @click="form_office.org_structure=null;form_office.org_structure_preview=office.org_structure"></q-btn>
                   </div>
                 </div>
 
@@ -332,14 +357,16 @@
   </div>
 </div>
 
-<q-dialog v-model="add_office_dialog.open">
+<q-dialog
+  persistent
+  v-model="add_office_dialog.open">
   <q-card style="width: 500px" class="q-px-sm q-pb-md">
     <q-card-section class="row items-center q-pb-none">
       <div class="text-h6">
         {{add_office_dialog.is_service ? 'Add Service' : 'Add Form'}}
       </div>
       <q-space></q-space>
-      <q-btn icon="close" flat round dense v-close-popup></q-btn>
+      <q-btn icon="close" flat round dense @click="resetOfficeDialogForm"></q-btn>
     </q-card-section>
     <q-card-section>
       <q-form
@@ -349,7 +376,7 @@
         @submit="addOfficeService(true)">
         <div class="col-12 q-gutter-y-md">
           <q-img
-            :src="add_office_dialog.service.image ? getImageUrl(add_office_dialog.service.image) : '<?php echo get_template_directory_uri().'/assets/images/Butuan_Logo_Transparent.png';?>'"
+            :src="add_office_dialog.service.image ? add_office_dialog.preview : '<?php echo get_template_directory_uri().'/assets/images/Butuan_Logo_Transparent.png';?>'"
             height="180px"
             class="cursor-pointer"
             @click="$refs.featured_image.$el.click()"
@@ -361,6 +388,7 @@
             v-model="add_office_dialog.service.image"
             label="Service Image"
             accept=".jpg,image/*"
+            @input="() => {add_office_dialog.preview = getImageUrl(add_office_dialog.service.image)}"
             :rules="[val => !!val || 'Invalid Service Image']">
           </q-file>
         </div>

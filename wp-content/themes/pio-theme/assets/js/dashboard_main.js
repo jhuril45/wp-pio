@@ -27,7 +27,8 @@ window.vue = new Vue({
         form:{
           file: null,
           title: '',
-        }
+        },
+        preview: null,
       },
       offices_table_columns: [
         {
@@ -269,11 +270,12 @@ window.vue = new Vue({
           image_preview: null,
           name: '',
           position: null,
-        }
+        },
+        preview: null,
       },
       bid_report_options: [
         {
-          label: 'Invitation to Bid',
+          label: 'Items to Bid',
           value: 1,
         },
         {
@@ -477,7 +479,7 @@ window.vue = new Vue({
         }
         this.file_display=null
       }
-    }
+    },
   },
   created(){
     document.getElementById("q-app").style.display = "block"
@@ -524,6 +526,12 @@ window.vue = new Vue({
       this.form_office.org_structure_preview = this.office.org_structure.length ? this.office.org_structure : this.form_office.org_structure_preview
       this.form_office.services = this.office.services;
       this.form_office.forms = this.office.forms;
+      if(this.$refs.add_office_form){
+        this.$nextTick(() => {
+          this.form_step = 5
+          this.$refs.add_office_form.resetValidation()
+        })
+      }
     }
     if(this.barangay){
       this.form_barangay = {
@@ -546,8 +554,34 @@ window.vue = new Vue({
         img_preview : this.tourism.path ? this.tourism.path : this.form_tourism.img_preview
       }
     }
+    if(this.edit_post){
+      this.form_post.id = this.edit_post.post.ID
+      this.form_post.title = this.edit_post.post.post_title
+      this.form_post.content = this.edit_post.post.post_content
+      this.file_display = this.edit_post.post.featured_image
+      this.form_post.existing_attachments = this.edit_post.attachments.length ? this.edit_post.attachments.filter(x => x.src != this.file_display) : []
+      this.loading = false
+      this.$nextTick(() => {
+        this.$refs.add_post_form.resetValidation()
+      })
+    }
   },
   methods: {
+    resetOfficeDialogForm(){
+      this.add_office_dialog = {
+        open: false,
+        is_service: true,
+        service:{
+          image: null,
+          title: '',
+        },
+        form:{
+          file: null,
+          title: '',
+        },
+        preview: null,
+      }
+    },
     editCarouselImage(image){
       this.file_display = image.path
       this.form_carousel = {
@@ -688,6 +722,7 @@ window.vue = new Vue({
       }
       
       this.add_office_dialog.open = false
+      this.add_office_dialog.preview = null
     },
     addBarangayDialog(is_service){
       if(is_service){
@@ -718,10 +753,10 @@ window.vue = new Vue({
           name: '',
           position: null,
         }
-        
       }
       
       this.add_barangay_dialog.open = false
+      this.add_barangay_dialog.preview = null
     },
     ///Add Post ///
     resetForm(type){
@@ -1103,6 +1138,43 @@ window.vue = new Vue({
             position: 'top-right'
           })
           window.location.replace(this.home_url+'/dashboard?tab=barangays');
+          this.loading = false
+        })
+        .catch((error) => {
+          this.loading = false
+        })
+      }).onCancel(() => {
+        // console.log('>>>> Cancel')
+      }).onDismiss(() => {
+        // console.log('I am triggered on both OK and Cancel')
+      })
+    },
+    deleteOffice(office){
+      window.Quasar
+      .plugins.Dialog
+      .create({
+        title: 'Confirm',
+        message: 'Remove Barangay ' + office.title + '?',
+        ok: {
+          color: 'primary'
+        },
+        cancel: {
+          color: 'negative'
+        },
+        persistent: true,
+      }).onOk(() => {
+        if(this.loading) return
+        this.loading = true
+        const formData = new FormData()
+        formData.append('id',office.id)
+        window.axios.post(settings.API_BASE_PATH+'myplugin/v1/remove-office',formData)
+        .then((response) => {
+          window.Quasar.Notify.create({
+            type: 'positive',
+            message: 'Success.',
+            position: 'top-right'
+          })
+          // window.location.replace(this.home_url+'/dashboard?tab=barangays');
           this.loading = false
         })
         .catch((error) => {

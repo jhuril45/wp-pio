@@ -1,4 +1,22 @@
 <?php
+function uploadFileSubmitted($file_name,$is_post=true,$prefix=''){
+  $upload_dir = wp_upload_dir();
+  $temp = explode('.',basename($_FILES[$file_name]['name']));
+  $extension = end($temp);
+  $image_data = file_get_contents($_FILES[$file_name]['tmp_name'] );
+      
+  $name = $prefix.time().'.'.$extension;
+  $file = null;
+  if($is_post){
+    $file = wp_mkdir_p($upload_dir['path']) ? $upload_dir['path'] . '/' . $name : $upload_dir['basedir'] . '/' . $name;
+  }else{
+    $file = wp_upload_bits( $name, null, @file_get_contents( $_FILES[$file_name]['tmp_name'] ) );
+  }
+
+  file_put_contents($file, $image_data);
+  return $file;
+}
+
 function checkUser($role){
   if(!is_user_logged_in()) return false;
   $user = wp_get_current_user();
@@ -35,6 +53,15 @@ function getDashboardDrawerMenu(){
       'url' => get_home_url().'/dashboard?tab=bid-reports',
       'icon' => 'receipt_long',
       'is_page' => $pagename == 'dashboard' && (get_query_var( 'tab' ) == 'bid-reports' || get_query_var( 'tab' ) == 'add-bid-report'),
+      'is_menu' => true,
+      'sub_menu' => [
+        array(
+          'title' => 'Offices',
+          'url' => get_home_url().'/dashboard?tab=offices',
+          'icon' => 'business',
+          'is_page' => $pagename == 'dashboard' && (get_query_var( 'tab' ) == 'offices' || get_query_var( 'tab' ) == 'add-office'),
+        ),
+      ]
     ),
     array(
       'title' => 'Offices',
@@ -93,7 +120,6 @@ function register_rest_images(){
       )
   );
 }
-add_action('rest_api_init', 'register_rest_images' );
 
 function get_rest_featured_image( $object, $field_name, $request ) {
   if( $object['featured_media'] ){
@@ -111,7 +137,7 @@ function check_news_category() {
   wp_create_category('Barangay');
   wp_create_category('Offices');
 }
-add_action( 'admin_init', 'check_news_category' );
+
 
 function custom_get_custom_logo(){
   $logo = get_theme_mod( 'custom_logo' );
@@ -149,21 +175,9 @@ function add_barangay_query_var( $vars ){
   return $vars;
 }
 
-add_filter( 'query_vars', 'add_tab_query_var' );
-add_filter( 'query_vars', 'add_id_query_var' );
-add_filter( 'query_vars', 'add_office_query_var' );
-add_filter( 'query_vars', 'add_barangay_query_var' );
-
 function myInit() {
   global $globalUrl;
   $globalUrl = url_to_postid(get_permalink());
-}
-add_action('init', 'myInit');
-
-function getCarouselImages() {
-  global $wpdb;
-  $results = $wpdb->get_results("SELECT * FROM wp_carousel_images");
-  return $results;
 }
 
 function getHeaderMenus() {
@@ -227,746 +241,6 @@ function getHeaderMenus() {
   ];
 
   return $arr;
-}
-
-function getTourismPlaces($is_place=true,$id=null,$all=false) {
-  global $wpdb;
-  if($all){
-    $table_name = $wpdb->prefix . "city_tourism";
-    $arr = $wpdb->get_results("SELECT * FROM $table_name");
-  }
-  else if($id){
-    $table_name = $wpdb->prefix . "city_tourism";
-    $tourism = $wpdb->get_row("SELECT * FROM $table_name WHERE id = $id");
-    return $tourism;
-  }
-  else if($is_place){
-    $table_name = $wpdb->prefix . "city_tourism";
-    $arr = $wpdb->get_results("SELECT * FROM $table_name WHERE type = 2");
-  }else{
-    $table_name = $wpdb->prefix . "city_tourism";
-    $arr = $wpdb->get_results("SELECT * FROM $table_name WHERE type = 1");
-  }
-  return $arr;
-}
-
-function getOfficeList() {
-  global $wpdb;
-  $table_name = $wpdb->prefix . "offices";
-  $offices = $wpdb->get_results("SELECT * FROM $table_name");
-  return $offices;
-}
-
-function getOffice($office_id) {
-  global $wpdb;
-  $table_name = $wpdb->prefix . "offices";
-  $office = $wpdb->get_row("SELECT * FROM $table_name WHERE id = $office_id");
-  if(empty($office)){
-    return null;
-  }
-  $office->services = getOfficeServices($office_id);
-  $office->forms = getOfficeForms($office_id);
-  if($office->facebook){
-    $office->messenger = explode('www.facebook.com/',$office->facebook)[1];
-  }
-  return $office;
-}
-
-function getReport($id,$is_bid=false) {
-  global $wpdb;
-  $table_name = $wpdb->prefix . ($is_bid  ? 'bid_reports' : 'reports');
-  $report = $wpdb->get_row("SELECT * FROM $table_name WHERE id = $id");
-  
-  if(empty($report)){
-    return null;
-  }
-  return $report;
-}
-
-function getOfficeServices($office_id) {
-  global $wpdb;
-  $table_name = $wpdb->prefix . "office_services";
-  $services = $wpdb->get_results("SELECT * FROM $table_name WHERE office_id = $office_id");
-  return $services;
-}
-
-function getOfficeForms($office_id) {
-  global $wpdb;
-  $table_name = $wpdb->prefix . "office_forms";
-  $forms = $wpdb->get_results("SELECT * FROM $table_name WHERE office_id = $office_id");
-  return $forms;
-}
-
-function getBarangayOfficials($barangay_id) {
-  global $wpdb;
-  $table_name = $wpdb->prefix . "barangay_officials";
-  $services = $wpdb->get_results("SELECT * FROM $table_name WHERE barangay_id = $barangay_id");
-  return $services;
-}
-
-function getBarangayServices($barangay_id) {
-  global $wpdb;
-  $table_name = $wpdb->prefix . "barangay_services";
-  $services = $wpdb->get_results("SELECT * FROM $table_name WHERE barangay_id = $barangay_id");
-  return $services;
-}
-
-
-
-function getCityBarangay($id=null){
-  if($id){
-    global $wpdb;
-    $table_name = $wpdb->prefix . "barangays";
-    $barangay = $wpdb->get_row("SELECT * FROM $table_name WHERE id = $id");
-    if(empty($barangay)){
-      return null;
-    }
-    $officials = getBarangayOfficials($id);
-    $barangay->services = getBarangayServices($id);
-    $barangay->official_list = array(
-      'kagawad' => [],
-      'sk_kagawad' => [],
-    );
-    foreach ($officials as $key => $value) {
-      if($value->position == 'Kagawad'){
-        array_push($barangay->official_list[strtolower($value->position)],$value);
-      }
-      else if($value->position == 'SK Kagawad'){
-        array_push($barangay->official_list['sk_kagawad'],$value);
-      }
-      else if($value->position == 'SK Chairman'){
-        $barangay->official_list['sk_chairman'] = $value;
-      }
-      else{
-        $barangay->official_list[strtolower($value->position)] = $value;
-      }
-    }
-    return $barangay;
-  }else{
-    global $wpdb;
-    $table_name = $wpdb->prefix . "barangays";
-    $table_name2 = $wpdb->prefix . "barangay_officials";
-    $barangays = $wpdb->get_results("
-    SELECT * FROM $table_name as barangay 
-    LEFT JOIN $table_name2 as barangay_officials 
-    ON barangay.id = barangay_officials.barangay_id 
-    WHERE barangay_officials.position = 'Chairman'
-    ");
-    return $barangays;
-  }
-}
-
-function getCityOfficials(){
-  return array(
-    'mayor' => array(
-      'name' => 'HON. RONNIE VICENTE C. LAGNADA',
-      'position' => 'City Mayor',
-      'image' => get_template_directory_uri().'/assets/images/RCL.webp',
-    ),
-    'vice_mayor' => array(
-      'name' => 'HON. JOSE S. AQUINO II',
-      'position' => 'City Vice Mayor',
-      'image' => get_template_directory_uri().'/assets/images/JS. Aquino.jpg',
-    ),
-    'sp_members' => [
-      array(
-        'name' => 'HON. GLENN C. CARAMPATANA',
-        'position' => 'SP Member',
-        'image' => get_template_directory_uri().'/assets/images/1 - Hon.webp',
-        'positions' => [
-          array(
-            'title' => 'Chairman',
-            'list' => [
-              'Committee on Education, Culture, Arts, and Heritage',
-              'Committee on Rules and Styles',
-            ]
-          ),
-          array(
-            'title' => 'Vice Chairman',
-            'list' => [
-              'Committee on Health',
-              'Committee on People’s Council and Sectoral Development',
-            ]
-          ),
-          array(
-            'title' => 'Member',
-            'list' => [
-              'Committee on Civil Service and Reorganization',
-              'Committee on Family, Women, and Children’s Welfare',
-              'Committee on Good Government and Ethics',
-              'Committee on Science and Technology Development',
-              'Committee on Ways and Means',
-              'Committee on Youth and Sports Development',
-            ]
-          ),
-        ]
-      ),
-      array(
-        'name' => 'HON. FERDINAND E. NALCOT',
-        'position' => 'SP Member',
-        'image' => get_template_directory_uri().'/assets/images/2 - Hon.webp',
-        'positions' => [
-          array(
-            'title' => 'Chairman',
-            'list' => [
-              'Committee on Labor, Employment, and Human Resources Development',
-              'Committee on Social Welfare and Development',
-            ]
-          ),
-          array(
-            'title' => 'Member',
-            'list' => [
-              'Committee on Barangay Development',
-              'Committee on Disaster Risk Reduction and Climate Change Adaptation',
-              'Committee on Economic, Trade, and Industry Development',
-              'Committee on Health',
-              'Committee on Infrastructure Development',
-              'Committee on Rules and Styles',
-              'Committee on Ways and Means',
-            ]
-          ),
-        ]
-      ),
-      array(
-        'name' => 'HON. DERRICK A. PLAZA',
-        'position' => 'SP Member',
-        'image' => get_template_directory_uri().'/assets/images/3 - Hon.webp',
-        'positions' => [
-          array(
-            'title' => 'Chairman',
-            'list' => [
-              'Committee on Accounts',
-              'Committee on Civil Service and Reorganization',
-            ]
-          ),
-          array(
-            'title' => 'Member',
-            'list' => [
-              'Committee on Education, Culture, Arts, and Heritage',
-              'Committee on Health',
-              'Committee on Infrastructure Development',
-              'Committee on People’s Council and Sectoral Development',
-              'Committee on Public Order and Safety',
-            ]
-          ),
-        ]
-      ),
-      array(
-        'name' => 'HON. CROMWELL P. NORTEGA',
-        'position' => 'SP Member',
-        'image' => get_template_directory_uri().'/assets/images/4 - Hon.webp',
-        'positions' => [
-          array(
-            'title' => 'Chairman',
-            'list' => [
-              'Committee on People’s Council and Sectoral Development',
-              'Committee on Tourism Development',
-            ]
-          ),
-          array(
-            'title' => 'Vice Chairman',
-            'list' => [
-              'Committee on Youth and Sports Development',
-            ]
-          ),
-          array(
-            'title' => 'Member',
-            'list' => [
-              'Committee on Appropriations',
-              'Committee on Environment and Natural Resources Development',
-              'Committee on Infrastructure Development',
-              'Committee on Public Order and Safety',
-              'Committee on Urban Planning, Housing, and Resettlement',
-            ]
-          ),
-        ]
-      ),
-      array(
-        'name' => 'HON. REMA E. BURDEOS',
-        'position' => 'SP Member',
-        'image' => get_template_directory_uri().'/assets/images/5 - Hon.webp',
-        'positions' => [
-          array(
-            'title' => 'Chairman',
-            'list' => [
-              'Committee on Family, Women, and Children’s Welfare',
-              'Committee on Good Government and Ethics',
-            ]
-          ),
-          array(
-            'title' => 'Vice Chairman',
-            'list' => [
-              'Committee on Franchises and Licenses',
-              'Committee on Rules and Styles',
-            ]
-          ),
-          array(
-            'title' => 'Member',
-            'list' => [
-              'Committee on Barangay Development',
-              'Committee on Civil Service and Reorganization',
-              'Committee on Economic, Trade, and Industry Development',
-              'Committee on Education, Culture, Arts, and Heritage',
-              'Committee on Labor, Employment, and Human Resources Development',
-              'Committee on Social Welfare and Development',
-              'Committee on Tourism Development',
-              'Committee on Ways and Means',
-            ]
-          ),
-        ]
-      ),
-      array(
-        'name' => 'HON. EHRNEST JOHN C. SANCHEZ',
-        'position' => 'SP Member',
-        'image' => get_template_directory_uri().'/assets/images/6 - Hon.webp',
-        'positions' => [
-          array(
-            'title' => 'Chairman',
-            'list' => [
-              'Committee on Public Order and Safety',
-              'Committee on Urban Planning, Housing, and Resettlement',
-            ]
-          ),
-          array(
-            'title' => 'Vice Chairman',
-            'list' => [
-              'Committee on Disaster Risk Reduction and Climate Change Adaptation',
-            ]
-          ),
-          array(
-            'title' => 'Member',
-            'list' => [
-              'Committee on Economic, Trade, and Industry Development',
-              'Committee on Franchises and Licenses',
-              'Committee on Good Government and Ethics',
-              'Committee on Rules and Styles',
-              'Committee on Youth and Sports Development',
-            ]
-          ),
-        ]
-      ),
-      array(
-        'name' => 'HON. JOHN GIL S. UNAY, SR.',
-        'position' => 'SP Member',
-        'image' => get_template_directory_uri().'/assets/images/7 - Hon.webp',
-        'positions' => [
-          array(
-            'title' => 'Chairman',
-            'list' => [
-              'Committee on Ways and Means',
-              'Committee on Franchises and Licenses',
-            ]
-          ),
-          array(
-            'title' => 'Vice Chairman',
-            'list' => [
-              'Committee on Civil Service and Reorganization',
-              'Committee on Environment and Natural Resources Development',
-              'Committee on Good Government and Ethics',
-              'Committee on Infrastructure Development',
-            ]
-          ),
-          array(
-            'title' => 'Member',
-            'list' => [
-              'Committee on Accounts',
-              'Committee on Labor, Employment, and Human Resources Development',
-              'Committee on Public Order and Safety',
-              'Committee on Rules and Styles',
-              'Committee on Urban Planning, Housing, and Resettlement',
-            ]
-          ),
-        ]
-      ),
-      array(
-        'name' => 'HON. JOSEPH OMAR O. ANDAYA',
-        'position' => 'SP Member',
-        'image' => get_template_directory_uri().'/assets/images/8 - Hon. Andaya.jpg',
-        'positions' => [
-          array(
-            'title' => 'Chairman',
-            'list' => [
-              'Committee on Economic, Trade, and Industry Development',
-              'Committee on Environment and Natural Resources Development',
-            ]
-          ),
-          array(
-            'title' => 'Vice Chairman',
-            'list' => [
-              'Committee on Accounts',
-              'Committee on Appropriations',
-              'Committee on Labor, Employment, and Human Resources Development',
-              'Committee on Science and Technology Development',
-              'Committee on Ways and Means',
-            ]
-          ),
-          array(
-            'title' => 'Member',
-            'list' => [
-              'Committee on Franchises and Licenses',
-              'Committee on People’s Council and Sectoral Development',
-            ]
-          ),
-        ]
-      ),
-      array(
-        'name' => 'HON. CHERRY MAY G. BUSA',
-        'position' => 'SP Member',
-        'image' => get_template_directory_uri().'/assets/images/9 - Hon.webp',
-        'positions' => [
-          array(
-            'title' => 'Chairman',
-            'list' => [
-              'Committee on Health',
-              'Committee on Science and Technology Development',
-            ]
-          ),
-          array(
-            'title' => 'Vice Chairman',
-            'list' => [
-              'Committee on Economic, Trade, and Industry Development',
-              'Committee on Education, Culture, Arts, and Heritage',
-              'Committee on Social Welfare and Development',
-              'Committee on Tourism Development',
-            ]
-          ),
-          array(
-            'title' => 'Member',
-            'list' => [
-              'Committee on Accounts',
-              'Committee on Appropriations',
-              'Committee on Civil Service and Reorganization',
-              'Committee on Environment and Natural Resources Development',
-              'Committee on Family, Women, and Children’s Welfare',
-              'Committee on Labor, Employment, and Human Resources Development',
-            ]
-          ),
-        ]
-      ),
-      array(
-        'name' => 'HON. VINCENT RIZAL C. ROSARIO',
-        'position' => 'SP Member',
-        'image' => get_template_directory_uri().'/assets/images/10 - Hon.webp',
-        'positions' => [
-          array(
-            'title' => 'Chairman',
-            'list' => [
-              'Committee on Disaster Risk Reduction and Climate Change Adaptation',
-              'Committee on Infrastructure Development',
-            ]
-          ),
-          array(
-            'title' => 'Vice Chairman',
-            'list' => [
-              'Committee on Barangay Development',
-              'Committee on Public Order and Safety',
-              'Committee on Urban Planning, Housing, and Resettlement',
-              'Committee on Tourism Development',
-            ]
-          ),
-          array(
-            'title' => 'Member',
-            'list' => [
-              'Committee on Appropriations',
-              'Committee on Environment and Natural Resources Development',
-              'Committee on Franchises and Licenses',
-              'Committee on Science and Technology Development',
-            ]
-          ),
-        ]
-      ),
-      array(
-        'name' => 'HON. GEMMA P. TABADA',
-        'position' => 'SP Member',
-        'image' => get_template_directory_uri().'/assets/images/11 - Hon.webp',
-        'positions' => [
-          array(
-            'title' => 'Chairman',
-            'list' => [
-              'Committee on Barangay Development',
-            ]
-          ),
-          array(
-            'title' => 'Vice Chairman',
-            'list' => [
-              'Committee on Family, Women, and Children’s Welfare',
-            ]
-          ),
-          array(
-            'title' => 'Member',
-            'list' => [
-              'Committee on Accounts',
-              'Committee on Disaster Risk Reduction and Climate Change Adaptation',
-              'Committee on Good Government and Ethics',
-              'Committee on People’s Council and Sectoral Development',
-              'Committee on Social Welfare and Development',
-              'Committee on Tourism Development',
-              'Committee on Urban Planning, Housing, and Resettlement',
-              'Committee on Youth and Sports Development'
-            ]
-          ),
-        ]
-      ),
-      array(
-        'name' => 'HON. WEN KOK L. CHIANG II',
-        'position' => 'SP Member, President SK Federation',
-        'image' => get_template_directory_uri().'/assets/images/12 - Hon.webp',
-        'positions' => [
-          array(
-            'title' => 'Chairman',
-            'list' => [
-              'Committee on Youth and Sports Development',
-            ]
-          ),
-          array(
-            'title' => 'Member',
-            'list' => [
-              'Committee on Barangay Development',
-              'Committee on Disaster Risk Reduction and Climate Change Adaptation',
-              'Committee on Education, Culture, Arts, and Heritage',
-              'Committee on Family, Women, and Children’s Welfare',
-              'Committee on Health',
-              'Committee on Science and Technology Development',
-              'Committee on Social Welfare and Development',
-              'Committee on Tourism Development'
-            ]
-          ),
-        ]
-      ),
-    ],
-    'committees' => [
-      array(
-        'title' => 'COMMITTEE ON APPROPRIATIONS',
-        'chairman' => 'Hon. Jose S. Aquino II',
-        'vice_chairman' => 'Hon. Joseph Omar O. Andaya',
-        'members' => [
-          'Hon. Cherry May G. Busa',
-          'Hon. Cromwell P. Nortega',
-          'Hon. Vincent Rizal C. Rosario',
-        ]
-      ),
-      array(
-        'title' => 'COMMITTEE ON ACCOUNTS',
-        'chairman' => 'Hon. Derrick A. Plaza',
-        'vice_chairman' => 'Hon. Joseph Omar O. Andaya',
-        'members' => [
-          'Hon. Cherry May G. Busa',
-          'Hon. John Gil S. Unay, Sr.',
-          'Hon. Gemma P. Tabada',
-        ]
-      ),
-      array(
-        'title' => 'COMMITTEE ON BARANGAY DEVELOPMENT',
-        'chairman' => 'Hon. Gemma P. Tabada',
-        'vice_chairman' => 'Hon. Vincent Rizal C. Rosario',
-        'members' => [
-          'Hon. Wen Kok L. Chiang II',
-          'Hon. Rema E. Burdeos',
-          'Hon. Ferdinand E. Nalcot',
-        ]
-      ),
-      array(
-        'title' => 'COMMITTEE ON CIVIL SERVICE AND REORGANIZATION',
-        'chairman' => 'Hon. Derrick A. Plaza',
-        'vice_chairman' => 'Hon. John Gil S. Unay, Sr.',
-        'members' => [
-          'Hon. Cherry May G. Busa',
-          'Hon. Rema E. Burdeos',
-          'Hon. Glenn C. Carampatana',
-        ]
-      ),
-      array(
-        'title' => 'COMMITTEE ON DISASTER RISK REDUCTION AND CLIMATE CHANGE ADAPTATION',
-        'chairman' => 'Hon. Vincent Rizal C. Rosario',
-        'vice_chairman' => 'Hon. Ehrnest John C. Sanchez',
-        'members' => [
-          'Hon. Ferdinand E. Nalcot',
-          'Hon. Gemma P. Tabada',
-          'Hon. Wen Kok L. Chiang II',
-        ]
-      ),
-      array(
-        'title' => 'COMMITTEE ON ECONOMIC, TRADE, AND INDUSTRY DEVELOPMENT',
-        'chairman' => 'Hon. Joseph Omar O. Andaya',
-        'vice_chairman' => 'Hon. Cherry May G. Busa',
-        'members' => [
-          'Hon. Rema E. Burdeos',
-          'Hon. Ferdinand E. Nalcot',
-          'Hon. Ehrnest John C. Sanchez',
-        ]
-      ),
-      array(
-        'title' => 'COMMITTEE ON EDUCATION, CULTURE, ARTS, AND HERITAGE',
-        'chairman' => 'Hon. Glenn C. Carampatana',
-        'vice_chairman' => 'Hon. Cherry May G. Busa',
-        'members' => [
-          'Hon. Rema E. Burdeos',
-          'Hon. Wen Kok L. Chiang II',
-          'Hon. Derrick A. Plaza',
-        ]
-      ),
-      array(
-        'title' => 'COMMITTEE ON ENVIRONMENT AND NATURAL RESOURCES DEVELOPMENT',
-        'chairman' => 'Hon. Joseph Omar O. Andaya',
-        'vice_chairman' => 'Hon. John Gil S. Unay, Sr.',
-        'members' => [
-          'Hon. Cromwell P. Nortega',
-          'Hon. Cherry May G. Busa',
-          'Hon. Vincent Rizal C. Rosario',
-        ]
-      ),
-      array(
-        'title' => 'COMMITTEE ON FAMILY, WOMEN, AND CHILDREN’S WELFARE',
-        'chairman' => 'Hon. Rema E. Burdeos',
-        'vice_chairman' => 'Hon. Gemma P. Tabada',
-        'members' => [
-          'Hon. Cherry May G. Busa',
-          'Hon. Glenn C. Carampatana',
-          'Hon. Wen Kok L. Chiang II',
-        ]
-      ),
-      array(
-        'title' => 'COMMITTEE ON FRANCHISES AND LICENSES',
-        'chairman' => 'Hon. John Gil S. Unay, Sr.',
-        'vice_chairman' => 'Hon. Rema E. Burdeos',
-        'members' => [
-          'Hon. Ehrnest John C. Sanchez',
-          'Hon. Joseph Omar O. Andaya',
-          'Hon. Vincent Rizal C. Rosario',
-        ]
-      ),
-      array(
-        'title' => 'COMMITTEE ON GOOD GOVERNMENT AND ETHICS',
-        'chairman' => 'Hon. Rema E. Burdeos',
-        'vice_chairman' => 'Hon. John Gil S. Unay, Sr.',
-        'members' => [
-          'Hon. Ehrnest John C. Sanchez',
-          'Hon. Gemma P. Tabada',
-          'Hon. Glenn C. Carampatana',
-        ]
-      ),
-      array(
-        'title' => 'COMMITTEE ON HEALTH',
-        'chairman' => 'Hon. Cherry May G. Busa',
-        'vice_chairman' => 'Hon. Glenn C. Carampatana',
-        'members' => [
-          'Hon. Ferdinand E. Nalcot',
-          'Hon. Wen Kok L. Chiang II',
-          'Hon. Derrick A. Plaza',
-        ]
-      ),
-      array(
-        'title' => 'COMMITTEE ON INFRASTRUCTURE DEVELOPMENT',
-        'chairman' => 'Hon. Vincent Rizal C. Rosario',
-        'vice_chairman' => 'Hon. John Gil S. Unay, Sr.',
-        'members' => [
-          'Hon. Cromwell P. Nortega',
-          'Hon. Derrick A. Plaza',
-          'Hon. Ferdinand E. Nalcot',
-        ]
-      ),
-      array(
-        'title' => 'COMMITTEE ON LABOR, EMPLOYMENT, AND HUMAN RESOURCES DEVELOPMENT',
-        'chairman' => 'Hon. Ferdinand E. Nalcot',
-        'vice_chairman' => 'Hon. Joseph Omar O. Andaya',
-        'members' => [
-          'Hon. Rema E. Burdeos',
-          'Hon. Cherry May G. Busa',
-          'Hon. John Gil S. Unay, Sr.',
-        ]
-      ),
-      array(
-        'title' => 'COMMITTEE ON PEOPLE’S COUNCIL AND SECTORAL DEVELOPMENT',
-        'chairman' => 'Hon. Cromwell P. Nortega',
-        'vice_chairman' => 'Hon. Glenn C. Carampatana',
-        'members' => [
-          'Hon. Derrick A. Plaza',
-          'Hon. Gemma P. Tabada',
-          'Hon. Joseph Omar O. Andaya',
-        ]
-      ),
-      array(
-        'title' => 'COMMITTEE ON PUBLIC ORDER AND SAFETY',
-        'chairman' => 'Hon.Ehrnest John C. Sanchez',
-        'vice_chairman' => 'Hon. Vincent Rizal C. Rosario',
-        'members' => [
-          'Hon. John Gil S. Unay, Sr.',
-          'Hon. Cromwell P. Nortega',
-          'Hon. Derrick A. Plaza',
-        ]
-      ),
-      array(
-        'title' => 'COMMITTEE ON RULES AND STYLES',
-        'chairman' => 'Hon. Glenn C. Carampatana',
-        'vice_chairman' => 'Hon. Rema E. Burdeos',
-        'members' => [
-          'Hon. Ferdinand E. Nalcot',
-          'Hon. Ehrnest John C. Sanchez',
-          'Hon. John Gil S. Unay, Sr.',
-        ]
-      ),
-      array(
-        'title' => 'COMMITTEE ON SCIENCE AND TECHNOLOGY DEVELOPMENT',
-        'chairman' => 'Hon. Cherry May G. Busa',
-        'vice_chairman' => 'Hon. Joseph Omar O. Andaya',
-        'members' => [
-          'Hon. Vincent Rizal C. Rosario',
-          'Hon. Wen Kok L. Chiang II',
-          'Hon. Glenn C. Carampatana',
-        ]
-      ),
-      array(
-        'title' => 'COMMITTEE ON SOCIAL WELFARE AND DEVELOPMENT',
-        'chairman' => 'Hon. Ferdinand E. Nalcot',
-        'vice_chairman' => 'Hon. Cherry May G. Busa',
-        'members' => [
-          'Hon. Gemma P. Tabada',
-          'Hon. Wen Kok L. Chiang II',
-          'Hon. Rema E. Burdeos',
-        ]
-      ),
-      array(
-        'title' => 'COMMITTEE ON TOURISM DEVELOPMENT',
-        'chairman' => 'Hon. Cromwell P. Nortega',
-        'vice_chairman' => 'Hon. Cherry May G. Busa',
-        'members' => [
-          'Hon. Rema E. Burdeos',
-          'Hon. Wen Kok L. Chiang II',
-          'Hon. Gemma P. Tabada',
-        ]
-      ),
-      array(
-        'title' => 'COMMITTEE ON URBAN PLANNING, HOUSING, AND RESETTLEMENT',
-        'chairman' => 'Hon. Ehrnest John C. Sanchez',
-        'vice_chairman' => 'Hon. Vincent Rizal C. Rosario',
-        'members' => [
-          'Hon. Cromwell P. Nortega',
-          'Hon. Gemma P. Tabada',
-          'Hon. John Gil S. Unay, Sr.',
-        ]
-      ),
-      array(
-        'title' => 'COMMITTEE ON WAYS AND MEANS',
-        'chairman' => 'Hon. John Gil S. Unay, Sr.',
-        'vice_chairman' => 'Hon. Joseph Omar O. Andaya',
-        'members' => [
-          'Hon. Glenn C. Carampatana',
-          'Hon. Rema E. Burdeos',
-          'Hon. Ferdinand E. Nalcot',
-        ]
-      ),
-      array(
-        'title' => 'COMMITTEE ON YOUTH & SPORTS DEVELOPMENT',
-        'chairman' => 'Hon. Wen Kok L. Chiang II',
-        'vice_chairman' => 'Hon. Cromwell P. Nortega',
-        'members' => [
-          'Hon. Ehrnest John C. Sanchez',
-          'Hon. Gemma P. Tabada',
-          'Hon. Glenn C. Carampatana',
-        ]
-      ),
-    ]
-  );
 }
 
 function getFlipCards() {
@@ -1084,7 +358,7 @@ function restrict_admin() {
     return wp_redirect(home_url('/dashboard'));
   }
 }
-add_action( 'admin_init', 'restrict_admin', 1 );
+
 
 function my_login_logo() { ?>
   <style type="text/css">
@@ -1097,4 +371,13 @@ function my_login_logo() { ?>
       }
   </style>
 <?php }
+
+add_action('rest_api_init', 'register_rest_images' );
+add_action( 'admin_init', 'check_news_category' );
+add_filter( 'query_vars', 'add_tab_query_var' );
+add_filter( 'query_vars', 'add_id_query_var' );
+add_filter( 'query_vars', 'add_office_query_var' );
+add_filter( 'query_vars', 'add_barangay_query_var' );
+add_action('init', 'myInit');
+add_action( 'admin_init', 'restrict_admin', 1 );
 add_action( 'login_enqueue_scripts', 'my_login_logo' );

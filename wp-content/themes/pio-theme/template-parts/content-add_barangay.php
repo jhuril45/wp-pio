@@ -107,9 +107,9 @@
               :done="form_step > 2"
               :header-nav="form_step > 2">
               <div class="row q-gutter-y-sm">
-                <div class="col-12">
+                <div class="col-12 relative-position">
                   <q-img
-                    :src="form_barangay.landmark_image != null ? getImageUrl(form_barangay.landmark_image) : form_barangay.landmark_preview"
+                    :src="form_barangay.landmark_preview"
                     height="180px"
                     class="cursor-pointer"
                     @click="$refs.featured_image.$el.click()"
@@ -124,9 +124,17 @@
                     ref="featured_image"
                     v-model="form_barangay.landmark_image"
                     accept=".jpg, image/*"
-                    @input="addedFile"
+                    @input="() => {form_barangay.landmark_preview = getImageUrl(form_barangay.landmark_image)}"
                     v-show="false">
                   </q-file>
+                  <q-btn
+                    class="absolute-top-right"
+                    size="sm"
+                    round
+                    color="red"
+                    icon="close"
+                    v-if="form_barangay.id && form_barangay.landmark_image"
+                    @click="form_barangay.landmark_image=null;form_barangay.landmark_preview=barangay.landmark_img"></q-btn>
                 </div>
                 <div class="col-12">
                   <q-input
@@ -201,7 +209,7 @@
                           size="sm"
                           color="red"
                           icon="cancel"
-                          @click="official.id ? '' : form_barangay.officials.splice(index,1)"></q-btn>
+                          @click="official.id ? removeBarangayAttachments('official',official) : form_barangay.officials.splice(index,1)"></q-btn>
                       </q-item-section>
                     </q-item>
                     <q-item v-if="form_barangay.officials.length == 0">
@@ -309,7 +317,7 @@
         @submit="addBarangayDialog(true)">
         <div class="col-12 q-gutter-y-md">
           <q-img
-            :src="add_barangay_dialog.service.image ? getImageUrl(add_barangay_dialog.service.image) : '<?php echo get_template_directory_uri().'/assets/images/Butuan_Logo_Transparent.png';?>'"
+            :src="add_barangay_dialog.service.image ? add_barangay_dialog.preview : '<?php echo get_template_directory_uri().'/assets/images/Butuan_Logo_Transparent.png';?>'"
             height="180px"
             class="cursor-pointer"
             @click="$refs.featured_image.$el.click()"
@@ -321,15 +329,19 @@
             v-model="add_barangay_dialog.service.image"
             label="Service Image"
             accept=".jpg,image/*"
-            :rules="[val => !!val || 'Invalid Service Image']">
+            @input="() => {add_barangay_dialog.preview = getImageUrl(add_barangay_dialog.service.image)}"
+            :rules="[val => !!val || 'Invalid Service Image']"
+            hide-bottom-space>
           </q-file>
         </div>
         <div class="col-12">
           <q-input
+            outlined
             v-model="add_barangay_dialog.service.title"
             outlined
             placeholder="Service name"
-            :rules="[val => !!val && val.length > 0 || 'Invalid Service Name']">
+            :rules="[val => !!val && val.length > 0 || 'Invalid Service Name']"
+            hide-bottom-space>
           </q-input>
         </div>
         <div class="col-12">
@@ -346,7 +358,7 @@
         greedy
         class="row q-gutter-y-md"
         @submit="addBarangayDialog()">
-        <div class="col-12">
+        <div class="col-12 q-gutter-y-sm">
           <q-img
             :src="add_barangay_dialog.official.image_preview ? add_barangay_dialog.official.image_preview : '<?php echo get_template_directory_uri().'/assets/images/Butuan_Logo_Transparent.png';?>'"
             height="180px"
@@ -355,26 +367,33 @@
             contain>
           </q-img>
           <q-file
+            outlined
             ref="featured_image"
             v-model="add_barangay_dialog.official.image"
             label="Image"
             accept=".jpg,image/*"
-            :rules="[val => !!val || 'Invalid Image']">
+            @input="() => {add_barangay_dialog.official.image_preview = getImageUrl(add_barangay_dialog.official.image)}"
+            :rules="[val => !!val || 'Invalid Image']"
+            hide-bottom-space>
           </q-file>
         </div>
         <div class="col-12">
           <q-input
+            outlined
             v-model="add_barangay_dialog.official.name"
             label="Name"
-            :rules="[val => !!val && val.length > 0 || 'Invalid name']">
+            :rules="[val => !!val && val.length > 0 || 'Invalid name']"
+            hide-bottom-space>
           </q-input>
         </div>
         <div class="col-12">
           <q-select
+            outlined
             v-model="add_barangay_dialog.official.position"
             :options="form_barangay_positions"
             label="Position"
             :rules="[val => !!val || 'Invalid name']"
+            hide-bottom-space
             emit-value
             map-options></q-select>
         </div>

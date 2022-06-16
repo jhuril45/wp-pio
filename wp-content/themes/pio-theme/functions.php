@@ -21,7 +21,18 @@ require get_template_directory() . '/load-styles.php';
  */
 require get_template_directory() . '/custom-functions.php';
 require get_template_directory() . '/rest-functions.php';
-require get_template_directory() . '/rest-routes.php';
+
+require get_template_directory() . '/functions/post.php';
+require get_template_directory() . '/functions/carousel.php';
+require get_template_directory() . '/functions/tourism.php';
+require get_template_directory() . '/functions/report.php';
+require get_template_directory() . '/functions/bid_report.php';
+require get_template_directory() . '/functions/office.php';
+require get_template_directory() . '/functions/barangay.php';
+require get_template_directory() . '/functions/city_official.php';
+
+require get_template_directory() . '/routes.php';
+
 
 add_action("after_switch_theme", "cgb_create_tables");
 add_action("after_switch_theme", "cgb_create_pages");
@@ -53,6 +64,7 @@ function cgb_create_tables(){
       year int(10) NOT NULL,
       quarter int(10) DEFAULT NULL,
       path varchar(255) NOT NULL,
+      url varchar(255) DEFAULT NULL,
       type int(5) NOT NULL,
       PRIMARY KEY  (id),
       KEY file_path (path)
@@ -68,6 +80,7 @@ function cgb_create_tables(){
       month int(10) DEFAULT NULL,
       date_posted DATE DEFAULT NULL,
       path varchar(255) NOT NULL,
+      url varchar(255) DEFAULT NULL,
       type int(5) NOT NULL,
       mode int(5) DEFAULT NULL,
       PRIMARY KEY  (id),
@@ -91,7 +104,9 @@ function cgb_create_tables(){
       twitter varchar(255) DEFAULT NULL,
       messenger varchar(255) DEFAULT NULL,
       logo varchar(255) DEFAULT NULL,
+      logo_url varchar(255) DEFAULT NULL,
       org_structure varchar(255) DEFAULT NULL,
+      org_structure_url varchar(255) DEFAULT NULL,
       order_number int(10) DEFAULT NULL,
       is_published tinyint(1) DEFAULT NULL,
       PRIMARY KEY  (id),
@@ -105,6 +120,7 @@ function cgb_create_tables(){
       title varchar(255) NOT NULL,
       office_id int(10) NOT NULL,
       path varchar(255) NOT NULL,
+      url varchar(255) DEFAULT NULL,
       PRIMARY KEY  (id),
       KEY file_path (path)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
@@ -116,6 +132,7 @@ function cgb_create_tables(){
       title varchar(255) NOT NULL,
       office_id int(10) NOT NULL,
       path varchar(255) NOT NULL,
+      url varchar(255) DEFAULT NULL,
       PRIMARY KEY  (id),
       KEY file_path (path)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
@@ -134,6 +151,7 @@ function cgb_create_tables(){
       population int(25) DEFAULT NULL,
       landmark_name varchar(255) DEFAULT NULL,
       landmark_img varchar(255) DEFAULT NULL,
+      landmark_img_url varchar(255) DEFAULT NULL,
       PRIMARY KEY  (id),
       KEY file_path (landmark_img)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
@@ -146,6 +164,7 @@ function cgb_create_tables(){
       name varchar(255) NOT NULL,
       position varchar(255) NOT NULL,
       path varchar(255) NOT NULL,
+      url varchar(255) DEFAULT NULL,
       PRIMARY KEY  (id),
       KEY file_path (path)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
@@ -157,6 +176,7 @@ function cgb_create_tables(){
       title varchar(255) NOT NULL,
       barangay_id int(10) NOT NULL,
       path varchar(255) NOT NULL,
+      url varchar(255) DEFAULT NULL,
       PRIMARY KEY  (id),
       KEY file_path (path)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
@@ -172,6 +192,7 @@ function cgb_create_tables(){
       contact_no varchar(255) DEFAULT NULL,
       map_link varchar(255) DEFAULT NULL,
       path varchar(255) NOT NULL,
+      url varchar(255) DEFAULT NULL,
       PRIMARY KEY  (id),
       KEY file_path (path)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
