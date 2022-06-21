@@ -16,6 +16,8 @@
 # htaccess
 /.htaccess
 
+# Config
+/wp-config.php
 # All plugins
 #
 # Note: If you wish to whitelist plugins,
