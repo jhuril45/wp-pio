@@ -1,57 +1,121 @@
-<?php
-  wp_register_script('load-bids-script', get_template_directory_uri() . '/assets/js/load_bids.js',array ( 'jquery' ), 1.1, true);
-  wp_enqueue_script( 'load-bids-script');
-?>
 <q-card>
   <q-card-section class="q-px-sm q-py-md">
     <div class="row q-gutter-y-md">
       <div class="col-12">
         <q-table
           flat
-          title="Bids"
+          title="Bids and Awards"
           :data="bids_data"
           :columns="columns_report"
           row-key="name"
           :filter="filter"
-          :pagination.sync="pagination"
-          :rows-per-page-options="[0]"
-          hide-header
         >
           <template v-slot:top>
-            <div class="row full-width">
+            <?php if($pagename == 'dashboard'){?>
+              <div class="row full-width q-py-sm justify-end q-mb-sm">
+                <div class="col-shrink q-px-md">
+                  <q-btn
+                    size="sm"
+                    color="primary"
+                    padding="10px 15px"
+                    icon="add"
+                    href="<?php echo get_home_url().'/dashboard?tab=add-bid-report';?>"></q-btn>
+                </div>
+              </div>
+            <?php }?>
+            <div class="row full-width q-gutter-y-md">
               <div class="col-4 q-px-sm">
                 <q-select
                   dense
                   outlined
-                  v-model="transparency_type"
-                  :options="report_options"
-                  label="Report type"
+                  v-model="biding_type"
+                  :options="bid_report_options"
+                  label="Type"
                   emit-value
-                  map-options/>
+                  map-options></q-select>
               </div>
               <div class="col-4 q-px-sm">
                 <q-select
                   dense
                   outlined
-                  v-model="transparency_year"
+                  v-model="biding_year"
                   :options="['All',...year_options]"
-                  label="Year" />
+                  label="Year"></q-select>
               </div>
-              <div class="col-4 q-px-sm" v-if="transparency_type == 2">
+              <div class="col-4 q-px-sm">
                 <q-select
                   dense
                   outlined
-                  v-model="transparency_quarter"
-                  :options="quarter_options"
-                  label="Quarter"
+                  v-model="biding_month"
+                  :options="[{label:'All',value:0},...month_options]"
+                  label="Month"
                   emit-value
-                  map-options/>
+                  map-options></q-select>
+              </div>
+              <div class="col-4 q-px-sm">
+                <q-input outlined dense debounce="300" v-model="filter" placeholder="Search">
+                  <template v-slot:append>
+                    <q-icon name="search"></q-icon>
+                  </template>
+                </q-input>
               </div>
             </div>
           </template>
 
+          <template v-slot:header="props">
+            <q-tr :props="props">
+              <q-th
+                v-for="col in props.cols"
+                :key="col.name"
+                :props="props"
+              >
+                <span class="text-body2">
+                  {{ col.label }}
+                </span>
+              </q-th>
+              <q-th>
+                <span class="text-body2">
+                  Actions
+                </span>
+              </q-th>
+            </q-tr>
+          </template>
+
           <template v-slot:body="props">
-            <q-item :props="props" clickable>
+            <q-tr :props="props">
+              <q-td key="title" :props="props" class="text-primary text-weight-bold">
+                <q-icon
+                  size="sm"
+                  color="primary"
+                  name="description"></q-icon>
+                <span class="q-pl-sm">
+                  {{ props.row.title }} ({{ props.row.year }})
+                </span>
+              </q-td>
+              
+              <q-td class="text-center" >
+                <?php if($pagename == 'dashboard'){?>
+                 <q-btn
+                    v-if="page_name == 'dashboard'"
+                    size="sm"
+                    round
+                    color="primary"
+                    icon="edit"
+                    :href="'<?php echo get_home_url();?>/dashboard?tab=add-bid-report&id='+props.row.id">  
+                  </q-btn>
+                <?php }?>
+                <q-btn
+                  round
+                  color="primary"
+                  size="sm"
+                  icon="download"
+                  :href="props.row.path"
+                  :target="'_blank'">
+                </q-btn>
+              </q-td>
+              
+            </q-tr>
+            <q-item :props="props" clickable v-if="false">
               <q-item-section side top>
                 <q-icon
                   size="sm"

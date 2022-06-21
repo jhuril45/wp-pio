@@ -1,27 +1,31 @@
-<?php
-  wp_register_script('dashboard-script', get_template_directory_uri() . '/assets/js/dashboard.js',array ( 'jquery' ), 1.1, true);
-  wp_enqueue_script( 'dashboard-script');
-?>
-
 <q-card>
   <q-card-section class="q-px-sm q-py-md">
     <div class="row q-gutter-y-md">
-      <div class="col-12" v-if="posts">
+      <div class="col-12">
         <q-table
           flat
           title="Posts"
-          :data="posts.data"
-          :columns="posts.columns"
+          :data="posts"
+          :columns="posts_columns"
           row-key="title"
           :filter="filter"
           hide-header
         >
           <template v-slot:top-right>
-            <q-input outlined dense debounce="300" v-model="filter" placeholder="Search">
-              <template v-slot:append>
-                <q-icon name="search"></q-icon>
-              </template>
-            </q-input>
+            <div class="row q-gutter-x-sm">
+              <q-input outlined dense debounce="300" v-model="filter" placeholder="Search">
+                <template v-slot:append>
+                  <q-icon name="search"></q-icon>
+                </template>
+              </q-input>
+              <q-btn
+                size="xs"
+                color="primary"
+                padding="10px 15px"
+                icon="add"
+                href="<?php echo get_home_url().'/dashboard?tab=add-post';?>">
+              </q-btn>
+            </div>
           </template>
 
           <template v-slot:body="props">
@@ -37,6 +41,12 @@
                   <q-icon color="primary" name="edit">
                   </q-icon>
                 </a>
+              </q-item-section>
+              <q-item-section side top>
+                <q-btn padding="none" flat @click.prevent="copyToClipBoard('<?php echo get_home_url();?>/?p='+props.row.ID)">
+                  <q-icon color="primary" name="content_copy">
+                  </q-icon>
+                </q-btn>
               </q-item-section>
             </q-item>
           </template>

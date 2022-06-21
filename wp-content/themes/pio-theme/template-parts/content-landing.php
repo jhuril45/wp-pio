@@ -1,65 +1,34 @@
-<?php 
-$carousel_images = fetchCarouselImages();
-
-$data = get_posts( array( 
-  'post_type' => 'post',
-  'posts_per_page' => 5,
-  )
-);
-$recent_posts = [];
-foreach ($data as $key => $value) {
-  $post_thumbnail_id = get_post_thumbnail_id($value->ID);
-  if ( $post_thumbnail_id ) {
-    $src = wp_get_attachment_url( $attachment->ID, 'full');
-    $recent_src = wp_get_attachment_url( $post_thumbnail_id, 'full');
-    $value->fimg_url = $recent_src;
-  }else{
-    $value->fimg_url = get_template_directory_uri().'/assets/images/Butuan_Logo_Transparent.png';
-  }
-  array_push($recent_posts,$value);
-}
-?>
 <div class="full-width">
   <q-carousel
     animated
     v-model="slide"
     ref="carousel"
     :height="$q.screen.lt.sm ? '250px' : '600px'"
-    infinite
-  >
-    <?php 
-      if($carousel_images){
-      $index = 1;
-      foreach ($carousel_images as $key => $value) {
-    ?>
-    <q-carousel-slide class="q-pa-none" :name="<?php echo $index?>">
-      <q-img
-        src="<?php echo($value->path); ?>"
-        style="max-height:100%;width:100%;height:100%"
-        >
-        <?php if($index >= 4) {?>
-          <div class="text-body1" style="left:35%;top:50%;transform: translate(-50%,-50%);background:rgba(33, 150, 243,0.7)">
-            {{lorem}}
-            {{lorem}}
+    autoplay
+    infinite>
+
+    <template v-if="carousel_images.length">
+      <q-carousel-slide class="q-pa-none" :name="index+1" v-for="(carousel,index) in carousel_images" :key="'landing-carousel'+index">
+        <q-img
+          :src="carousel.path"
+          style="max-height:100%;width:100%;height:100%"
+          >
+          <div v-if="carousel.caption" :class="$q.screen.lt.sm ? '' : 'text-body1'" style="left:35%;top:50%;transform: translate(-50%,-50%);background:rgba(33, 150, 243,0.7)">
+            {{carousel.caption}}
           </div>
-        <?php } ?>
-      </q-img>
-    </q-carousel-slide>
-    <?php 
-        $index = $index + 1;
-      }
-    }else{
-    ?>
-    <q-carousel-slide class="q-pa-none" :name="1">
-      <q-img
-        src="<?php echo get_template_directory_uri().'/assets/images/ButuanOnDesign.png'; ?>"
-        style="max-height:100%;width:100%;height:100%"
-        :contain="$q.screen.lt.sm"></q-img>
-    </q-carousel-slide>
-    <?php 
-    }
-    ?>
-    <template v-slot:control v-if="Boolean(<?php echo(count($carousel_images) > 1);?>)">
+        </q-img>
+      </q-carousel-slide>
+    </template>
+    <template v-else>
+      <q-carousel-slide class="q-pa-none" :name="1">
+        <q-img
+          :src="template_dir+'/assets/images/ButuanOnDesign.png'"
+          style="max-height:100%;width:100%;height:100%"
+          :contain="$q.screen.lt.sm"></q-img>
+      </q-carousel-slide>
+    </template>
+
+    <template v-slot:control v-if="carousel_images.length">
       <q-carousel-control
         position="bottom-right"
         :offset="[18, 18]"
@@ -93,7 +62,7 @@ foreach ($data as $key => $value) {
           <q-img
             cover
             height="100%"
-            :src="flip.image">
+            :src="'<?php echo get_template_directory_uri().'/assets/images/'; ?>'+flip.image">
             <div class="absolute-full flex flex-center" style="opacity: 0.7;" :class="flip.class_front ? flip.class_front : ''">
               
             </div>
@@ -110,6 +79,7 @@ foreach ($data as $key => $value) {
             <div class="text-white text-center q-px-sm">
               <p>{{flip.description}}</p>
               <q-btn
+                v-if="false"
                 rounded
                 color="primary"
                 label="View More"
@@ -148,7 +118,7 @@ foreach ($data as $key => $value) {
 
 <div class="full-width">
   <div class="row relative-position">
-    <q-img cover src="<?php echo get_template_directory_uri().'/assets/images/city-hall-drone.png'; ?>" height="500px">
+    <q-img cover :src="template_dir + '/assets/images/city-hall-drone.png'" height="500px">
       <div class="absolute-left full-width row justify-end" style="background:none !important;">
         <div class="col-12 col-md-6 rounded-borders q-pa-lg q-my-lg" style="background: rgba(79, 195, 247, 0.8)">
           <div class="text-h4 text-white text-start">DEPARTMENTS & OFFICES</div>
@@ -198,36 +168,35 @@ foreach ($data as $key => $value) {
   </div>
 </div>
 
+<!-- Latest news must be dynamic -->
 <div class="full-width row justify-start" :class="$q.screen.lt.sm ? 'q-my-lg q-px-md' : 'q-my-xl q-pa-xl'">
   <div class="col-12 text-center q-my-md text-bold" :class="$q.screen.lt.sm ? 'text-h5' : 'text-h4'">
     LATEST NEWS
   </div>
   <div class="col-12 row q-pt-md">
-    <?php
-      foreach($recent_posts as $key => $value) { ?>
-      <div class="col-6 col-md-3 row q-gutter-y-sm q-px-sm">
-        <div class="col-12 q-pt-md">
-          <q-card class="news-card" >
-            <a href="<?php echo($value->guid);?>">
-              <q-img
-                cover
-                height="200px"
-                src="<?php echo($value->fimg_url);?>"
-                basic
-              >
-                <div class="absolute-bottom text-caption text-start">
-                  <q-item-label lines="3" class="q-px-none q-py-none">
-                    <?php echo $value->post_title?>
-                  </q-item-label>
-                </div>
-              </q-img>
-            </a>
-          </q-card>
-        </div>
+    <div
+      v-for="(post,index) in recent_posts"
+      :key="'landing_recent'+index"
+      class="col-6 col-md-3 row q-gutter-y-sm q-px-sm">
+      <div class="col-12 q-pt-md">
+        <q-card class="news-card" >
+          <a :href="post.guid">
+            <q-img
+              cover
+              height="200px"
+              :src="post.fimg_url"
+              basic
+            >
+              <div class="absolute-bottom text-caption text-start">
+                <q-item-label lines="3" class="q-px-none q-py-none">
+                  {{post.post_title}}
+                </q-item-label>
+              </div>
+            </q-img>
+          </a>
+        </q-card>
       </div>
-    <?php
-      }
-    ?>
+    </div>
   </div>
 </div>
 
@@ -280,36 +249,41 @@ foreach ($data as $key => $value) {
 </div>
 
 <!-- Links must be dynamic -->
-<div class="full-width row justify-start" :class="$q.screen.lt.sm ? 'q-my-lg q-px-md' : 'q-my-xl q-pa-xl'">
+<div class="full-width row justify-around" :class="$q.screen.lt.sm ? 'q-my-lg q-px-md' : 'q-my-xl q-pa-xl'">
   <div class="col-12 row justify-center q-mt-lg" :class="$q.screen.lt.sm ? 'q-gutter-y-xl' : 'q-gutter-x-xl'">
-    <div class="q-px-sm" :class="$q.screen.lt.sm ? 'col-12 row justify-center' : 'col-auto'">
+    <div class="" :class="$q.screen.lt.sm ? 'col-12 row justify-center' : 'col-grow'">
       <a href="https://www.gov.ph/">
-        <img src="https://www.davaocity.gov.ph/wp-content/uploads/2018/10/ph_logo.png" style="height:80px">
+        <img src="<?php echo(get_template_directory_uri() . '/assets/images/govph.png')?>" style="height:70px">
       </a>
     </div>
-    <div class="q-px-sm" :class="$q.screen.lt.sm ? 'col-12 row justify-center' : 'col-auto'">
+    <div class="q-px-lg" :class="$q.screen.lt.sm ? 'col-12 row justify-center' : 'col-grow'">
       <a href="https://www.dti.gov.ph/">
-        <img src="https://www.davaocity.gov.ph/wp-content/uploads/2018/10/ph_logo_2.png" style="height:80px">
+        <img src="<?php echo(get_template_directory_uri() . '/assets/images/dti.png')?>" style="height:70px">
       </a>
     </div>
-    <div class="q-px-sm" :class="$q.screen.lt.sm ? 'col-12 row justify-center' : 'col-auto'">
+    <div class="q-px-lg" :class="$q.screen.lt.sm ? 'col-12 row justify-center' : 'col-grow'">
       <a href="https://www.deped.gov.ph/">
-        <img src="https://www.davaocity.gov.ph/wp-content/uploads/2018/10/ph_logo_3.png" style="height:80px">
+        <img src="<?php echo(get_template_directory_uri() . '/assets/images/deped.png')?>" style="height:70px">
       </a>
     </div>
-    <div class="q-px-sm" :class="$q.screen.lt.sm ? 'col-12 row justify-center' : 'col-auto'">
+    <div class="q-px-lg" :class="$q.screen.lt.sm ? 'col-12 row justify-center' : 'col-grow'">
       <a href="https://dfa.gov.ph/">
-        <img src="https://www.davaocity.gov.ph/wp-content/uploads/2018/10/ph_logo_4.png" style="height:80px">
+        <img src="<?php echo(get_template_directory_uri() . '/assets/images/dfa.png')?>" style="height:70px">
       </a>
     </div>
-    <div class="q-px-sm" :class="$q.screen.lt.sm ? 'col-12 row justify-center' : 'col-auto'">
+    <div class="q-px-lg" :class="$q.screen.lt.sm ? 'col-12 row justify-center' : 'col-grow'">
       <a href="https://www.dilg.gov.ph/">
-        <img src="https://www.davaocity.gov.ph/wp-content/uploads/2018/10/ph_logo_5.png" style="height:80px">
+        <img src="<?php echo(get_template_directory_uri() . '/assets/images/dilg.png')?>" style="height:70px">
       </a>
     </div>
-    <div class="q-px-sm" :class="$q.screen.lt.sm ? 'col-12 row justify-center' : 'col-auto'">
+    <div class="q-px-lg" :class="$q.screen.lt.sm ? 'col-12 row justify-center' : 'col-grow'">
       <a href="http://tourism.gov.ph/">
-        <img src="https://www.davaocity.gov.ph/wp-content/uploads/2018/10/ph_logo_6.png" style="height:80px">
+        <img src="<?php echo(get_template_directory_uri() . '/assets/images/dot.png')?>" style="height:70px">
+      </a>
+    </div>
+    <div class="" :class="$q.screen.lt.sm ? 'col-12 row justify-center' : 'col-grow'">
+      <a href="<?php echo(get_home_url() . '/transparency')?>">
+        <img src="<?php echo(get_template_directory_uri() . '/assets/images/transparency.png')?>" style="height:70px">
       </a>
     </div>
   </div>
@@ -346,7 +320,7 @@ foreach ($data as $key => $value) {
 
         <q-tab-panel name="offices" class="q-pa-none">
           <q-list class="q-py-none" separator>
-            <q-item clickable v-ripple v-for="off in 4" :key="'office-'+off" href="<?php echo get_home_url().'/offices-pio' ?>">
+            <q-item clickable v-ripple v-for="off in 4" :key="'office-'+off" href="<?php echo get_home_url().'/offices' ?>">
               <q-item-section avatar top>
                 <q-avatar>
                   <img src="<?php echo get_template_directory_uri().'/assets/images/Butuan_Logo_Transparent.png'; ?>">

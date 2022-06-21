@@ -124,7 +124,7 @@ class Cgb_Carousel_Admin {
     wp_register_script('vue-script', plugin_dir_url( __FILE__ ) . 'js/vue.min.js',array ( 'jquery' ), 1.1, true);
     wp_register_script('quasar-script', plugin_dir_url( __FILE__ ) . 'js/quasar.min.js',array ( 'jquery' ), 1.1, true);
     wp_register_script('axios', plugin_dir_url( __FILE__ ) . 'js/axios.min.js',array ( 'jquery' ), 1.1, true);
-    wp_register_script('vue-main', plugin_dir_url( __FILE__ ) . 'js/main.js',array ( 'jquery' ), 1.1, true);
+    wp_register_script('vue-main', plugin_dir_url( __FILE__ ) . 'js/cgb_main.js',array ( 'jquery' ), 1.1, true);
 
     wp_enqueue_script( 'vue-script');
     wp_enqueue_script( 'quasar-script');

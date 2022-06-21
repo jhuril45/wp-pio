@@ -49,6 +49,9 @@
               ref="editor_ref"
               v-model="form_post.content"
               @paste.native="evt => pasteCapture(evt)"
+              :toolbar="[
+                ['bold', 'italic', 'underline']
+              ]"
               height="50vh">
             </q-editor>
             <q-input

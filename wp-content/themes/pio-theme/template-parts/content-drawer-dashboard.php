@@ -1,5 +1,5 @@
 <q-drawer
-  v-model="drawer_left"
+  v-model="dashboard_drawer"
   :width="250"
   side="left"
   bordered
@@ -27,47 +27,72 @@
         </q-item-section>
       </q-item>
       <q-separator></q-separator>
-      <q-item clickable v-ripple href="<?php echo get_home_url().'/dashboard?tab=add-post';?>">
-        <q-item-section side>
-          <q-icon :name="'add'"></q-icon>
-        </q-item-section>
-        <q-item-section>
-          <q-item-label class="text-body2 text-bold">
-            Add Post
-          </q-item-label>
-        </q-item-section>
-      </q-item>
-      <q-separator></q-separator>
-      <q-item clickable v-ripple href="<?php echo get_home_url().'/dashboard?tab=add-report';?>">
-        <q-item-section side>
-          <q-icon :name="'picture_as_pdf'"></q-icon>
-        </q-item-section>
-        <q-item-section>
-          <q-item-label class="text-body2 text-bold">
-            Add Report
-          </q-item-label>
-        </q-item-section>
-      </q-item>
-      <q-item clickable v-ripple href="<?php echo get_home_url().'/dashboard?tab=add-bid-report';?>">
-        <q-item-section side>
-          <q-icon :name="'picture_as_pdf'"></q-icon>
-        </q-item-section>
-        <q-item-section>
-          <q-item-label class="text-body2 text-bold">
-            Add Bid Report
-          </q-item-label>
-        </q-item-section>
-      </q-item>
-      <q-item clickable v-ripple href="<?php echo wp_logout_url();?>">
-        <q-item-section side>
-          <q-icon :name="'picture_as_pdf'"></q-icon>
-        </q-item-section>
-        <q-item-section>
-          <q-item-label class="text-body2 text-bold">
-            Logout
-          </q-item-label>
-        </q-item-section>
-      </q-item>
+      <template v-for="(menu,index) in dashboard_drawer_menu">
+        <q-expansion-item
+          v-if="menu.is_menu"
+          expand-separator
+          :icon="menu.icon"
+          :label="menu.title"
+          :header-class="menu.is_page ? 'text-primary' : ''"
+          :expand-icon-class="menu.is_page ? 'text-primary' : ''">
+          <template v-slot:header>
+            <q-item-section side>
+              <q-icon
+                :name="menu.icon"
+                :color="menu.is_page ? 'primary' : ''"></q-icon>
+            </q-item-section>
+
+            <q-item-section>
+              <q-item-label class="text-body2 text-bold" :class=" menu.is_page ? 'text-primary' : ''">
+                {{menu.title}}
+              </q-item-label>
+            </q-item-section>
+          </template>
+          <q-list separator>
+            <q-item
+              clickable
+              v-ripple
+              v-for="(sub,index2) in menu.sub_menu"
+              :href="sub.url"
+              :key="'dashboard-sub-menu-'+index2">
+              <q-item-section
+                class="q-px-md"
+                side>
+                <q-icon
+                  :name="sub.icon"
+                  :class=" sub.is_page ? 'text-primary' : ''"></q-icon>
+              </q-item-section>
+              <q-item-section>
+                <q-item-label
+                  class="text-body2 text-bold"
+                  :class=" sub.is_page ? 'text-primary' : ''">
+                  {{sub.title}}
+                </q-item-label>
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </q-expansion-item>
+        <q-item
+          v-else
+          clickable
+          v-ripple
+          :href="menu.url"
+          :key="'dashboard-menu-'+index">
+          <q-item-section side>
+            <q-icon
+              :name="menu.icon"
+              :class=" menu.is_page ? 'text-primary' : ''"></q-icon>
+          </q-item-section>
+          <q-item-section>
+            <q-item-label
+              class="text-body2 text-bold"
+              :class=" menu.is_page ? 'text-primary' : ''">
+              {{menu.title}}
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+        <q-separator></q-separator>
+      </template>
     </q-list>
   </q-scroll-area>
 </q-drawer>

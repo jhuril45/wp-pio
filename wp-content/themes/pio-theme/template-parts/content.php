@@ -1,4 +1,6 @@
 <?php
+  $term = get_term_by('name', 'News', 'category');
+  if(has_category($term->term_id,$post->ID)){
   $featured_image_url = get_the_post_thumbnail_url($post->ID);
   $post_date = date('F d Y, l  h:i A',strtotime($post->post_date));
   $attachments = get_posts( array( 
@@ -27,6 +29,7 @@
     'post_type' => 'post',
     'posts_per_page' => 5,
     'exclude' => array($post->ID),
+    'category' => $term->term_id,
     )
   );
   $recent_posts = [];
@@ -42,8 +45,8 @@
     array_push($recent_posts,$value);
   }
 ?>
-<div class="row justify-end">
-  <div class="col-md-8 col-12" :class="$q.screen.lt.sm ? 'q-py-sm q-px-md' : 'q-py-lg q-px-xl'">
+<div class="row" :class="<?php echo(count($recent_posts))?> > 0 ? 'justify-end' : 'justify-center'">
+  <div class="col-md-7 col-12" :class="$q.screen.lt.sm ? 'q-py-sm q-px-md' : 'q-py-lg q-px-xl'">
     <q-card flat :class="$q.screen.lt.sm ? '' : ''">
       <q-card-section class="">
         <div class="post-title">
@@ -62,7 +65,7 @@
           infinite
           :autoplay="false"
           :padding="true"
-        >
+          height="300px">
           <?php for ( $index = 0 ; $index < count($attachments) ; $index++ ) {?>
             <q-carousel-slide
               class="q-pa-none carousel-img cursor-pointer"
@@ -71,12 +74,11 @@
               @click="post_attachments=true">
             </q-carousel-slide>
           <?php }?>
-          <template v-slot:control>
+          <template v-slot:control v-if="<?php echo(count($attachments))?> > 1">
             <q-carousel-control
               position="bottom-right"
               :offset="[18, 18]"
-              class="q-gutter-xs"
-            >
+              class="q-gutter-xs">
               <q-btn
                 push round dense color="primary" text-color="white" icon="arrow_left"
                 @click="$refs.carousel.previous()"
@@ -128,3 +130,7 @@
     ?>
   </div>
 </div>
+<?php }
+else{
+  get_template_part('template-parts/content', '404');
+}?>
