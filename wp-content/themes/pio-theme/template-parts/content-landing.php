@@ -253,37 +253,37 @@
   <div class="col-12 row justify-center q-mt-lg" :class="$q.screen.lt.sm ? 'q-gutter-y-xl' : 'q-gutter-x-xl'">
     <div class="" :class="$q.screen.lt.sm ? 'col-12 row justify-center' : 'col-grow'">
       <a href="https://www.gov.ph/">
-        <img src="https://www.davaocity.gov.ph/wp-content/uploads/2018/10/ph_logo.png" style="height:70px">
+        <img src="<?php echo(get_template_directory_uri() . '/assets/images/govph.png')?>" style="height:70px">
       </a>
     </div>
     <div class="q-px-lg" :class="$q.screen.lt.sm ? 'col-12 row justify-center' : 'col-grow'">
       <a href="https://www.dti.gov.ph/">
-        <img src="https://www.davaocity.gov.ph/wp-content/uploads/2018/10/ph_logo_2.png" style="height:70px">
+        <img src="<?php echo(get_template_directory_uri() . '/assets/images/dti.png')?>" style="height:70px">
       </a>
     </div>
     <div class="q-px-lg" :class="$q.screen.lt.sm ? 'col-12 row justify-center' : 'col-grow'">
       <a href="https://www.deped.gov.ph/">
-        <img src="https://www.davaocity.gov.ph/wp-content/uploads/2018/10/ph_logo_3.png" style="height:70px">
+        <img src="<?php echo(get_template_directory_uri() . '/assets/images/deped.png')?>" style="height:70px">
       </a>
     </div>
     <div class="q-px-lg" :class="$q.screen.lt.sm ? 'col-12 row justify-center' : 'col-grow'">
       <a href="https://dfa.gov.ph/">
-        <img src="https://www.davaocity.gov.ph/wp-content/uploads/2018/10/ph_logo_4.png" style="height:70px">
+        <img src="<?php echo(get_template_directory_uri() . '/assets/images/dfa.png')?>" style="height:70px">
       </a>
     </div>
     <div class="q-px-lg" :class="$q.screen.lt.sm ? 'col-12 row justify-center' : 'col-grow'">
       <a href="https://www.dilg.gov.ph/">
-        <img src="https://www.davaocity.gov.ph/wp-content/uploads/2018/10/ph_logo_5.png" style="height:70px">
+        <img src="<?php echo(get_template_directory_uri() . '/assets/images/dilg.png')?>" style="height:70px">
       </a>
     </div>
     <div class="q-px-lg" :class="$q.screen.lt.sm ? 'col-12 row justify-center' : 'col-grow'">
       <a href="http://tourism.gov.ph/">
-        <img src="https://www.davaocity.gov.ph/wp-content/uploads/2018/10/ph_logo_6.png" style="height:70px">
+        <img src="<?php echo(get_template_directory_uri() . '/assets/images/dot.png')?>" style="height:70px">
       </a>
     </div>
     <div class="" :class="$q.screen.lt.sm ? 'col-12 row justify-center' : 'col-grow'">
-      <a href="http://tourism.gov.ph/">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Department_of_Budget_and_Management_%28DBM%29.svg/1200px-Department_of_Budget_and_Management_%28DBM%29.svg.png" style="height:70px">
+      <a href="<?php echo(get_home_url() . '/transparency')?>">
+        <img src="<?php echo(get_template_directory_uri() . '/assets/images/transparency.png')?>" style="height:70px">
       </a>
     </div>
   </div>
