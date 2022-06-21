@@ -49,7 +49,7 @@
       color="primary"
       @click="drawer_left = !drawer_left">
     </q-btn>
-    <div class="row items-center full-height q-gutter-x-sm">
+    <div class="row items-center full-height q-gutter-x-sm full-width">
       <div class="col-shrink">
         <a href="<?php echo get_home_url() ?>">
           <q-img
@@ -60,7 +60,7 @@
             :src="header_logo" />
         </a>
       </div>
-      <div class="row q-gutter-x-sm" v-if="$q.screen.gt.xs">
+      <div class="col-shrink row q-gutter-x-sm " v-if="$q.screen.gt.xs">
         <div class="col-auto" v-for="(link,index) in header_menus" :key="'header-menu-'+index">
           <q-btn
             flat
@@ -95,19 +95,21 @@
             <span class="link-item" :class="link.slug == page_name ? 'active' : ''">{{link.title}}</span>
           </q-btn>
         </div>
-        
-        <ul class="header-links" v-if="false">
-          <li
-            v-for="(link,index) in header_menus"
-            :key="'header-menu-'+index">
-            <a
-              :href="link.url ? link.url : ''"
-              style="text-decoration:none"
-              :class="link.object_slug == 'home' ? 'active' : ''">
-              {{link.title}}
-            </a>
-          </li>
-        </ul>
+      </div>
+      <q-space></q-space>
+      <div class="col-auto">
+        <q-form
+        @submit="searchPage(search)">
+          <q-input
+            v-model="search"
+            placeholder="Search"
+            dense
+            outlined>
+            <template v-slot:prepend>
+              <q-icon name="search"/>
+            </template>
+          </q-input>
+        </q-form>
       </div>
     </div>
   </q-toolbar>

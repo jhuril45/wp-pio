@@ -1,14 +1,14 @@
 <?php
-function fetchOffices($office_id=null) {
+function fetchOffices($id=null,$is_post = false) {
   global $wpdb;
   $table_name = $wpdb->prefix . "offices";
-  if(isset($office_id)){
-    $office = $wpdb->get_row("SELECT * FROM $table_name WHERE id = $office_id");
+  if(isset($id)){
+    $office = $is_post ? $wpdb->get_row("SELECT * FROM $table_name WHERE post_id = $id") : $wpdb->get_row("SELECT * FROM $table_name WHERE id = $id");
     if(empty($office)){
       return null;
     }
-    $office->services = fetchOfficeServices($office_id);
-    $office->forms = fetchOfficeForms($office_id);
+    $office->services = fetchOfficeServices($office->id);
+    $office->forms = fetchOfficeForms($office->id);
     if($office->facebook){
       $office->messenger = explode('www.facebook.com/',$office->facebook)[1];
     }
@@ -79,6 +79,18 @@ function submitOffice() {
       $data['logo_url'] = $logo ? $logo['file'] : null;
       $data['org_structure'] = $org_structure ? $org_structure['url'] : null;
       $data['org_structure_url'] = $org_structure ? $org_structure['file'] : null;
+      $data['created_at'] = date("Y-m-d h:i:sa");
+      
+      $term = get_term_by('name', 'Offices', 'category');
+      $post = wp_insert_post(
+        array(
+          'post_title' => $_POST['title'],
+          'post_content' => $_POST['title'],
+          'post_status' => 'publish',
+          'post_category' => array($term->term_id),
+        )
+      );
+      $data['post_id'] = $post;
 
       $office = $wpdb->insert(
         $table_name,

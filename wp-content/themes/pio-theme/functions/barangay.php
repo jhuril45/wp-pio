@@ -1,14 +1,14 @@
 <?php
-function fetchBarangays($id=null,$is_edit=false){
+function fetchBarangays($id=null,$is_edit=false,$is_post = false){
   if($id){
     global $wpdb;
     $table_name = $wpdb->prefix . "barangays";
-    $barangay = $wpdb->get_row("SELECT * FROM $table_name WHERE id = $id");
+    $barangay = $is_post ? $wpdb->get_row("SELECT * FROM $table_name WHERE post_id = $id") : $wpdb->get_row("SELECT * FROM $table_name WHERE id = $id");
     if(empty($barangay)){
       return null;
     }
-    $officials = getBarangayOfficials($id);
-    $barangay->services = getBarangayServices($id);
+    $officials = getBarangayOfficials($barangay->id);
+    $barangay->services = getBarangayServices($barangay->id);
     if($is_edit){
       $barangay->officials = $officials;
     }else{
@@ -82,6 +82,18 @@ function submitBarangay() {
       $data['landmark_name'] = $_POST['landmark_name'] ? $_POST['landmark_name'] : null;
       $data['landmark_img'] = $landmark_image ? $landmark_image['url'] : null;
       $data['landmark_img_url'] = $landmark_image ? $landmark_image['file'] : null;
+      $data['created_at'] = date("Y-m-d h:i:sa");
+
+      $term = get_term_by('name', 'Barangay', 'category');
+      $post = wp_insert_post(
+        array(
+          'post_title' => $_POST['title'],
+          'post_content' => $_POST['title'],
+          'post_status' => 'publish',
+          'post_category' => array($term->term_id),
+        )
+      );
+      $data['post_id'] = $post;
       $wpdb->insert($table_name, $data);
     }
 

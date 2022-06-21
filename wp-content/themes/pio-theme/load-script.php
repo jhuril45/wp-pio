@@ -3,7 +3,8 @@ function add_script()
 {
   global $pagename;
 
-  wp_register_script( 'vue-script', 'https://cdn.jsdelivr.net/npm/vue/dist/vue.js',array ( 'jquery' ), 1.1, true);
+  // wp_register_script( 'vue-script', 'https://cdn.jsdelivr.net/npm/vue/dist/vue.js',array ( 'jquery' ), 1.1, true);
+  wp_register_script('vue-script', get_template_directory_uri() . '/assets/js/vue.min.js',array ( 'jquery' ), 1.1, true);
   wp_register_script('quasar-script', get_template_directory_uri() . '/assets/js/quasar.min.js',array ( 'jquery' ), 1.1, true);
   // wp_register_script('quasar-fontawesome', get_template_directory_uri() . '/assets/js/quasar-fontawesome5.min.js',array ( 'jquery' ), 1.1, true);
   
@@ -37,6 +38,7 @@ function add_script()
       'city_barangays' => get_query_var( 'tab' ) && get_query_var( 'tab' ) == 'barangays' ? fetchBarangays() : [],
       'barangay' => get_query_var( 'tab' ) && get_query_var( 'id' ) && get_query_var( 'tab' ) == 'add-barangay' ? fetchBarangays(get_query_var( 'id' ),true) : '',
       'places_to_stay' => fetchTourism(),
+      'posts' => getRecentPosts(),
       
       'places_to_go' => fetchTourism(false),
       'city_tourism' => get_query_var( 'tab' ) && get_query_var( 'tab' ) == 'tourism' ? fetchTourism(false,0,true) : [],
@@ -47,6 +49,10 @@ function add_script()
     ];
   }else{
     wp_register_script('vue-main', get_template_directory_uri() . '/assets/js/landing_main.js',array ( 'jquery' ), 1.1, true);
+    $office = get_query_var( 'office' ) ? fetchOffices(get_query_var( 'office' ),get_query_var( 'searched' )) : null;
+    $barangay = get_query_var( 'barangay' ) ? fetchBarangays(get_query_var( 'barangay' ),false,get_query_var( 'searched' )) : null;
+    
+
     $page_data = [
       'home_url' => get_home_url(),
       'nonce' => wp_create_nonce('wp_rest'),
@@ -60,13 +66,14 @@ function add_script()
       'offices' => $pagename == 'offices' ? fetchOffices() : [],
       'reports' => $pagename == 'transparency' ? fetchReports() : [],
       'bids' => $pagename == 'bids' ? fetchBids() : [],
-      'office' => get_query_var( 'office' ) ? fetchOffices(get_query_var( 'office' )) : '',
-      'barangay' => get_query_var( 'barangay' ) ? fetchBarangays(get_query_var( 'barangay' )) : '',
+      'office' => $office,
+      'barangay' => $barangay,
       'city_officials' => $pagename == 'city-officials' ? fetchCityOfficials() : '',
       'city_barangays' => $pagename == 'barangays' ? fetchBarangays() : '',
       'places_to_stay' => fetchTourism(),
       'places_to_go' => fetchTourism(false),
       'header_logo' => get_template_directory_uri().'/assets/images/Butuan_Logo_Transparent.png',
+      'searched_contents' => $pagename == 'contents' ? searchContents(get_query_var( 'search' )) : [],
     ];
   }
   wp_enqueue_script( 'vue-main');

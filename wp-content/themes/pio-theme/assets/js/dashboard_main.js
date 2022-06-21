@@ -13,10 +13,22 @@ window.vue = new Vue({
   },
   data() {
     return {
+      posts: [],
       ...Main,
       biding_type: 1,
       biding_year: 'All',
       biding_month: 0,
+      posts_columns: [
+        {
+          name: 'post_title',
+          required: true,
+          label: 'Title',
+          align: 'left',
+          field: row => row.post_title,
+          format: val => `${val}`,
+          sortable: false
+        },
+      ],
       add_office_dialog: {
         open: false,
         is_service: true,
@@ -114,7 +126,7 @@ window.vue = new Vue({
       reportSource: null,
       tab: 'description',
       drawer_left: false,
-      posts: null,
+      dashboard_drawer: false,
       page_dialog: {
         open: false,
         data: {},
@@ -486,7 +498,6 @@ window.vue = new Vue({
   },
   mounted(){
     console.log(Main)
-    console.log(window.Quasar)
     this.form_office.logo_preview = Main.template_dir + '/assets/images/Butuan_Logo_Transparent.png'
     this.form_office.org_structure_preview = Main.template_dir + '/assets/images/Butuan_Logo_Transparent.png'
     this.form_barangay.landmark_preview = Main.template_dir + '/assets/images/Butuan_Logo_Transparent.png'
@@ -828,7 +839,31 @@ window.vue = new Vue({
         this.$nextTick(() => {
           this.$refs.add_tourism_form.resetValidation()
         })
+      } else if(type == 'office'){
+        this.form_office = {
+          id: null,
+          title: '',
+          logo: null,
+          logo_preview: null,
+          org_structure: null,
+          org_structure_preview: null,
+          services: [],
+          mandate: '',
+          head: '',
+          assistant: '',
+          description: '',
+          instagram: '',
+          facebook: '',
+          twitter: '',
+          youtube: '',
+          email: '',
+          forms: [],
+        }
+        this.$nextTick(() => {
+          this.$refs.add_office_form.resetValidation()
+        })
       }
+      this.form_step = 1
     },
     addedFile(file,is_attachments=false){
       if(!is_attachments){
@@ -1039,14 +1074,11 @@ window.vue = new Vue({
       }
       formData.append('title',this.form_office.title)
       formData.append('mandate',this.form_office.mandate)
-
       formData.append('facebook',this.form_office.facebook)
       formData.append('instagram',this.form_office.instagram)
       formData.append('twitter',this.form_office.twitter)
       formData.append('youtube',this.form_office.youtube)
       formData.append('email',this.form_office.email)
-
-      
       formData.append('logo',this.form_office.logo)
       formData.append('org_structure',this.form_office.org_structure)
       formData.append('head',this.form_office.head)
@@ -1065,6 +1097,7 @@ window.vue = new Vue({
       window.axios.post(settings.API_BASE_PATH+'myplugin/v1/add-office',formData)
       .then((response) => {
         console.log(response.data)
+        if(!this.form_office.id) this.resetForm('office')
         this.loading = false
       })
       .catch((error) => {
@@ -1323,8 +1356,8 @@ window.vue = new Vue({
             var index = this.form_barangay.services.findIndex(x => x.id == data.id)
             if(index >= 0) this.form_barangay.services.splice(index,1)
           }else{
-            var index = this.form_barangay.forms.findIndex(x => x.id == data.id)
-            if(index >= 0) this.form_barangay.forms.splice(index,1)
+            var index = this.form_barangay.officials.findIndex(x => x.id == data.id)
+            if(index >= 0) this.form_barangay.officials.splice(index,1)
           }
         })
         .catch((error) => {

@@ -2,10 +2,6 @@
 if(!is_user_logged_in()){
   wp_redirect( wp_login_url() );
 }else{
-  wp_localize_script('vue-main', 'Rest', [
-    'nonce' => wp_create_nonce('wp_rest'),
-  ]);
-  
   get_header();
   if(get_query_var( 'tab' )){
     if(get_query_var( 'tab' ) == 'carousel'){?>

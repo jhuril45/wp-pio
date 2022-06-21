@@ -15,6 +15,7 @@ window.vue = new Vue({
     return {
       ...Main,
       office_dialog: false,
+      search: '',
       biding_type: 1,
       biding_year: 'All',
       biding_month: 0,
@@ -351,6 +352,21 @@ window.vue = new Vue({
     }
   },
   methods: {
+    searchPage(data){
+      // if(this.loading) return
+      // this.loading = true
+      // const formData = new FormData()
+      // formData.append('search',data)
+      // window.axios.post(settings.API_BASE_PATH+'myplugin/v1/search-page',formData)
+      // .then((response) => {
+      //   console.log(response.data)
+      //   this.loading = false
+      // })
+      // .catch((error) => {
+      //   this.loading = false
+      // })
+      window.location.replace(this.home_url+'/contents?search='+data)
+    },
     openPageDialog(data){
       console.log(data)
     },

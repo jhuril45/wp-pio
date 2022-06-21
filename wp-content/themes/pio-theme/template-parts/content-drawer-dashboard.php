@@ -1,5 +1,5 @@
 <q-drawer
-  v-model="drawer_left"
+  v-model="dashboard_drawer"
   :width="250"
   side="left"
   bordered

@@ -30,16 +30,6 @@
         $data['path'] = $file['url'];
         $data['url'] = $file['file'];
       }
-      // $post = wp_insert_post(
-      //   array(
-      //     'ID' => $_POST['id'] ? $_POST['id'] : 0,
-      //     'post_title' => $_POST['title'],
-      //     'post_content' => '',
-      //     'post_status' => 'publish',
-      //     // 'post_category' => array($term->term_id),
-      //     'post_type' => 'bids',
-      //   )
-      // );
       if($id){
         $data_where = array('id' => $_POST['id']);
         $prev = $wpdb->get_row("SELECT * FROM $table_name WHERE id = $id");
@@ -50,6 +40,17 @@
           }
         }
       }else{
+        $data['created_at'] = date("Y-m-d h:i:sa");
+        // $term = get_term_by('name', 'Reports', 'category');
+        // $post = wp_insert_post(
+        //   array(
+        //     'post_title' => $_POST['title'],
+        //     'post_content' => $_POST['title'],
+        //     'post_status' => 'publish',
+        //     'post_category' => array($term->term_id),
+        //   )
+        // );
+        // $data['post_id'] = $post;
         $report = $wpdb->insert($table_name,$data);
       }
   
@@ -77,10 +78,10 @@
     }
   }
 
-  function getReport($id,$is_bid=false) {
+  function getReport($id,$is_bid=false,$is_post=false) {
     global $wpdb;
     $table_name = $wpdb->prefix . ($is_bid  ? 'bid_reports' : 'reports');
-    $report = $wpdb->get_row("SELECT * FROM $table_name WHERE id = $id");
+    $report = $is_post ? $wpdb->get_row("SELECT * FROM $table_name WHERE post_id = $id") : $wpdb->get_row("SELECT * FROM $table_name WHERE id = $id");
     
     if(empty($report)){
       return null;

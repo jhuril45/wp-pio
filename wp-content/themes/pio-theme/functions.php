@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set("Asia/Manila");
 add_theme_support( 'html5', array( 'navigation-widgets' ) );
 add_theme_support('custom-header');
 add_theme_support('menus');
@@ -66,6 +67,8 @@ function cgb_create_tables(){
       path varchar(255) NOT NULL,
       url varchar(255) DEFAULT NULL,
       type int(5) NOT NULL,
+      created_at timestamp DEFAULT NULL,
+      post_id int(10) DEFAULT NULL,
       PRIMARY KEY  (id),
       KEY file_path (path)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
@@ -83,6 +86,8 @@ function cgb_create_tables(){
       url varchar(255) DEFAULT NULL,
       type int(5) NOT NULL,
       mode int(5) DEFAULT NULL,
+      created_at timestamp DEFAULT NULL,
+      post_id int(10) DEFAULT NULL,
       PRIMARY KEY  (id),
       KEY file_path (path)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
@@ -109,6 +114,8 @@ function cgb_create_tables(){
       org_structure_url varchar(255) DEFAULT NULL,
       order_number int(10) DEFAULT NULL,
       is_published tinyint(1) DEFAULT NULL,
+      created_at timestamp DEFAULT NULL,
+      post_id int(10) DEFAULT NULL,
       PRIMARY KEY  (id),
       KEY file_path (logo)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
@@ -152,6 +159,8 @@ function cgb_create_tables(){
       landmark_name varchar(255) DEFAULT NULL,
       landmark_img varchar(255) DEFAULT NULL,
       landmark_img_url varchar(255) DEFAULT NULL,
+      created_at timestamp DEFAULT NULL,
+      post_id int(10) NOT NULL,
       PRIMARY KEY  (id),
       KEY file_path (landmark_img)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
@@ -193,6 +202,8 @@ function cgb_create_tables(){
       map_link varchar(255) DEFAULT NULL,
       path varchar(255) NOT NULL,
       url varchar(255) DEFAULT NULL,
+      created_at timestamp DEFAULT NULL,
+      post_id int(10) DEFAULT NULL,
       PRIMARY KEY  (id),
       KEY file_path (path)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
@@ -226,6 +237,9 @@ function cgb_create_pages(){
     ),
     array(
       'title' => 'About',
+    ),
+    array(
+      'title' => 'Contents',
     ),
   ];
   

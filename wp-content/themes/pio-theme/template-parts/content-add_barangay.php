@@ -187,39 +187,47 @@
                   </div>
                 </q-card-section>
                 <q-card-section>
-                  <q-list separator>
-                    <q-separator></q-separator>
-                    <q-item 
-                      clickable 
-                      v-ripple 
-                      v-for="(official,index) in form_barangay.officials"
-                      :key="'official-'+index">
-                      <q-item-section thumbnail class="q-px-sm">
-                        <img :src="official.id ? official.path : getImageUrl(official.image)">
-                      </q-item-section>
-                      <q-item-section>
-                        <q-item-label>
-                          {{official.name}}
-                        </q-item-label>
-                        <q-item-label caption>{{getBarangayPosition(official.position) ? getBarangayPosition(official.position).label : ''}}</q-item-label>
-                      </q-item-section>
-                      <q-item-section side>
-                        <q-btn
-                          round
-                          size="sm"
-                          color="red"
-                          icon="cancel"
-                          @click="official.id ? removeBarangayAttachments('official',official) : form_barangay.officials.splice(index,1)"></q-btn>
-                      </q-item-section>
-                    </q-item>
-                    <q-item v-if="form_barangay.officials.length == 0">
-                      <q-item-section>
-                        <q-item-label class="text-center text-body2">
-                          Empty
-                        </q-item-label>
-                      </q-item-section>
-                    </q-item>
-                  </q-list>
+                  <q-field
+                    ref="field"
+                    v-model="form_barangay.officials"
+                    borderless
+                    :rules="[val => val.length > 0 || 'Officials is required']"
+                  >
+                    <template v-slot:control>
+                      <q-list class="full-width" separator>
+                        <q-item 
+                          clickable 
+                          v-ripple 
+                          v-for="(official,index) in form_barangay.officials"
+                          :key="'official-'+index">
+                          <q-item-section thumbnail class="q-px-sm">
+                            <img :src="official.id ? official.path : getImageUrl(official.image)">
+                          </q-item-section>
+                          <q-item-section>
+                            <q-item-label>
+                              {{official.name}}
+                            </q-item-label>
+                            <q-item-label caption>{{getBarangayPosition(official.position) ? getBarangayPosition(official.position).label : ''}}</q-item-label>
+                          </q-item-section>
+                          <q-item-section side>
+                            <q-btn
+                              round
+                              size="sm"
+                              color="red"
+                              icon="cancel"
+                              @click="official.id ? removeBarangayAttachments('official',official) : form_barangay.officials.splice(index,1)"></q-btn>
+                          </q-item-section>
+                        </q-item>
+                        <q-item v-if="form_barangay.officials.length == 0">
+                          <q-item-section>
+                            <q-item-label class="text-center text-body2">
+                              Empty
+                            </q-item-label>
+                          </q-item-section>
+                        </q-item>
+                      </q-list>
+                    </template>
+                  </q-field>
                 </q-card-section>
               </q-card>
 

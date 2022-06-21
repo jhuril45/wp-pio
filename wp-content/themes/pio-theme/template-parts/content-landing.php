@@ -79,6 +79,7 @@
             <div class="text-white text-center q-px-sm">
               <p>{{flip.description}}</p>
               <q-btn
+                v-if="false"
                 rounded
                 color="primary"
                 label="View More"

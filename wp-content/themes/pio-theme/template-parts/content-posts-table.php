@@ -1,17 +1,12 @@
-<?php
-  wp_register_script('dashboard-script', get_template_directory_uri() . '/assets/js/dashboard.js',array ( 'jquery' ), 1.1, true);
-  wp_enqueue_script( 'dashboard-script');
-?>
-
 <q-card>
   <q-card-section class="q-px-sm q-py-md">
     <div class="row q-gutter-y-md">
-      <div class="col-12" v-if="posts">
+      <div class="col-12">
         <q-table
           flat
           title="Posts"
-          :data="posts.data"
-          :columns="posts.columns"
+          :data="posts"
+          :columns="posts_columns"
           row-key="title"
           :filter="filter"
           hide-header

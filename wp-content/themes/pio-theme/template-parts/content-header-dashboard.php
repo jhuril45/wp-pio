@@ -2,7 +2,7 @@
   <q-toolbar class="q-py-md bg-white q-px-lg">
     <q-btn
       flat
-      @click="drawer_left = !drawer_left"
+      @click="dashboard_drawer = !dashboard_drawer"
       round
       dense
       color="primary"

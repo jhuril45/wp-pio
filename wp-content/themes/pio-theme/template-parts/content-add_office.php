@@ -165,7 +165,7 @@
                       ref="featured_image"
                       v-model="form_office.logo"
                       accept=".jpg, image/*"
-                      @input="() => {form.office.logo_preview = getImageUrl(form_office.logo)}"
+                      @input="() => {form_office.logo_preview = getImageUrl(form_office.logo)}"
                       label="Office Logo"
                       :rules="[val => (!!val || !!form_office.id) || 'Invalid Office Logo']">
                     </q-file>
@@ -212,7 +212,7 @@
                       ref="attachments"
                       v-model="form_office.org_structure"
                       accept=".jpg, image/*"
-                      @input="() => {form.office.org_structure_preview = getImageUrl(form_office.logo)}"
+                      @input="() => {form_office.org_structure_preview = getImageUrl(form_office.logo)}"
                       label="Org Structure"
                       :rules="[val => (!!val || !!form_office.id) || 'Invalid Office Logo']">
                     </q-file>
@@ -330,7 +330,7 @@
                             size="sm"
                             color="red"
                             icon="cancel"
-                            @click="form.id ? '' : form_office.forms.splice(index,1)"></q-btn>
+                            @click="form_office.id ? '' : form_office.forms.splice(index,1)"></q-btn>
                         </q-item-section>
                       </q-item>
                       <q-item v-if="form_office.forms.length == 0">
