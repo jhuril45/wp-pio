@@ -26,67 +26,85 @@ function checkUser($role){
 function getDashboardDrawerMenu(){
   global $pagename;
   if(!is_user_logged_in()) return [];
+  $arr = [];
   if(checkUser('pio')){
-    
+    array_push($arr,
+      array(
+        'title' => 'Carousel',
+        'url' => get_home_url().'/dashboard?tab=carousel',
+        'icon' => 'collections',
+        'is_page' => $pagename == 'dashboard' && (get_query_var( 'tab' ) == 'carousel'),
+      ),
+      array(
+        'title' => 'Posts',
+        'url' => get_home_url().'/dashboard?tab=posts',
+        'icon' => 'rss_feed',
+        'is_page' => $pagename == 'dashboard' && (get_query_var( 'tab' ) == 'post' || get_query_var( 'tab' ) == 'posts' || get_query_var( 'tab' ) == ''),
+      ),
+      array(
+        'title' => 'Offices',
+        'url' => get_home_url().'/dashboard?tab=offices',
+        'icon' => 'business',
+        'is_page' => $pagename == 'dashboard' && (get_query_var( 'tab' ) == 'offices' || get_query_var( 'tab' ) == 'add-office'),
+      ),
+      array(
+        'title' => 'Barangays',
+        'url' => get_home_url().'/dashboard?tab=barangays',
+        'icon' => 'foundation',
+        'is_page' => $pagename == 'dashboard' && (get_query_var( 'tab' ) == 'barangays' || get_query_var( 'tab' ) == 'add-barangay'),
+      ),
+    );
+  }else if(checkUser('bac')){
+    array_push($arr,
+      array(
+        'title' => 'Reports',
+        'url' => get_home_url().'/dashboard?tab=reports',
+        'icon' => 'summarize',
+        'is_page' => $pagename == 'dashboard' && (get_query_var( 'tab' ) == 'reports' || get_query_var( 'tab' ) == 'add-report'),
+      ),
+      array(
+        'title' => 'Bid Reports',
+        'url' => get_home_url().'/dashboard?tab=bid-reports',
+        'icon' => 'receipt_long',
+        'is_page' => $pagename == 'dashboard' && (get_query_var( 'tab' ) == 'bid-reports' || get_query_var( 'tab' ) == 'add-bid-report'),
+        'is_menu' => false,
+        'sub_menu' => [
+          array(
+            'title' => 'Offices',
+            'url' => get_home_url().'/dashboard?tab=offices',
+            'icon' => 'business',
+            'is_page' => $pagename == 'dashboard' && (get_query_var( 'tab' ) == 'offices' || get_query_var( 'tab' ) == 'add-office'),
+          ),
+        ]
+      ),
+    );
+  }else if(checkUser('tourism')){
+    array_push($arr,
+      array(
+        'title' => 'Tourism',
+        'url' => get_home_url().'/dashboard?tab=tourism',
+        'icon' => 'tour',
+        'is_page' => $pagename == 'dashboard' && (get_query_var( 'tab' ) == 'tourism' || get_query_var( 'tab' ) == 'add-tourism'),
+      ),
+    );
   }
+  array_push($arr,
+    array(
+      'title' => 'Logout',
+      'url' => wp_logout_url(),
+      'icon' => 'logout',
+      'is_page' => false,
+    ),
+  );
+  return $arr;
   return $arr = [
-    array(
-      'title' => 'Carousel',
-      'url' => get_home_url().'/dashboard?tab=carousel',
-      'icon' => 'collections',
-      'is_page' => $pagename == 'dashboard' && (get_query_var( 'tab' ) == 'carousel'),
-    ),
-    array(
-      'title' => 'Posts',
-      'url' => get_home_url().'/dashboard?tab=posts',
-      'icon' => 'rss_feed',
-      'is_page' => $pagename == 'dashboard' && (get_query_var( 'tab' ) == 'post' || get_query_var( 'tab' ) == 'posts' || get_query_var( 'tab' ) == ''),
-    ),
-    array(
-      'title' => 'Reports',
-      'url' => get_home_url().'/dashboard?tab=reports',
-      'icon' => 'summarize',
-      'is_page' => $pagename == 'dashboard' && (get_query_var( 'tab' ) == 'reports' || get_query_var( 'tab' ) == 'add-report'),
-    ),
-    array(
-      'title' => 'Bid Reports',
-      'url' => get_home_url().'/dashboard?tab=bid-reports',
-      'icon' => 'receipt_long',
-      'is_page' => $pagename == 'dashboard' && (get_query_var( 'tab' ) == 'bid-reports' || get_query_var( 'tab' ) == 'add-bid-report'),
-      'is_menu' => false,
-      'sub_menu' => [
-        array(
-          'title' => 'Offices',
-          'url' => get_home_url().'/dashboard?tab=offices',
-          'icon' => 'business',
-          'is_page' => $pagename == 'dashboard' && (get_query_var( 'tab' ) == 'offices' || get_query_var( 'tab' ) == 'add-office'),
-        ),
-      ]
-    ),
-    array(
-      'title' => 'Offices',
-      'url' => get_home_url().'/dashboard?tab=offices',
-      'icon' => 'business',
-      'is_page' => $pagename == 'dashboard' && (get_query_var( 'tab' ) == 'offices' || get_query_var( 'tab' ) == 'add-office'),
-    ),
-    array(
-      'title' => 'Barangays',
-      'url' => get_home_url().'/dashboard?tab=barangays',
-      'icon' => 'foundation',
-      'is_page' => $pagename == 'dashboard' && (get_query_var( 'tab' ) == 'barangays' || get_query_var( 'tab' ) == 'add-barangay'),
-    ),
-    array(
-      'title' => 'Tourism',
-      'url' => get_home_url().'/dashboard?tab=tourism',
-      'icon' => 'tour',
-      'is_page' => $pagename == 'dashboard' && (get_query_var( 'tab' ) == 'tourism' || get_query_var( 'tab' ) == 'add-tourism'),
-    ),
-    array(
-      'title' => 'Officials',
-      'url' => get_home_url().'/dashboard?tab=official',
-      'icon' => 'groups',
-      'is_page' => $pagename == 'dashboard' && (get_query_var( 'tab' ) == 'official' || get_query_var( 'tab' ) == 'add-official'),
-    ),
+    
+    // array(
+    //   'title' => 'Officials',
+    //   'url' => get_home_url().'/dashboard?tab=official',
+    //   'icon' => 'groups',
+    //   'is_page' => $pagename == 'dashboard' && (get_query_var( 'tab' ) == 'official' || get_query_var( 'tab' ) == 'add-official'),
+    // ),
     array(
       'title' => 'Logout',
       'url' => wp_logout_url(),
