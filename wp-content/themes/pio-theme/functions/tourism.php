@@ -52,7 +52,6 @@
       }else{
         $data['path'] = $tourism_image ? $tourism_image['url'] : null;
         $data['url'] = $tourism_image ? $tourism_image['file'] : null;
-        $data['created_at'] = date("Y-m-d h:i:sa");
 
         $term = get_term_by('name', 'Tourism', 'category');
         $post = wp_insert_post(

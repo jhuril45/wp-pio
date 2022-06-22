@@ -79,7 +79,6 @@ function submitOffice() {
       $data['logo_url'] = $logo ? $logo['file'] : null;
       $data['org_structure'] = $org_structure ? $org_structure['url'] : null;
       $data['org_structure_url'] = $org_structure ? $org_structure['file'] : null;
-      $data['created_at'] = date("Y-m-d h:i:sa");
       
       $term = get_term_by('name', 'Offices', 'category');
       $post = wp_insert_post(

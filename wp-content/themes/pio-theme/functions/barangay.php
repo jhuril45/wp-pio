@@ -82,7 +82,6 @@ function submitBarangay() {
       $data['landmark_name'] = $_POST['landmark_name'] ? $_POST['landmark_name'] : null;
       $data['landmark_img'] = $landmark_image ? $landmark_image['url'] : null;
       $data['landmark_img_url'] = $landmark_image ? $landmark_image['file'] : null;
-      $data['created_at'] = date("Y-m-d h:i:sa");
 
       $term = get_term_by('name', 'Barangay', 'category');
       $post = wp_insert_post(

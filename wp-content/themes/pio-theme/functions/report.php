@@ -40,7 +40,6 @@
           }
         }
       }else{
-        $data['created_at'] = date("Y-m-d h:i:sa");
         // $term = get_term_by('name', 'Reports', 'category');
         // $post = wp_insert_post(
         //   array(
