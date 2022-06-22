@@ -201,3 +201,20 @@ add_action( 'rest_api_init', function () {
     'callback' => 'searchContents',
   ) );
 } );
+
+add_action( 'rest_api_init', function () {
+  register_rest_route( 'myplugin/v1', '/add-flip-card', array(
+    'methods' => 'POST',
+    'callback' => 'submitFlipCard',
+    'permission_callback' => function($request){
+      return checkUser('pio');
+    },
+  ) );
+} );
+
+add_action( 'rest_api_init', function () {
+  register_rest_route( 'myplugin/v1', '/get-flip-cards', array(
+    'methods' => 'GET',
+    'callback' => 'fetchFlipCards',
+  ) );
+} );

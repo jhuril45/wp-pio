@@ -356,6 +356,17 @@ window.vue = new Vue({
       form_carousel: {
         file: null,
         caption: '',
+      },
+      form_flip_cards: {
+        image: null,
+        icon: null,
+        title: '',
+        description: '',
+        text_color: '',
+        bg_color: '',
+        link: '',
+        image_preview: null,
+        icon_preview: null,
       }
     }
   },
@@ -606,6 +617,42 @@ window.vue = new Vue({
       window.axios.get(settings.API_BASE_PATH+'myplugin/v1/get-carousel')
       .then((response) => {
         this.carousel_images = response.data
+      })
+    },
+    getFlipCards(evt){
+      window.axios.get(settings.API_BASE_PATH+'myplugin/v1/get-flip-cards')
+      .then((response) => {
+        this.flip_cards = response.data
+      })
+    },
+    submitFlipCard(){
+      if(this.loading) return
+      this.loading = true
+      const formData = new FormData()
+      formData.append('title',this.form_flip_cards.title)
+      formData.append('description',this.form_flip_cards.description)
+      formData.append('image',this.form_flip_cards.image)
+      formData.append('icon',this.form_flip_cards.icon)
+      if(this.form_flip_cards.id){
+        formData.append('id',this.form_flip_cards.id)
+      }
+      window.axios.post(settings.API_BASE_PATH+'myplugin/v1/add-flip-card',formData)
+      .then((response) => {
+        this.getFlipCards()
+        this.loading = false
+        this.carousel_dialog = false
+        this.form_flip_cards = {
+          image: null,
+          icon: null,
+          title: '',
+          description: '',
+          link: '',
+          image_preview: null,
+          icon_preview: null,
+        }
+      })
+      .catch((error) => {
+        this.loading = false
       })
     },
     submitCarouselImage(evt){

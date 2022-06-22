@@ -11,6 +11,13 @@ if(!is_user_logged_in()){
         </div>
       </div>
     <?php }
+    else if(get_query_var( 'tab' ) == 'flip-cards'){?>
+      <div class="row justify-center">
+        <div class="col-12 col-md-10 q-py-lg">
+          <?php get_template_part('template-parts/content', 'flip-cards-list');?>
+        </div>
+      </div>
+    <?php }
     else if(get_query_var( 'tab' ) == 'add-post'){
       get_template_part('template-parts/content', 'add_post');
     }

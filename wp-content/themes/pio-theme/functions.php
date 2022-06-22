@@ -31,6 +31,7 @@ require get_template_directory() . '/functions/bid_report.php';
 require get_template_directory() . '/functions/office.php';
 require get_template_directory() . '/functions/barangay.php';
 require get_template_directory() . '/functions/city_official.php';
+require get_template_directory() . '/functions/flip_cards.php';
 
 require get_template_directory() . '/routes.php';
 
@@ -74,7 +75,6 @@ function cgb_create_tables(){
     dbDelta( $sql );
 
     $bids = $wpdb->prefix . "bid_reports";  
-
     $sql = "CREATE TABLE $bids (
       id int(10) unsigned NOT NULL AUTO_INCREMENT,
       title varchar(255) NOT NULL,
@@ -162,8 +162,8 @@ function cgb_create_tables(){
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
     dbDelta( $sql );
 
-    $barangays = $wpdb->prefix . "barangay_officials";  
-    $sql = "CREATE TABLE $barangays (
+    $barangay_officials = $wpdb->prefix . "barangay_officials";  
+    $sql = "CREATE TABLE $barangay_officials (
       id int(10) unsigned NOT NULL AUTO_INCREMENT,
       barangay_id int(10) NOT NULL,
       name varchar(255) NOT NULL,
@@ -204,7 +204,23 @@ function cgb_create_tables(){
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
     dbDelta( $sql );
 
-
+    $flips = $wpdb->prefix . "flip_cards";  
+    $sql = "CREATE TABLE $flips (
+      id int(10) unsigned NOT NULL AUTO_INCREMENT,
+      title varchar(255) NOT NULL,
+      description LONGTEXT DEFAULT NULL,
+      text_color varchar(25) NOT NULL,
+      bg_color varchar(25) NOT NULL,
+      link varchar(255) DEFAULT NULL,
+      image_path varchar(255) NOT NULL,
+      icon_path varchar(255) NOT NULL,
+      image_url varchar(255) DEFAULT NULL,
+      icon_url varchar(255) DEFAULT NULL,
+      post_id int(10) DEFAULT NULL,
+      PRIMARY KEY  (id),
+      KEY file_path (image_path)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+    dbDelta( $sql );
 }
 
 function cgb_create_pages(){

@@ -53,6 +53,12 @@ function getDashboardDrawerMenu(){
         'icon' => 'foundation',
         'is_page' => $pagename == 'dashboard' && (get_query_var( 'tab' ) == 'barangays' || get_query_var( 'tab' ) == 'add-barangay'),
       ),
+      array(
+        'title' => 'Flip Cards',
+        'url' => get_home_url().'/dashboard?tab=flip-cards',
+        'icon' => 'foundation',
+        'is_page' => $pagename == 'dashboard' && (get_query_var( 'tab' ) == 'flip-cards'),
+      ),
     );
   }else if(checkUser('bac')){
     array_push($arr,
