@@ -3,7 +3,7 @@
     <q-card class="add-post-card col-10 col-md-4">
       <q-card-section class="text-bold text-h5 row">
         <span>
-          Add Bid Report
+          {{form_bid_report.id ? 'Edit Bid Report' : 'Add Bid Report'}}
         </span>
         <q-space></q-space>
         <q-btn

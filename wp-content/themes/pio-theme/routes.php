@@ -282,3 +282,48 @@ add_action( 'rest_api_init', function () {
     },
   ) );
 } );
+
+add_action( 'rest_api_init', function () {
+  register_rest_route( 'myplugin/v1', '/get-office-list', array(
+    'methods' => 'GET',
+    'callback' => function () {
+      return fetchOffices($_GET['id'],$_GET['is_post']);
+    }
+  ) );
+} );
+
+add_action( 'rest_api_init', function () {
+  register_rest_route( 'myplugin/v1', '/get-barangay-list', array(
+    'methods' => 'GET',
+    'callback' => function () {
+      return fetchBarangays($_GET['id'],$_GET['is_edit'],$_GET['is_post']);
+    }
+  ) );
+} );
+
+add_action( 'rest_api_init', function () {
+  register_rest_route( 'myplugin/v1', '/get-bids-report-list', array(
+    'methods' => 'GET',
+    'callback' => 'fetchBids',
+  ) );
+} );
+
+add_action( 'rest_api_init', function () {
+  register_rest_route( 'myplugin/v1', '/get-report', array(
+    'methods' => 'GET',
+    'callback' => function () {
+      return getReport($_GET['id'],$_GET['is_bid']);
+    }
+  ) );
+} );
+
+add_action('rest_api_init', function () {
+  register_rest_route( 'myplugin/v1', '/get-tourism-list', array(
+    'methods' => 'GET',
+    'callback' => function () {
+      return fetchTourism($_GET['is_place'],$_GET['id'],$_GET['is_all']);
+      return getReport($_GET['id'],$_GET['is_bid']);
+    }
+  ) );
+} );
+

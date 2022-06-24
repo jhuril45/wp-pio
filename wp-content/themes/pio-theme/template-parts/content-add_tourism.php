@@ -1,13 +1,3 @@
-<?php 
-  wp_localize_script('vue-main', 'Rest', [
-    'nonce' => wp_create_nonce('wp_rest'),
-  ]);
-  if(is_user_logged_in()){
-    wp_register_script('add-post-script', get_template_directory_uri() . '/assets/js/add_post.js',array ( 'jquery' ), 1.1, true);
-    wp_enqueue_script( 'add-post-script');
-  }
-?>
-
 <div class="row q-py-lg q-gutter-y-md">
   <div class="col-12 row justify-center">
     <q-card class="add-post-card col-10 col-md-4">
@@ -45,7 +35,7 @@
           </div>
           <div class="col-12">
             <q-img
-              :src="form_tourism.img ? getImageUrl(form_tourism.img) : form_tourism.img_preview"
+              :src="form_tourism.img ? form_tourism.img_preview : form_tourism.img_preview"
               height="180px"
               class="cursor-pointer"
               @click="$refs.img.$el.click()"
@@ -64,6 +54,7 @@
               accept=".jpg, image/*"
               label="Image"
               :rules="[val => (!!val || !!form_tourism.id) || 'Invalid Image']"
+              @input="() => {form_tourism.img_preview = getImageUrl(form_tourism.img)}"
               hide-bottom-space>
             </q-file>
           </div>

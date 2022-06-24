@@ -1,5 +1,6 @@
 <?php
 function fetchBarangays($id=null,$is_edit=false,$is_post = false){
+  $id = is_numeric($id) ? intval($id) : null;
   if($id){
     global $wpdb;
     $table_name = $wpdb->prefix . "barangays";

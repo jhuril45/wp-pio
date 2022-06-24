@@ -1,7 +1,9 @@
 <?php
 function fetchOffices($id=null,$is_post = false) {
+  // return $is_post;
   global $wpdb;
   $table_name = $wpdb->prefix . "offices";
+  $id = is_numeric($id) ? intval($id) : null;
   if(isset($id)){
     $office = $is_post ? $wpdb->get_row("SELECT * FROM $table_name WHERE post_id = $id") : $wpdb->get_row("SELECT * FROM $table_name WHERE id = $id");
     if(empty($office)){
@@ -17,7 +19,13 @@ function fetchOffices($id=null,$is_post = false) {
     $offices = $wpdb->get_results("SELECT * FROM $table_name");
     return $offices;
   }
-  
+}
+
+function getOffices() {
+  global $wpdb;
+  $table_name = $wpdb->prefix . "offices";
+  $offices = $wpdb->get_results("SELECT * FROM $table_name");
+  return $offices;
 }
 
 function submitOffice() {

@@ -115,21 +115,6 @@ function getDashboardDrawerMenu(){
     ),
   );
   return $arr;
-  return $arr = [
-    
-    // array(
-    //   'title' => 'Officials',
-    //   'url' => get_home_url().'/dashboard?tab=official',
-    //   'icon' => 'groups',
-    //   'is_page' => $pagename == 'dashboard' && (get_query_var( 'tab' ) == 'official' || get_query_var( 'tab' ) == 'add-official'),
-    // ),
-    array(
-      'title' => 'Logout',
-      'url' => wp_logout_url(),
-      'icon' => 'logout',
-      'is_page' => false,
-    ),
-  ];
 }
 
 function getRecentPosts(){

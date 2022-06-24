@@ -1,6 +1,7 @@
 <?php
   function fetchTourism($is_place=true,$id=null,$all=false) {
     global $wpdb;
+    $id = is_numeric($id) ? intval($id) : null;
     if($all){
       $table_name = $wpdb->prefix . "city_tourism";
       $arr = $wpdb->get_results("SELECT * FROM $table_name");

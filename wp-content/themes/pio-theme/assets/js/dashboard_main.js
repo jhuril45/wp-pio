@@ -16,6 +16,16 @@ window.vue = new Vue({
       posts: [],
       quick_links: [],
       partners_list: [],
+      offices: [],
+      office: null,
+      city_barangays: [],
+      barangay: null,
+      bids: [],
+      bid: null,
+      reports: [],
+      report: null,
+      city_tourism: [],
+      tourism: null,
       ...Main,
       biding_type: 1,
       biding_year: 'All',
@@ -546,9 +556,109 @@ window.vue = new Vue({
         }
       }
     },
+    office:{
+      immediate: true,
+      handler(val){
+        if(val){
+          this.form_office.id = val.id
+          this.form_office.title = val.title
+          this.form_office.assistant = val.assistant
+          this.form_office.description = val.description
+          this.form_office.mandate = val.mandate
+          this.form_office.head = val.head
+          this.form_office.facebook = val.facebook
+          this.form_office.email = val.email
+          this.form_office.twitter = val.twitter
+          this.form_office.instagram = val.instagram
+          this.form_office.youtube = val.youtube
+          this.form_office.logo_preview = val.logo.length ? val.logo : this.form_office.logo_preview
+          this.form_office.org_structure_preview = val.org_structure.length ? val.org_structure : this.form_office.org_structure_preview
+          this.form_office.services = val.services;
+          this.form_office.forms = val.forms;
+          if(this.$refs.add_office_form){
+            this.$nextTick(() => {
+              this.form_step = 5
+              this.$refs.add_office_form.resetValidation()
+            })
+          }
+        }
+      }
+    },
+    barangay:{
+      immediate: true,
+      handler(val){
+        if(val){
+          this.form_barangay = {
+            ...this.form_barangay,
+            ...val,
+            landmark_preview: val.landmark_img && val.landmark_img.length ? val.landmark_img : this.form_barangay.landmark_preview
+          }
+          if(this.$refs.add_barangay_form){
+            this.$nextTick(() => {
+              this.form_step = 4
+              this.$refs.add_barangay_form.resetValidation()
+            })
+          }
+        }
+      }
+    },
+    bid:{
+      immediate: true,
+      handler(val){
+        console.log(val)
+        if(val){
+          this.form_bid_report = {
+            ...val,
+            type: parseInt(val.type),
+            month: parseInt(val.month)
+          }
+          this.$nextTick(() => {
+            this.$refs.add_bid_report_form.resetValidation()
+          })
+        }
+      }
+    },
+    report:{
+      immediate: true,
+      handler(val){
+        if(val){
+          this.form_report = {
+            ...val,
+            type: parseInt(val.type)
+          }
+          this.$nextTick(() => {
+            this.$refs.add_report_form.resetValidation()
+          })
+        }
+      }
+    }
   },
   created(){
     document.getElementById("q-app").style.display = "block"
+    if(this.query_tab.includes('office')){
+      this.getOffices(this.query_id)
+    }
+    if(this.query_tab.includes('barangay')){
+      this.getBarangays(this.query_id,this.query_id ? 1 : 0)
+    }
+    if(this.query_tab == 'bid-reports'){
+      this.getBidReports()
+    }
+    if(this.query_tab == 'reports'){
+      this.getReports()
+    }
+    if(this.query_tab == 'add-bid-report' && this.query_id){
+      this.fetchReport(this.query_id,1)
+    }
+    if(this.query_tab == 'add-report' && this.query_id){
+      this.fetchReport(this.query_id,0)
+    }
+    if(this.query_tab == 'tourism'){
+      this.getTourism(null,1)
+    }
+    if(this.query_tab == 'add-tourism' && this.query_id){
+      this.getTourism(this.query_id,0)
+    }
   },
   mounted(){
     console.log(Main)
@@ -556,62 +666,7 @@ window.vue = new Vue({
     this.form_office.org_structure_preview = Main.template_dir + '/assets/images/Butuan_Logo_Transparent.png'
     this.form_barangay.landmark_preview = Main.template_dir + '/assets/images/Butuan_Logo_Transparent.png'
     this.form_tourism.img_preview = Main.template_dir + '/assets/images/Butuan_Logo_Transparent.png'
-    if(this.report){
-      this.form_report = {
-        ...this.report,
-        type: parseInt(this.report.type)
-      }
-      this.$nextTick(() => {
-        this.$refs.add_report_form.resetValidation()
-      })
-    }
-    if(this.bid){
-      this.form_bid_report = {
-        ...this.bid,
-        type: parseInt(this.bid.type),
-        month: parseInt(this.bid.month)
-      }
-      this.$nextTick(() => {
-        this.$refs.add_bid_report_form.resetValidation()
-      })
-    }
-    if(this.office){
-      this.form_office.id = this.office.id
-      this.form_office.title = this.office.title
-      this.form_office.assistant = this.office.assistant
-      this.form_office.description = this.office.description
-      this.form_office.mandate = this.office.mandate
-      this.form_office.head = this.office.head
-      this.form_office.facebook = this.office.facebook
-      this.form_office.email = this.office.email
-      this.form_office.twitter = this.office.twitter
-      this.form_office.instagram = this.office.instagram
-      this.form_office.youtube = this.office.youtube
-      this.form_office.logo_preview = this.office.logo.length ? this.office.logo : this.form_office.logo_preview
-      this.form_office.org_structure_preview = this.office.org_structure.length ? this.office.org_structure : this.form_office.org_structure_preview
-      this.form_office.services = this.office.services;
-      this.form_office.forms = this.office.forms;
-      if(this.$refs.add_office_form){
-        this.$nextTick(() => {
-          this.form_step = 5
-          this.$refs.add_office_form.resetValidation()
-        })
-      }
-    }
-    if(this.barangay){
-      this.form_barangay = {
-        ...this.form_barangay,
-        ...this.barangay,
-        landmark_preview: this.barangay.landmark_img && this.barangay.landmark_img.length ? this.barangay.landmark_img : this.form_barangay.landmark_preview
-      }
-      if(this.$refs.add_barangay_form){
-        this.$nextTick(() => {
-          this.form_step = 4
-          this.$refs.add_barangay_form.resetValidation()
-        })
-      }
-      console.log(this.form_barangay)
-    }
+    
     if(this.tourism){
       this.form_tourism = {
         ...this.tourism,
@@ -632,6 +687,40 @@ window.vue = new Vue({
     }
   },
   methods: {
+    getTourism(id=null,is_all){
+      window.axios.get(settings.API_BASE_PATH+'myplugin/v1/get-tourism-list?id='+id+'&is_all='+is_all)
+      .then((response) => {
+        this[id ? 'tourism' : 'city_tourism'] = response.data
+      })
+    },
+    getOffices(id){
+      window.axios.get(settings.API_BASE_PATH+'myplugin/v1/get-office-list?id='+id)
+      .then((response) => {
+        this[id == null ? 'offices' : 'office'] = response.data
+        // this.offices = response.data
+      })
+    },
+    getBarangays(id,is_edit=false,is_post=false){
+      window.axios.get(settings.API_BASE_PATH+'myplugin/v1/get-barangay-list?id='+id+'&is_edit='+is_edit)
+      .then((response) => {
+        console.log(response.data)
+        this[id == null ? 'city_barangays' : 'barangay'] = response.data
+      })
+    },
+    getBidReports(){
+      window.axios.get(settings.API_BASE_PATH+'myplugin/v1/get-bids-report-list')
+      .then((response) => {
+        console.log(response.data)
+        this.bids = response.data
+      })
+    },
+    fetchReport(id,is_bid=false){
+      window.axios.get(settings.API_BASE_PATH+'myplugin/v1/get-report?id='+id+'&is_bid='+is_bid)
+      .then((response) => {
+        console.log(response.data)
+        this[is_bid ? 'bid' : 'report'] = response.data
+      })
+    },
     resetOfficeDialogForm(){
       this.add_office_dialog = {
         open: false,
@@ -718,7 +807,6 @@ window.vue = new Vue({
         this.loading = false
       })
     },
-
     getPartnersLists(evt){
       window.axios.get(settings.API_BASE_PATH+'myplugin/v1/get-partner-lists')
       .then((response) => {
@@ -769,7 +857,6 @@ window.vue = new Vue({
         this.loading = false
       })
     },
-
     submitFlipCard(){
       if(this.loading) return
       this.loading = true
