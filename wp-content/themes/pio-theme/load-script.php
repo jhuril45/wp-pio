@@ -47,6 +47,8 @@ function add_script()
       'carousel_images' => get_query_var( 'tab' ) && get_query_var( 'tab' ) == 'carousel' ? fetchCarouselImages() : [],
       'edit_post' => get_query_var( 'tab' ) && get_query_var( 'tab' ) == 'add-post' && get_query_var( 'id' ) ? fetchPost(get_query_var( 'id' )) : null, 
       'flip_cards' => get_query_var( 'tab' ) && get_query_var( 'tab' ) == 'flip-cards' ? fetchFlipCards() : [],
+      'quick_links' => get_query_var( 'tab' ) && get_query_var( 'tab' ) == 'quick-links' ? fetchQuickLinks() : [],
+      'partners_list' => get_query_var( 'tab' ) && get_query_var( 'tab' ) == 'partners-list' ? fetchPartnerLists() : [],
     ];
   }else{
     wp_register_script('vue-main', get_template_directory_uri() . '/assets/js/landing_main.js',array ( 'jquery' ), 1.1, true);
@@ -57,8 +59,10 @@ function add_script()
     $page_data = [
       'home_url' => get_home_url(),
       'nonce' => wp_create_nonce('wp_rest'),
-      'carousel_images' => fetchCarouselImages(),
-      'flip_cards' => getFlipCards(),
+      'carousel_images' => is_front_page() == 1 ? fetchCarouselImages() : [],
+      'flip_cards' => is_front_page() == 1 ? fetchFlipCards() : [],
+      'quick_links' => is_front_page() == 1 ? fetchQuickLinks() : [],
+      'partners_list' => is_front_page() == 1 ? fetchPartnerLists() : [],
       // 'recent_posts' => is_front_page() ? getRecentPosts() : [],
       'recent_posts' => getRecentPosts(),
       'header_menus' => getHeaderMenus(),
@@ -71,8 +75,8 @@ function add_script()
       'barangay' => $barangay,
       'city_officials' => $pagename == 'city-officials' ? fetchCityOfficials() : '',
       'city_barangays' => $pagename == 'barangays' ? fetchBarangays() : '',
-      'places_to_stay' => fetchTourism(),
-      'places_to_go' => fetchTourism(false),
+      'places_to_stay' => $pagename == 'tourism' ? fetchTourism() : [],
+      'places_to_go' => $pagename == 'tourism' ? fetchTourism(false) : [],
       'header_logo' => get_template_directory_uri().'/assets/images/Butuan_Logo_Transparent.png',
       'searched_contents' => $pagename == 'contents' ? searchContents(get_query_var( 'search' )) : [],
     ];

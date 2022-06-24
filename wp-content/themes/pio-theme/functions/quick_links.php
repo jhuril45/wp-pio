@@ -1,9 +1,9 @@
 <?php
-  function fetchFlipCards() {
+  function fetchQuickLinks() {
     try{
       $user = wp_get_current_user();
       global $wpdb;
-      $table_name = $wpdb->prefix . "flip_cards";
+      $table_name = $wpdb->prefix . "quick_links";
       $results = $wpdb->get_results("SELECT * FROM $table_name");
       return $results;
     }catch(Exception $error){
@@ -11,30 +11,20 @@
     }
   }
 
-  function submitFlipCard() {
+  function submitQuickLink() {
     try{
       global $wpdb;
       $image = basename($_FILES["image"]["name"]);
-      $icon = basename($_FILES["icon"]["name"]);
       $id = is_numeric($_POST['id']) ? intval($_POST['id']) : null;
-      $table_name = $wpdb->prefix . 'flip_cards';
+      $table_name = $wpdb->prefix . 'quick_links';
 
       $data = array(
-        'title' => $_POST['title'],
-        'description' => $_POST['description'],
-        'text_color' => $_POST['text_color'],
-        'bg_color' => $_POST['bg_color'],
+        'link' => $_POST['link'],
       );
       if($image){
-        $file = uploadFileSubmitted('image',false,'flip_card');
-        $data['image_path'] = $file['url'];
-        $data['image_url'] = $file['file'];
-      }
-
-      if($icon){
-        $icon = uploadFileSubmitted('icon',false,'flip_card');
-        $data['icon_path'] = $icon['url'];
-        $data['icon_url'] = $icon['file'];
+        $file = uploadFileSubmitted('image',false,'quick_link');
+        $data['path'] = $file['url'];
+        $data['url'] = $file['file'];
       }
 
       if($id){
@@ -44,12 +34,7 @@
         $flip_card = $wpdb->update($table_name,$data,$data_where);
         if($image){
           if(isset($prev_image)){
-            wp_delete_file($prev_image->image_url);
-          }
-        }
-        if($icon){
-          if(isset($prev_image)){
-            wp_delete_file($prev_image->icon_url);
+            wp_delete_file($prev_image->url);
           }
         }
       }else{
@@ -63,17 +48,16 @@
     }
   }
 
-  function deleteFlipCard() {
+  function deleteQuickLink() {
     try{
       global $wpdb;
-      $table_name = $wpdb->prefix . 'flip_cards';
+      $table_name = $wpdb->prefix . 'quick_links';
       $id = is_numeric($_POST['id']) ? intval($_POST['id']) : null;
-      $flip_card = isset($id) ? $wpdb->get_row("SELECT * FROM $table_name WHERE id = $id") : null;
+      $quick = isset($id) ? $wpdb->get_row("SELECT * FROM $table_name WHERE id = $id") : null;
 
-      if(isset($flip_card)){
+      if(isset($quick)){
         $wpdb->delete( $table_name, array( 'id' => intval($id) ) );
-        wp_delete_file($flip_card->image_url);
-        wp_delete_file($flip_card->icon_url);
+        wp_delete_file($quick->url);
         return array( 'success' => true);
       }
     }catch(Exception $error){

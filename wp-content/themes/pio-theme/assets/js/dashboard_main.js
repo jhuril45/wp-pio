@@ -14,6 +14,8 @@ window.vue = new Vue({
   data() {
     return {
       posts: [],
+      quick_links: [],
+      partners_list: [],
       ...Main,
       biding_type: 1,
       biding_year: 'All',
@@ -358,6 +360,7 @@ window.vue = new Vue({
         caption: '',
       },
       form_flip_cards: {
+        id: null,
         image: null,
         icon: null,
         title: '',
@@ -367,7 +370,19 @@ window.vue = new Vue({
         link: '',
         image_preview: null,
         icon_preview: null,
-      }
+      },
+      form_quick_link: {
+        id: null,
+        image: null,
+        image_preview: null,
+        link: '',
+      },
+      form_partners_list: {
+        id: null,
+        image: null,
+        image_preview: null,
+        link: '',
+      },
     }
   },
   computed:{
@@ -502,6 +517,34 @@ window.vue = new Vue({
         }
         this.file_display=null
       }
+      if(!val && this.form_flip_cards.id){
+        this.form_flip_cards = {
+          id: null,
+          image: null,
+          icon: null,
+          title: '',
+          description: '',
+          link: '',
+          image_preview: null,
+          icon_preview: null,
+        }
+      }
+      if(!val && this.form_quick_link.id){
+        this.form_quick_link = {
+          id: null,
+          image: null,
+          image_preview: null,
+          link: '',
+        }
+      }
+      if(!val && this.form_partners_list.id){
+        this.form_partners_list = {
+          id: null,
+          image: null,
+          image_preview: null,
+          link: '',
+        }
+      }
     },
   },
   created(){
@@ -625,12 +668,117 @@ window.vue = new Vue({
         this.flip_cards = response.data
       })
     },
+    getQuickLinks(evt){
+      window.axios.get(settings.API_BASE_PATH+'myplugin/v1/get-quick-links')
+      .then((response) => {
+        this.quick_links = response.data
+      })
+    },
+    editQuickLink(data){
+      this.form_quick_link = {
+        id: data.id,
+        image: null,
+        link: data.link,
+        image_preview: data.path,
+      }
+      this.carousel_dialog = true
+    },
+    deleteQuickLink(flip){
+      const formData = new FormData()
+      formData.append('id',flip.id)
+      window.axios.post(settings.API_BASE_PATH+'myplugin/v1/delete-quick-link',formData)
+      .then((response) => {
+        console.log(response.data)
+        this.getQuickLinks()
+      })
+    },
+    submitQuickLink(){
+      if(this.loading) return
+      this.loading = true
+      const formData = new FormData()
+
+      formData.append('link',this.form_quick_link.link)
+      formData.append('image',this.form_quick_link.image)
+      if(this.form_quick_link.id){
+        formData.append('id',this.form_quick_link.id)
+      }
+      window.axios.post(settings.API_BASE_PATH+'myplugin/v1/add-quick-link',formData)
+      .then((response) => {
+        this.getQuickLinks()
+        this.loading = false
+        this.carousel_dialog = false
+        this.form_quick_link = {
+          id: null,
+          image: null,
+          image_preview: null,
+          link: '',
+        }
+      })
+      .catch((error) => {
+        this.loading = false
+      })
+    },
+
+    getPartnersLists(evt){
+      window.axios.get(settings.API_BASE_PATH+'myplugin/v1/get-partner-lists')
+      .then((response) => {
+        this.partners_list = response.data
+      })
+    },
+    editPartnersList(data){
+      this.form_partners_list = {
+        id: data.id,
+        image: null,
+        link: data.link,
+        image_preview: data.path,
+      }
+      this.carousel_dialog = true
+    },
+    deletePartnersList(flip){
+      const formData = new FormData()
+      formData.append('id',flip.id)
+      window.axios.post(settings.API_BASE_PATH+'myplugin/v1/delete-partner-list',formData)
+      .then((response) => {
+        console.log(response.data)
+        this.getPartnersLists()
+      })
+    },
+    submitPartnersList(){
+      if(this.loading) return
+      this.loading = true
+      const formData = new FormData()
+
+      formData.append('link',this.form_partners_list.link)
+      formData.append('image',this.form_partners_list.image)
+      if(this.form_partners_list.id){
+        formData.append('id',this.form_partners_list.id)
+      }
+      window.axios.post(settings.API_BASE_PATH+'myplugin/v1/add-partner-list',formData)
+      .then((response) => {
+        this.getPartnersLists()
+        this.loading = false
+        this.carousel_dialog = false
+        this.form_partners_list = {
+          id: null,
+          image: null,
+          image_preview: null,
+          link: '',
+        }
+      })
+      .catch((error) => {
+        this.loading = false
+      })
+    },
+
     submitFlipCard(){
       if(this.loading) return
       this.loading = true
       const formData = new FormData()
+
       formData.append('title',this.form_flip_cards.title)
       formData.append('description',this.form_flip_cards.description)
+      formData.append('text_color',this.form_flip_cards.text_color)
+      formData.append('bg_color',this.form_flip_cards.bg_color)
       formData.append('image',this.form_flip_cards.image)
       formData.append('icon',this.form_flip_cards.icon)
       if(this.form_flip_cards.id){
@@ -642,10 +790,13 @@ window.vue = new Vue({
         this.loading = false
         this.carousel_dialog = false
         this.form_flip_cards = {
+          id: null,
           image: null,
           icon: null,
           title: '',
           description: '',
+          text_color: null,
+          bg_color: null,
           link: '',
           image_preview: null,
           icon_preview: null,
@@ -653,6 +804,30 @@ window.vue = new Vue({
       })
       .catch((error) => {
         this.loading = false
+      })
+    },
+    editFlipCard(data){
+      this.form_flip_cards = {
+        id: data.id,
+        image: null,
+        icon: null,
+        title: data.title,
+        description: data.description,
+        text_color: data.text_color,
+        bg_color: data.bg_color,
+        link: '',
+        image_preview: data.image_path,
+        icon_preview: data.icon_path,
+      }
+      this.carousel_dialog = true
+    },
+    deleteFlipCard(flip){
+      const formData = new FormData()
+      formData.append('id',flip.id)
+      window.axios.post(settings.API_BASE_PATH+'myplugin/v1/delete-flip-card',formData)
+      .then((response) => {
+        console.log(response.data)
+        this.getFlipCards()
       })
     },
     submitCarouselImage(evt){

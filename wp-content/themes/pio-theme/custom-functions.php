@@ -56,8 +56,20 @@ function getDashboardDrawerMenu(){
       array(
         'title' => 'Flip Cards',
         'url' => get_home_url().'/dashboard?tab=flip-cards',
-        'icon' => 'foundation',
+        'icon' => 'flip',
         'is_page' => $pagename == 'dashboard' && (get_query_var( 'tab' ) == 'flip-cards'),
+      ),
+      array(
+        'title' => 'Quick Links',
+        'url' => get_home_url().'/dashboard?tab=quick-links',
+        'icon' => 'share',
+        'is_page' => $pagename == 'dashboard' && (get_query_var( 'tab' ) == 'quick-links'),
+      ),
+      array(
+        'title' => 'Partners',
+        'url' => get_home_url().'/dashboard?tab=partners-list',
+        'icon' => 'handshake',
+        'is_page' => $pagename == 'dashboard' && (get_query_var( 'tab' ) == 'partners-list'),
       ),
     );
   }else if(checkUser('bac')){

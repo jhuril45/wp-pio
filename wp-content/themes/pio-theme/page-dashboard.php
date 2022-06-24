@@ -18,6 +18,20 @@ if(!is_user_logged_in()){
         </div>
       </div>
     <?php }
+    else if(get_query_var( 'tab' ) == 'quick-links'){?>
+      <div class="row justify-center">
+        <div class="col-12 col-md-10 q-py-lg">
+          <?php get_template_part('template-parts/content', 'quick-links-list');?>
+        </div>
+      </div>
+    <?php }
+    else if(get_query_var( 'tab' ) == 'partners-list'){?>
+      <div class="row justify-center">
+        <div class="col-12 col-md-10 q-py-lg">
+          <?php get_template_part('template-parts/content', 'partners-list');?>
+        </div>
+      </div>
+    <?php }
     else if(get_query_var( 'tab' ) == 'add-post'){
       get_template_part('template-parts/content', 'add_post');
     }

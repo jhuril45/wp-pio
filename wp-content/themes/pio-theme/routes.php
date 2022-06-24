@@ -218,3 +218,67 @@ add_action( 'rest_api_init', function () {
     'callback' => 'fetchFlipCards',
   ) );
 } );
+
+add_action( 'rest_api_init', function () {
+  register_rest_route( 'myplugin/v1', '/delete-flip-card', array(
+    'methods' => 'POST',
+    'callback' => 'deleteFlipCard',
+    'permission_callback' => function($request){
+      return checkUser('pio');
+    },
+  ) );
+} );
+
+add_action( 'rest_api_init', function () {
+  register_rest_route( 'myplugin/v1', '/get-quick-links', array(
+    'methods' => 'GET',
+    'callback' => 'fetchQuickLinks',
+  ) );
+} );
+
+add_action( 'rest_api_init', function () {
+  register_rest_route( 'myplugin/v1', '/add-quick-link', array(
+    'methods' => 'POST',
+    'callback' => 'submitQuickLink',
+    'permission_callback' => function($request){
+      return checkUser('pio');
+    },
+  ) );
+} );
+
+add_action( 'rest_api_init', function () {
+  register_rest_route( 'myplugin/v1', '/delete-quick-link', array(
+    'methods' => 'POST',
+    'callback' => 'deleteQuickLink',
+    'permission_callback' => function($request){
+      return checkUser('pio');
+    },
+  ) );
+} );
+
+add_action( 'rest_api_init', function () {
+  register_rest_route( 'myplugin/v1', '/get-partner-lists', array(
+    'methods' => 'GET',
+    'callback' => 'fetchPartnerLists',
+  ) );
+} );
+
+add_action( 'rest_api_init', function () {
+  register_rest_route( 'myplugin/v1', '/add-partner-list', array(
+    'methods' => 'POST',
+    'callback' => 'submitPartnerList',
+    'permission_callback' => function($request){
+      return checkUser('pio');
+    },
+  ) );
+} );
+
+add_action( 'rest_api_init', function () {
+  register_rest_route( 'myplugin/v1', '/delete-partner-list', array(
+    'methods' => 'POST',
+    'callback' => 'deletePartnerList',
+    'permission_callback' => function($request){
+      return checkUser('pio');
+    },
+  ) );
+} );

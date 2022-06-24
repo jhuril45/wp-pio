@@ -32,6 +32,8 @@ require get_template_directory() . '/functions/office.php';
 require get_template_directory() . '/functions/barangay.php';
 require get_template_directory() . '/functions/city_official.php';
 require get_template_directory() . '/functions/flip_cards.php';
+require get_template_directory() . '/functions/quick_links.php';
+require get_template_directory() . '/functions/partners_list.php';
 
 require get_template_directory() . '/routes.php';
 
@@ -221,7 +223,29 @@ function cgb_create_tables(){
       KEY file_path (image_path)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
     dbDelta( $sql );
-}
+
+    $quick_links = $wpdb->prefix . "quick_links";  
+    $sql = "CREATE TABLE $quick_links (
+      id int(10) unsigned NOT NULL AUTO_INCREMENT,
+      link varchar(255) NOT NULL,
+      path varchar(255) NOT NULL,
+      url varchar(255) DEFAULT NULL,
+      PRIMARY KEY  (id),
+      KEY image_path (path)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+    dbDelta( $sql );
+
+    $partners_list = $wpdb->prefix . "partners_list";  
+    $sql = "CREATE TABLE $partners_list (
+      id int(10) unsigned NOT NULL AUTO_INCREMENT,
+      link varchar(255) NOT NULL,
+      path varchar(255) NOT NULL,
+      url varchar(255) DEFAULT NULL,
+      PRIMARY KEY  (id),
+      KEY image_path (path)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+    dbDelta( $sql );
+  }
 
 function cgb_create_pages(){
   $arr = [
