@@ -55,6 +55,16 @@ if(!is_user_logged_in()){
     else if(get_query_var( 'tab' ) == 'add-bid-report'){
       get_template_part('template-parts/content', 'add_bid_report');
     }
+    else if(get_query_var( 'tab' ) == 'procurement-monitoring-reports'){?>
+      <div class="row justify-center">
+        <div class="col-12 col-md-6 q-py-lg">
+          <?php get_template_part('template-parts/content', 'procurement-monitoring-reports-table');?>
+        </div>
+      </div>
+    <?php }
+    else if(get_query_var( 'tab' ) == 'add-procurement-monitoring-report'){
+      get_template_part('template-parts/content', 'add_procurment_monitoring_report');
+    }
     else if(get_query_var( 'tab' ) == 'offices'){
       get_template_part('template-parts/content', 'offices-table');
     }

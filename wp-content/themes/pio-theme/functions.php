@@ -245,6 +245,17 @@ function cgb_create_tables(){
       KEY image_path (path)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
     dbDelta( $sql );
+
+    $procurement_monitoring_reports = $wpdb->prefix . "procurement_monitoring_reports";  
+    $sql = "CREATE TABLE $procurement_monitoring_reports (
+      id int(10) unsigned NOT NULL AUTO_INCREMENT,
+      year int(10) NOT NULL,
+      quarter int(10) DEFAULT NULL,
+      post_id int(10) DEFAULT NULL,
+      PRIMARY KEY  (id),
+      KEY year (year)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+    dbDelta( $sql );
   }
 
 function cgb_create_pages(){

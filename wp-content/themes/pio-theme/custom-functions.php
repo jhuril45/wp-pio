@@ -71,6 +71,12 @@ function getDashboardDrawerMenu(){
         'icon' => 'handshake',
         'is_page' => $pagename == 'dashboard' && (get_query_var( 'tab' ) == 'partners-list'),
       ),
+      array(
+        'title' => 'Procurement Monitoring Reports',
+        'url' => get_home_url().'/dashboard?tab=procurement-monitoring-reports',
+        'icon' => 'summarize',
+        'is_page' => $pagename == 'dashboard' && (get_query_var( 'tab' ) == 'procurement-monitoring-reports' || get_query_var( 'tab' ) == 'add-procurement-monitoring-report'),
+      ),
     );
   }else if(checkUser('bac')){
     array_push($arr,

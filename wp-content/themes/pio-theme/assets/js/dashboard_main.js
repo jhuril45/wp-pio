@@ -358,7 +358,7 @@ window.vue = new Vue({
         2019,
         2020,
         2021,
-        2022
+        2022,
       ],
       file_display: null,
       images: [],
@@ -392,6 +392,19 @@ window.vue = new Vue({
         image: null,
         image_preview: null,
         link: '',
+      },
+      form_procurement_monitoring:{
+        id: null,
+        attachments: [],
+        year: null,
+        quarter: null,
+      },
+      add_procurement_report_dialog: {
+        open: false,
+        data:{
+          file: null,
+          title: '',
+        },
       },
     }
   },
@@ -1691,6 +1704,17 @@ window.vue = new Vue({
         // fail
       })
 
+    },
+    submitProcurementMonitoringDialog(){
+      // this.form_procurement_monitoring.attachments
+      this.form_procurement_monitoring.attachments.push(this.add_procurement_report_dialog.data)
+      this.add_procurement_report_dialog = {
+        open: false,
+        data:{
+          file: null,
+          title: '',
+        },
+      }
     }
   },
 })
