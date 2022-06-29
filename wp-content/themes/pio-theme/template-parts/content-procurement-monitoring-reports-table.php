@@ -1,40 +1,45 @@
 <q-card>
   <q-card-section class="q-px-sm q-py-md">
-    <div class="row q-gutter-y-md">
-      <div class="col-12">
+    <div class="row justify-center">
+      <div class="col-12 col-md-8" :class="$q.screen.lt.md ? 'q-pa-md' : 'q-pa-xl'">
         <q-table
-          flat
           title="Procurement Monitoring Reports"
-          :data="reports_data"
-          :columns="columns_report"
+          :data="procurement_monitorings_data"
+          :columns="columns_monitoring_report"
           row-key="name"
           :filter="filter"
         >
           <template v-slot:top>
-            <?php if($pagename == 'dashboard'){?>
-              <div class="row full-width q-py-sm justify-end q-mb-sm">
-                <div class="col-shrink q-px-md">
-                  <q-btn
-                    size="sm"
-                    color="primary"
-                    padding="10px 15px"
-                    icon="add"
-                    href="<?php echo get_home_url().'/dashboard?tab=add-procurement-monitoring-report';?>"></q-btn>
+              <div class="row full-width q-py-sm justify-between q-mb-sm q-gutter-x-sm">
+                <div class="col-auto text-h5 text-primary">
+                  Procurement Monitoring Reports
                 </div>
+                <div class="col-grow q-px-sm">
+                  <q-input
+                    outlined
+                    dense
+                    debounce="300"
+                    v-model="filter"
+                    placeholder="Search">
+                    <template v-slot:append>
+                      <q-icon name="search"></q-icon>
+                    </template>
+                  </q-input>
+                </div>
+                <?php if($pagename == 'dashboard'){?>
+                  <div class="col-shrink">
+                    <q-btn
+                      size="sm"
+                      color="primary"
+                      padding="10px 15px"
+                      icon="add"
+                      href="<?php echo get_home_url().'/dashboard?tab=add-procurement-monitoring-report';?>"></q-btn>
+                  </div>
+                <?php }?>
               </div>
-            <?php }?>
-            <div class="row full-width">
-              <div class="q-px-sm" :class="transparency_type == 2 ? 'col-4' : 'col-6'">
-                <q-select
-                  dense
-                  outlined
-                  v-model="transparency_type"
-                  :options="report_options"
-                  label="Report type"
-                  emit-value
-                  map-options></q-select>
-              </div>
-              <div class="q-px-sm" :class="transparency_type == 2 ? 'col-4' : 'col-6'">
+            
+            <div class="row full-width q-mt-md">
+              <div class="col-6 q-px-sm">
                 <q-select
                   dense
                   outlined
@@ -42,12 +47,12 @@
                   :options="['All',...year_options]"
                   label="Year"></q-select>
               </div>
-              <div class="col-4 q-px-sm" v-if="transparency_type == 2">
+              <div class="col-6 q-px-sm">
                 <q-select
                   dense
                   outlined
                   v-model="transparency_quarter"
-                  :options="quarter_options"
+                  :options="[{label:'All',value:0},...quarter_options]"
                   label="Quarter"
                   emit-value
                   map-options></q-select>
@@ -85,22 +90,27 @@
                   {{ props.row.title }} ({{ props.row.year }})
                 </span>
               </q-td>
+
+              <q-td key="quarter" :props="props" class="text-primary text-weight-bold">
+                <span class="q-pl-sm">
+                  {{ props.row.quarter }}
+                </span>
+              </q-td>
               
-                <q-td class="text-center" >
-                  <?php if($pagename == 'dashboard'){?>
-                    <q-btn v-if="page_name == 'dashboard'" size="sm" round color="primary" icon="edit" :href="'<?php echo get_home_url();?>/dashboard?tab=add-report&id='+props.row.id">  
-                    </q-btn>
-                  <?php }?>
-                  <q-btn
-                    round
-                    color="primary"
-                    size="sm"
-                    icon="download"
-                    :href="props.row.path"
-                    :target="'_blank'">
+              <q-td class="text-center">
+                <?php if($pagename == 'dashboard'){?>
+                  <q-btn v-if="page_name == 'dashboard'" size="sm" round color="primary" icon="edit" :href="'<?php echo get_home_url();?>/dashboard?tab=add-procurement-monitoring-report&id='+props.row.id">  
                   </q-btn>
-                </q-td>
-              
+                <?php }?>
+                <q-btn
+                  round
+                  color="primary"
+                  size="sm"
+                  icon="download"
+                  :href="props.row.path"
+                  :target="'_blank'">
+                </q-btn>
+              </q-td>
             </q-tr>
             <q-item :props="props" clickable v-if="false">
               <q-item-section side top>

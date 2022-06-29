@@ -34,6 +34,7 @@ require get_template_directory() . '/functions/city_official.php';
 require get_template_directory() . '/functions/flip_cards.php';
 require get_template_directory() . '/functions/quick_links.php';
 require get_template_directory() . '/functions/partners_list.php';
+require get_template_directory() . '/functions/procurement_monitoring.php';
 
 require get_template_directory() . '/routes.php';
 
@@ -249,11 +250,24 @@ function cgb_create_tables(){
     $procurement_monitoring_reports = $wpdb->prefix . "procurement_monitoring_reports";  
     $sql = "CREATE TABLE $procurement_monitoring_reports (
       id int(10) unsigned NOT NULL AUTO_INCREMENT,
+      title varchar(255) NOT NULL,
       year int(10) NOT NULL,
-      quarter int(10) DEFAULT NULL,
+      quarter int(10) NOT NULL,
       post_id int(10) DEFAULT NULL,
       PRIMARY KEY  (id),
       KEY year (year)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+    dbDelta( $sql );
+
+    $procurement_monitoring_report_attachments = $wpdb->prefix . "procurement_monitoring_report_attachments";  
+    $sql = "CREATE TABLE $procurement_monitoring_report_attachments (
+      id int(10) unsigned NOT NULL AUTO_INCREMENT,
+      title varchar(255) NOT NULL,
+      procurement_monitoring_report_id int(10) NOT NULL,
+      path varchar(255) NOT NULL,
+      url varchar(255) DEFAULT NULL,
+      PRIMARY KEY  (id),
+      KEY file_path (path)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
     dbDelta( $sql );
   }
@@ -286,6 +300,9 @@ function cgb_create_pages(){
     ),
     array(
       'title' => 'Contents',
+    ),
+    array(
+      'title' => 'Procurement Monitoring Reports',
     ),
   ];
   

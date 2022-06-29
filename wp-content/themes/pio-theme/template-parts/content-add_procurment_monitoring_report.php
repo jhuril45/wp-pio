@@ -18,8 +18,17 @@
         <q-form
           class="row q-gutter-y-lg"
           greedy
-          ref="add_report_form"
-          @submit="addReport">
+          ref="add_procurement_monitoring_form"
+          @submit="addProcurementMonitoring">
+          <div class="col-12">
+            <q-input
+              no-error-icon
+              v-model="form_procurement_monitoring.title"
+              label="Title"
+              hide-bottom-space
+              :rules="[val => !!val || 'Invalid Title']">
+            </q-input>
+          </div>
           <div class="col-12">
             <q-select
               no-error-icon
@@ -47,7 +56,8 @@
             <q-field
               ref="field"
               v-model="form_procurement_monitoring.attachments"
-              :rules="[val => val.length > 0 || 'Attachments is required']">
+              :rules="[val => val.length > 0 || 'Attachments is required']"
+              no-error-icon>
               <template v-slot:control>
                 <q-list class="full-width" separator>
                   <q-item 
@@ -66,7 +76,7 @@
                         size="sm"
                         color="red"
                         icon="cancel"
-                        @click="attachment.id ? '' : form_procurement_monitoring.attachments.splice(index,1)"></q-btn>
+                        @click="attachment.id ? removeProcurementMonitoringAttachment(attachment) : form_procurement_monitoring.attachments.splice(index,1)"></q-btn>
                     </q-item-section>
                   </q-item>
                   <q-item v-if="form_procurement_monitoring.attachments.length == 0">

@@ -46,7 +46,7 @@ function add_script()
       
       // 'city_tourism' => get_query_var( 'tab' ) && get_query_var( 'tab' ) == 'tourism' ? fetchTourism(false,0,true) : [],
       // 'tourism' => get_query_var( 'tab' ) && get_query_var( 'id' ) && get_query_var( 'tab' ) == 'add-tourism' ? fetchTourism(true,get_query_var( 'id' )) : '',
-
+      // 'procurement_monitorings' => fetchProcurementMonitoring(),
       'posts' => get_query_var( 'tab' ) == null || get_query_var( 'tab' ) == 'posts' ? getRecentPosts() : [],
       
       'dashboard_drawer_menu' => getDashboardDrawerMenu(),
@@ -70,6 +70,7 @@ function add_script()
       'quick_links' => is_front_page() == 1 ? fetchQuickLinks() : [],
       'partners_list' => is_front_page() == 1 ? fetchPartnerLists() : [],
       // 'recent_posts' => is_front_page() ? getRecentPosts() : [],
+      'procurement_monitorings' => fetchProcurementMonitoring(),
       'recent_posts' => getRecentPosts(),
       'header_menus' => getHeaderMenus(),
       'template_dir' => get_template_directory_uri(),

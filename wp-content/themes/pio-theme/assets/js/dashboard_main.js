@@ -26,6 +26,8 @@ window.vue = new Vue({
       report: null,
       city_tourism: [],
       tourism: null,
+      procurement_monitorings: [],
+      procurement_monitoring: null,
       ...Main,
       biding_type: 1,
       biding_year: 'All',
@@ -167,6 +169,26 @@ window.vue = new Vue({
           label: 'Title',
           align: 'left',
           field: row => row.title,
+          format: val => `${val}`,
+          sortable: false
+        },
+      ],
+      columns_monitoring_report: [
+        {
+          name: 'title',
+          required: true,
+          label: 'Title',
+          align: 'left',
+          field: row => row.title,
+          format: val => `${val}`,
+          sortable: false
+        },
+        {
+          name: 'quarter',
+          required: true,
+          label: 'Quarter',
+          align: 'left',
+          field: row => row.quarter,
           format: val => `${val}`,
           sortable: false
         },
@@ -395,6 +417,7 @@ window.vue = new Vue({
       },
       form_procurement_monitoring:{
         id: null,
+        title: '',
         attachments: [],
         year: null,
         quarter: null,
@@ -428,6 +451,12 @@ window.vue = new Vue({
         x.type == this.biding_type && 
         (this.biding_year != 'All' ? (x.year == this.biding_year) : true) && 
         (this.biding_month != 0 ? (x.month == this.biding_month) : true)
+      )
+    },
+    procurement_monitorings_data(){
+      return this.procurement_monitorings.filter(x => 
+        (this.transparency_year != 'All' ? (x.year == this.transparency_year) : true) && 
+        (this.transparency_quarter > 0 ? (x.quarter == this.transparency_quarter) : true)
       )
     },
     month_options(){
@@ -644,7 +673,24 @@ window.vue = new Vue({
           })
         }
       }
-    }
+    },
+    procurement_monitoring:{
+      immediate: true,
+      handler(val){
+        if(val){
+          this.form_procurement_monitoring.id = val.id
+          this.form_procurement_monitoring.title = val.title
+          this.form_procurement_monitoring.year = val.year
+          this.form_procurement_monitoring.quarter = val.quarter
+          this.form_procurement_monitoring.attachments = val.attachments
+          if(this.$refs.add_procurement_monitoring_form){
+            this.$nextTick(() => {
+              this.$refs.add_procurement_monitoring_form.resetValidation()
+            })
+          }
+        }
+      }
+    },
   },
   created(){
     document.getElementById("q-app").style.display = "block"
@@ -671,6 +717,13 @@ window.vue = new Vue({
     }
     if(this.query_tab == 'add-tourism' && this.query_id){
       this.getTourism(this.query_id,0)
+    }
+    if(this.query_tab == 'procurement-monitoring-reports'){
+      this.transparency_quarter = 0
+      this.getProcurementMonitoring()
+    }
+    if(this.query_tab == 'add-procurement-monitoring-report' && this.query_id){
+      this.getProcurementMonitoring(this.query_id)
     }
   },
   mounted(){
@@ -725,6 +778,47 @@ window.vue = new Vue({
       .then((response) => {
         console.log(response.data)
         this.bids = response.data
+      })
+    },
+    getProcurementMonitoring(id,is_edit=false,is_post=false){
+      window.axios.get(settings.API_BASE_PATH+'myplugin/v1/get-procurement-monitoring-list?id='+id+'&is_edit='+is_edit)
+      .then((response) => {
+        console.log(response.data)
+        this[id == null ? 'procurement_monitorings' : 'procurement_monitoring'] = response.data
+      })
+    },
+    removeProcurementMonitoringAttachment(attachment){
+      console.log(window)
+      window.Quasar
+      .plugins.Dialog
+      .create({
+        title: 'Confirm',
+        message: 'Remove attachment?',
+        ok: {
+          color: 'primary'
+        },
+        cancel: {
+          color: 'negative'
+        },
+        persistent: true,
+      }).onOk(() => {
+        if(this.loading) return
+        this.loading = true
+        const formData = new FormData()
+        formData.append('id',attachment.id)
+        window.axios.post(settings.API_BASE_PATH+'myplugin/v1/remove-procurement-monitoring-attachment',formData)
+        .then((response) => {
+          var index = this.form_procurement_monitoring.attachments.findIndex(x => x.id == attachment.id)
+          index >= 0 ? this.form_procurement_monitoring.attachments.splice(index,1) : ''
+          this.loading = false
+        })
+        .catch((error) => {
+          this.loading = false
+        })
+      }).onCancel(() => {
+        // console.log('>>>> Cancel')
+      }).onDismiss(() => {
+        // console.log('I am triggered on both OK and Cancel')
       })
     },
     fetchReport(id,is_bid=false){
@@ -1203,7 +1297,7 @@ window.vue = new Vue({
     getImageUrl(file){
       return URL.createObjectURL(file)
     },
-    removePostAttachment(){
+    removePostAttachment(attachment){
       console.log(window)
       window.Quasar
       .plugins.Dialog
@@ -1359,6 +1453,34 @@ window.vue = new Vue({
         // console.log('>>>> Cancel')
       }).onDismiss(() => {
         // console.log('I am triggered on both OK and Cancel')
+      })
+    },
+    addProcurementMonitoring(){
+      if(this.loading) return
+      this.loading = true
+      const formData = new FormData()
+      if(this.form_procurement_monitoring.id) formData.append('id',this.form_procurement_monitoring.id)
+      formData.append('title',this.form_procurement_monitoring.title)
+      formData.append('year',this.form_procurement_monitoring.year)
+      formData.append('quarter',this.form_procurement_monitoring.quarter)
+      formData.append('attachment_length',this.form_procurement_monitoring.attachments.length)
+      for(var i = 0; i < this.form_procurement_monitoring.attachments.length; i++){
+        formData.append('attachment_data-file'+parseInt(i+1),this.form_procurement_monitoring.attachments[i].file)
+        formData.append('attachment_data-title'+parseInt(i+1),this.form_procurement_monitoring.attachments[i].title)
+      }
+      window.axios.post(settings.API_BASE_PATH+'myplugin/v1/add-procurement-monitoring',formData)
+      .then((response) => {
+        console.log(response.data)
+        this.loading = false
+        // window.Quasar.Notify.create({
+        //   type: 'positive',
+        //   message: 'Report ' + (this.form_procurement_monitoring.id ? 'updated.' : 'submitted'),
+        //   position: 'top-right'
+        // })
+        // if(!this.form_procurement_monitoring.id) this.resetForm('add_procurement_monitoring_form')
+      })
+      .catch((error) => {
+        this.loading = false
       })
     },
     addBidReport(){

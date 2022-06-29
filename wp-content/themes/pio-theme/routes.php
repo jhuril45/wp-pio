@@ -327,3 +327,31 @@ add_action('rest_api_init', function () {
   ) );
 } );
 
+add_action( 'rest_api_init', function () {
+  register_rest_route( 'myplugin/v1', '/add-procurement-monitoring', array(
+    'methods' => 'POST',
+    'callback' => 'submitProcurementMonitoring',
+    'permission_callback' => function($request){
+      return checkUser('pio');
+    },
+  ) );
+} );
+
+add_action( 'rest_api_init', function () {
+  register_rest_route( 'myplugin/v1', '/get-procurement-monitoring-list', array(
+    'methods' => 'GET',
+    'callback' => function () {
+      return fetchProcurementMonitoring($_GET['id'],$_GET['is_post']);
+    }
+  ) );
+} );
+
+add_action( 'rest_api_init', function () {
+  register_rest_route( 'myplugin/v1', '/remove-procurement-monitoring-attachment', array(
+    'methods' => 'POST',
+    'callback' => 'removeProcurementMonitoringAttachment',
+    'permission_callback' => function($request){
+      return checkUser('pio');
+    },
+  ) );
+} );

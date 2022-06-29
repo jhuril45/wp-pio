@@ -13,6 +13,8 @@ window.vue = new Vue({
   },
   data() {
     return {
+      procurement_monitorings: [],
+      procurement_monitoring: null,
       ...Main,
       office_dialog: false,
       search: '',
@@ -121,33 +123,24 @@ window.vue = new Vue({
           sortable: true
         },
       ],
-      data: [
+      columns_monitoring_report: [
         {
-          name: 'Supplemental Procurement Plan 2020 (Vol 2)',
+          name: 'title',
+          required: true,
+          label: 'Title',
+          align: 'left',
+          field: row => row.title,
+          format: val => `${val}`,
+          sortable: false
         },
         {
-          name: 'Supplemental Procurement Plan 2020',
-        },
-        {
-          name: 'ANNUAL BUDGET',
-        },
-        {
-          name: 'Annual Procurement Plan 2020 (Covid-19 Operations)',
-        },
-        {
-          name: 'BAYANIHAN GRANT AS OF AUGUST 2020',
-        },
-        {
-          name: 'BAYANIHAN GRANT AS OF JULY 2020',
-        },
-        {
-          name: 'BAYANIHAN GRANT AS OF SEPTEMBER 2020',
-        },
-        {
-          name: 'BAYANIHAN GRANT AS OF OCTOBER 2020',
-        },
-        {
-          name: 'Status of Appropriation , Allotment and Obligations as of January 31, 2022',
+          name: 'quarter',
+          required: true,
+          label: 'Quarter',
+          align: 'left',
+          field: row => row.quarter,
+          format: val => `${val}`,
+          sortable: false
         },
       ],
       loading: false,
@@ -274,6 +267,12 @@ window.vue = new Vue({
     }
   },
   computed:{
+    procurement_monitorings_data(){
+      return this.procurement_monitorings.filter(x => 
+        (this.transparency_year != 'All' ? (x.year == this.transparency_year) : true) && 
+        (this.transparency_quarter > 0 ? (x.quarter == this.transparency_quarter) : true)
+      )
+    },
     reports_data(){
       return this.reports.filter(x => 
         x.type == this.transparency_type && 
@@ -342,6 +341,7 @@ window.vue = new Vue({
     }
   },
   created(){
+    if(this.page_name == 'procurement-monitoring-reports') this.transparency_quarter = 0
     document.getElementById("q-app").style.display = "block"
   },
   mounted(){
