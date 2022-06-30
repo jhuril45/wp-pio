@@ -57,7 +57,7 @@ if(!is_user_logged_in()){
     }
     else if(get_query_var( 'tab' ) == 'procurement-monitoring-reports'){?>
       <div class="row justify-center">
-        <div class="col-12 col-md-6 q-py-lg">
+        <div class="col-12 col-md-8 q-py-lg">
           <?php get_template_part('template-parts/content', 'procurement-monitoring-reports-table');?>
         </div>
       </div>

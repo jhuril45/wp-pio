@@ -123,11 +123,11 @@ function getDashboardDrawerMenu(){
   return $arr;
 }
 
-function getRecentPosts(){
+function getRecentPosts($limit=5){
   $term = get_term_by('name', 'News', 'category');
   $data = get_posts( array( 
     'post_type' => 'post',
-    'posts_per_page' => 5,
+    'posts_per_page' => $limit,
     'category' => $term->term_id,
     )
   );

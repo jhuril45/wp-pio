@@ -1,8 +1,9 @@
 <q-card>
   <q-card-section class="q-px-sm q-py-md">
     <div class="row justify-center">
-      <div class="col-12 col-md-8" :class="$q.screen.lt.md ? 'q-pa-md' : 'q-pa-xl'">
+      <div class="col-12" :class="$q.screen.lt.md ? 'q-pa-sm' : 'q-pa-sm'">
         <q-table
+          flat
           title="Procurement Monitoring Reports"
           :data="procurement_monitorings_data"
           :columns="columns_monitoring_report"
@@ -106,51 +107,11 @@
                   round
                   color="primary"
                   size="sm"
-                  icon="download"
-                  :href="props.row.path"
-                  :target="'_blank'">
+                  icon="view_list"
+                  @click="reportSource=props.row;procurements_report_dialog=true">
                 </q-btn>
               </q-td>
             </q-tr>
-            <q-item :props="props" clickable v-if="false">
-              <q-item-section side top>
-                <q-icon
-                  size="sm"
-                  color="primary"
-                  name="description"></q-icon>
-              </q-item-section>
-              <q-item-section :props="props">
-                <q-item-label>
-                  {{ props.row.title }} ({{ props.row.year }})
-                </q-item-label>
-              </q-item-section>
-              <q-item-section
-                side
-                top
-                :props="props">
-                <q-btn
-                  round
-                  color="primary"
-                  size="sm"
-                  icon="download"
-                  :href="props.row.path"
-                  :target="'_blank'">
-                </q-btn>
-              </q-item-section>
-              <q-item-section
-                side
-                top
-                :props="props">
-                <q-btn
-                  round
-                  color="primary"
-                  size="sm"
-                  icon="download"
-                  :href="props.row.path"
-                  :target="'_blank'">
-                </q-btn>
-              </q-item-section>
-            </q-item>
           </template>
         </q-table>
         <q-separator></q-separator>
@@ -159,7 +120,7 @@
   </q-card-section>
 </q-card>
 
-<q-dialog v-model="report_pdf">
+<q-dialog v-model="procurements_report_dialog">
   <q-card style="width:700px" v-if="reportSource">
     <q-card-section class="row items-center q-pb-none">
       <div class="text-h6">
@@ -168,12 +129,21 @@
       <q-space></q-space>
       <q-btn icon="close" flat round dense v-close-popup ></q-btn>
     </q-card-section>
-
     <q-card-section style="max-height: 70vh" class="scroll">
-      <vue-pdf-embed :source="reportSource.path" ></vue-pdf-embed>
+      <q-list bordered separator>
+        <q-item
+          clickable
+          v-ripple
+          v-for="(attachment,index) in reportSource.attachments"
+          :key="'attachment-'+index"
+          :href="attachment.path"
+          target="_blank">
+          <q-item-section>{{attachment.title}}</q-item-section>
+        </q-item>
+      </q-list>
     </q-card-section>
     <q-card-actions align="right">
-      <q-btn label="Download" color="primary" :href="reportSource.path" :download="reportSource.title+'('+reportSource.year+')'"></q-btn>
+      <q-btn flat label="Close" color="primary" v-close-popup></q-btn>
     </q-card-actions>
   </q-card>
 </q-dialog>

@@ -38,7 +38,7 @@
     </div>
 
   </q-toolbar>
-  <q-toolbar class="q-py-sm bg-white q-px-lg">
+  <q-toolbar class="q-py-sm bg-white" :class="$q.screen.gt.xs ? 'q-px-lg' : 'q-px-sm'">
     <q-btn
       flat
       round
@@ -49,8 +49,8 @@
       color="primary"
       @click="drawer_left = !drawer_left">
     </q-btn>
-    <div class="row items-center full-height q-gutter-x-sm full-width">
-      <div class="col-shrink">
+    <div class="row items-center full-height full-width" :class="$q.screen.gt.xs ? 'q-gutter-x-sm ' : ''">
+      <div class="col-shrink q-px-sm">
         <a href="<?php echo get_home_url() ?>">
           <q-img
             cover
@@ -96,10 +96,10 @@
           </q-btn>
         </div>
       </div>
-      <q-space></q-space>
-      <div class="col-auto">
+      <q-space></q-space v-if="$q.screen.gt.xs">
+      <div :class="$q.screen.gt.xs ? 'col-auto ' : 'col-8'">
         <q-form
-        @submit="searchPage(search)">
+          @submit="searchPage(search)">
           <q-input
             v-model="search"
             placeholder="Search"

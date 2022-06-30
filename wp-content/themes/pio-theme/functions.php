@@ -304,6 +304,9 @@ function cgb_create_pages(){
     array(
       'title' => 'Procurement Monitoring Reports',
     ),
+    array(
+      'title' => 'News',
+    ),
   ];
   
   foreach ($arr as $key => $value) {

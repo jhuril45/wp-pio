@@ -12,13 +12,21 @@
     );
   // var_dump($post);
   if ( $attachments ) {
+    $arr = [];
+    if($featured_image_url){
+      array_push($arr,$featured_image_url);
+    }
     foreach ( $attachments as $attachment ) {
       $src = wp_get_attachment_url( $attachment->ID, 'full');
       $mime = wp_get_attachment_metadata($attachment->ID);
       $type = wp_check_filetype($mime['file']);
       $attachment->mime_type = $type['type'];
-      $attachment->src = $src;
+        array_push($arr,$src);
+      //   if($src != $featured_image_url){
+      //   array_push($arr,$src);
+      // }
     }
+    $attachments = $arr;
   }else{
     $attachment = new stdClass();
     $attachment->src = get_template_directory_uri().'/assets/images/Butuan_Logo_Transparent.png';
@@ -70,7 +78,7 @@
             <q-carousel-slide
               class="q-pa-none carousel-img cursor-pointer"
               :name="<?php echo $index+1;?>"
-              img-src="<?php echo $attachments[$index]->src?>"
+              img-src="<?php echo $attachments[$index]?>"
               @click="post_attachments=true">
             </q-carousel-slide>
           <?php }?>

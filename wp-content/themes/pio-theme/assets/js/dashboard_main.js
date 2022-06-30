@@ -137,6 +137,7 @@ window.vue = new Vue({
       ],
       tourism_type: 0,
       report_pdf: false,
+      procurements_report_dialog: false,
       reportSource: null,
       tab: 'description',
       drawer_left: false,

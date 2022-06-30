@@ -235,9 +235,9 @@ body {
 }
 
 .carousel-img{
-  /* background-size: cover !important;
+  background-size: contain !important;
   background-repeat: no-repeat !important;
-  background-position: center !important; */
+  background-position: center !important;
 }
 
 .org_chart_parent .orgchart{

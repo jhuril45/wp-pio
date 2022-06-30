@@ -17,6 +17,7 @@ function add_css()
    wp_enqueue_style( 'material_icons');
 
    wp_register_style('fontawesome5', 'https://use.fontawesome.com/releases/v5.0.13/css/all.css', false,'1.1','all');
+  //  wp_register_style('fontawesome5', get_template_directory_uri() . '/assets/css/fontawesome.css', false,'1.1','all');
    wp_enqueue_style( 'fontawesome5');
 
    wp_register_style('main-css', get_template_directory_uri() . '/assets/css/main.css', false,'1.1','all');

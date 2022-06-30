@@ -13,6 +13,10 @@ function fetchProcurementMonitoring($id=null,$is_post = false) {
     return $procurement_monitoring_report;
   }else{
     $procurement_monitoring_reports = $wpdb->get_results("SELECT * FROM $table_name");
+    foreach ($procurement_monitoring_reports as $key => $value) {
+      $value->attachments = fetchProcurementMonitoringAttachments($value->id);
+      // array_push($arr,$key);
+    }
     return $procurement_monitoring_reports;
   }
 }

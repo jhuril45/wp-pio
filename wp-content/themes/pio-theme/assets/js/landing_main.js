@@ -15,6 +15,7 @@ window.vue = new Vue({
     return {
       procurement_monitorings: [],
       procurement_monitoring: null,
+      recent_posts: [],
       ...Main,
       office_dialog: false,
       search: '',
@@ -74,6 +75,7 @@ window.vue = new Vue({
       city_official_tab: 'officials',
       expanded: false,
       report_pdf: false,
+      procurements_report_dialog: false,
       reportSource: null,
       tab: 'description',
       drawer_left: false,
@@ -263,6 +265,26 @@ window.vue = new Vue({
             img: "https://cdn.quasar.dev/img/avatar5.jpg",
           },
         ],
+      },
+      columns_news: [
+        {
+          name: 'post_title',
+          required: true,
+          label: 'Title',
+          align: 'left',
+          field: row => row.post_title,
+          sortable: true
+        },
+      ],
+      data_news: [
+        {
+          post_title: 'Frozen Yogurt',
+        },
+      ],
+      newsPagination: {
+        page: 1,
+        // rowsPerPage: 4
+        // rowsNumber: xx if getting data from a server
       },
     }
   },

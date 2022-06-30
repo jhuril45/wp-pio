@@ -71,7 +71,7 @@ function add_script()
       'partners_list' => is_front_page() == 1 ? fetchPartnerLists() : [],
       // 'recent_posts' => is_front_page() ? getRecentPosts() : [],
       'procurement_monitorings' => fetchProcurementMonitoring(),
-      'recent_posts' => getRecentPosts(),
+      'recent_posts' => getRecentPosts(4),
       'header_menus' => getHeaderMenus(),
       'template_dir' => get_template_directory_uri(),
       'page_name' => $pagename,

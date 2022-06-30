@@ -218,8 +218,15 @@
 
 <!-- Latest news must be dynamic -->
 <div class="full-width row justify-start" :class="$q.screen.lt.sm ? 'q-my-lg q-px-md' : 'q-my-xl q-pa-xl'">
-  <div class="col-12 text-center q-my-md text-bold" :class="$q.screen.lt.sm ? 'text-h5' : 'text-h4'">
+  <div class="col-12 text-center q-my-md text-bold relative-position" :class="$q.screen.lt.sm ? 'text-h5' : 'text-h4'">
     LATEST NEWS
+    <q-btn
+      :href="home_url+'/news'"
+      flat
+      label="View More"
+      class="text-body2 absolute-right items-end text-primary text-bold"
+      v-if="recent_posts.length >= 4">
+    </q-btn>
   </div>
   <div class="col-12 row q-pt-md">
     <div
