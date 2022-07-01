@@ -74,7 +74,8 @@
     try{
       $user = wp_get_current_user();
       $attachment = null;
-      if (isset($_POST['id'])) {
+      $id = is_numeric($_POST['id']) ? intval($_POST['id']) : null;
+      if ($id) {
         $attachment = wp_delete_attachment($_POST['id']);
       }
       return $attachment;
@@ -83,9 +84,9 @@
     }
   }
   
-  function fetchPost() {
+  function fetchPost($id=null) {
     try{
-      $id = $_GET['id'];
+      $id = $id ? $id : $_GET['id'];
       $post = get_post($id);
   
       $featured_image = get_the_post_thumbnail_url($post->ID);
@@ -116,6 +117,72 @@
       );
     }catch(Exception $error){
       return $error;
+    }
+  }
+
+  function fetchPostCarousel($id=null){
+    $id = is_numeric($id) ? intval($id) : null;
+    if($id){
+      $featured_image_url = get_the_post_thumbnail_url($id);
+      $attachments = get_posts( array( 
+        'post_type' => 'attachment',
+        'post_mime_type'=>'image',
+        'posts_per_page' => -1,
+        'post_status' => 'published',
+        'post_parent' => $id)
+        );
+      if ( $attachments ) {
+        $arr = [];
+        if($featured_image_url){
+          array_push($arr,$featured_image_url);
+        }
+        foreach ( $attachments as $attachment ) {
+          $src = wp_get_attachment_url( $attachment->ID, 'full');
+          $mime = wp_get_attachment_metadata($attachment->ID);
+          $type = wp_check_filetype($mime['file']);
+          $attachment->mime_type = $type['type'];
+          if($src != $featured_image_url){
+            array_push($arr,$src);
+          }
+        }
+        $attachments = $arr;
+      }else{
+        $attachment = new stdClass();
+        $attachment->src = get_template_directory_uri().'/assets/images/Butuan_Logo_Transparent.png';
+        array_push($attachments,$attachment);
+      }
+      return $attachments;
+    }else{
+      return [];
+    }
+  }
+
+  function fetchOtherPosts($id=null,$term_id){
+    $id = is_numeric($id) ? intval($id) : null;
+    $term_id = is_numeric($term_id) ? intval($term_id) : null;
+    if($id && $term_id){
+      $data = get_posts( array( 
+        'post_type' => 'post',
+        'posts_per_page' => 5,
+        'exclude' => array($id),
+        'category' => $term_id,
+        )
+      );
+      
+      $recent_posts = [];
+      foreach ($data as $key => $value) {
+        $post_thumbnail_id = get_post_thumbnail_id($value->ID);
+        if ( $post_thumbnail_id ) {
+          $recent_src = wp_get_attachment_url( $post_thumbnail_id, 'full');
+          $value->fimg_url = $recent_src;
+        }else{
+          $value->fimg_url = get_template_directory_uri().'/assets/images/Butuan_Logo_Transparent.png';
+        }
+        array_push($recent_posts,$value);
+      }
+      return $recent_posts;
+    }else{
+      return [];
     }
   }
 
