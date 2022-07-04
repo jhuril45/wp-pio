@@ -1,13 +1,13 @@
 <?php
 function uploadFileSubmitted($file_name,$is_post=true,$prefix=''){
-  $upload_dir = wp_upload_dir();
   $temp = explode('.',basename($_FILES[$file_name]['name']));
   $extension = end($temp);
   $file_data = file_get_contents($_FILES[$file_name]['tmp_name'] );
       
-  $name = $prefix.time().'.'.$extension;
+  $name = $prefix.uniqid().'.'.$extension;
   $file = null;
   if($is_post){
+    $upload_dir = wp_upload_dir();
     $file = wp_mkdir_p($upload_dir['path']) ? $upload_dir['path'] . '/' . $name : $upload_dir['basedir'] . '/' . $name;
     file_put_contents($file, $file_data);
   }else{

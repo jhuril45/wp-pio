@@ -16,6 +16,7 @@ window.vue = new Vue({
       procurement_monitorings: [],
       procurement_monitoring: null,
       recent_posts: [],
+      paginate_posts: [],
       ...Main,
       office_dialog: false,
       search: '',
@@ -283,8 +284,7 @@ window.vue = new Vue({
       ],
       newsPagination: {
         page: 1,
-        // rowsPerPage: 4
-        // rowsNumber: xx if getting data from a server
+        rowsPerPage: 2
       },
     }
   },
@@ -362,6 +362,16 @@ window.vue = new Vue({
       ]
     }
   },
+  watch:{
+    page_name:{
+      immediate: true,
+      handler(val){
+        if(val == 'news'){
+          this.getPosts();
+        }
+      }
+    }
+  },
   created(){
     if(this.page_name == 'procurement-monitoring-reports') this.transparency_quarter = 0
     document.getElementById("q-app").style.display = "block"
@@ -374,6 +384,22 @@ window.vue = new Vue({
     }
   },
   methods: {
+    getPosts(){
+      if(this.loading) return
+      this.loading = true
+      const formData = new FormData()
+      formData.append('page',this.newsPagination.page)
+      formData.append('rows',this.newsPagination.rowsPerPage)
+      window.axios.post(settings.API_BASE_PATH+'myplugin/v1/fetch-posts',formData)
+      .then((response) => {
+        this.paginate_posts = response.data.posts
+        console.log(this.posts)
+        this.loading = false
+      })
+      .catch((error) => {
+        this.loading = false
+      })
+    },
     searchPage(data){
       // if(this.loading) return
       // this.loading = true

@@ -1362,7 +1362,7 @@ window.vue = new Vue({
           position: 'top-right'
         })
         if(!this.form_post.id){
-          this.resetForm('form_post')
+          // this.resetForm('form_post')
         }
         
       })

@@ -3,23 +3,31 @@
     <div class="col-12 col-md-8">
       <q-table
         title="News"
-        :data="recent_posts"
+        :data="paginate_posts"
         :columns="columns_news"
         row-key="name"
         :filter="filter"
         hide-header
         :pagination="newsPagination">
         <template v-slot:top-right>
-          <q-input
-            outlined
-            dense
-            debounce="300"
-            v-model="filter"
-            placeholder="Search">
-            <template v-slot:append>
-              <q-icon name="search"></q-icon>
-            </template>
-          </q-input>
+          <div class="q-gutter-x-sm row">
+            <q-input
+              outlined
+              dense
+              debounce="300"
+              v-model="filter"
+              placeholder="Search">
+              <template v-slot:append>
+                <q-icon name="search"></q-icon>
+              </template>
+            </q-input>
+            <q-btn
+              color="primary"
+              label="Search"
+              size="sm"
+              @click="getPosts">
+            </q-btn>
+          </div>
         </template>
         <template v-slot:body="props">
           <q-tr :props="props" >
@@ -30,7 +38,7 @@
               class="q-px-sm"
               :href="props.row.guid">
               <q-item-section top avatar class="q-px-md">
-                <img :src="props.row.fimg_url" style="width:130px;height:80px">
+                <img :src="props.row.fimg_url" style="width:130px;height:80px;object-fit:cover">
               </q-item-section>
 
               <q-item-section>
@@ -45,7 +53,7 @@
             <q-separator></q-separator>
           </q-tr>
         </template>
-        <template v-slot:bottom>
+        <template v-slot:bottom v-if="false">
           Bottom
         </template>
       </q-table>

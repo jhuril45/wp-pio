@@ -4,8 +4,8 @@ function add_script()
   global $pagename;
 
   // wp_register_script( 'vue-script', 'https://cdn.jsdelivr.net/npm/vue/dist/vue.js',array ( 'jquery' ), 1.1, true);
-  wp_register_script('vue-script', get_template_directory_uri() . '/assets/js/vue.min.js',array ( 'jquery' ), 1.1, true);
-  wp_register_script('quasar-script', get_template_directory_uri() . '/assets/js/quasar.min.js',array ( 'jquery' ), 1.1, true);
+  wp_register_script('vue-script', get_template_directory_uri() . '/assets/js/vue.min.js',[], 1.2, false);
+  wp_register_script('quasar-script', get_template_directory_uri() . '/assets/js/quasar.min.js',[], 1.2, true);
   // wp_register_script('quasar-fontawesome', get_template_directory_uri() . '/assets/js/quasar-fontawesome5.min.js',array ( 'jquery' ), 1.1, true);
   
   wp_register_script('axios', get_template_directory_uri() . '/assets/js/axios.min.js');
@@ -13,8 +13,7 @@ function add_script()
   wp_enqueue_script( 'quasar-script');
   wp_enqueue_script( 'axios');
 
-  wp_register_script('clockComponent', get_template_directory_uri() . '/assets/js/clockComponent.js',array ( 'jquery' ), 1.1, true);
-  wp_enqueue_script( 'clockComponent');
+  
 
   wp_register_script('organization-chart', get_template_directory_uri() . '/assets/js/organization-chart.min.js',array ( 'jquery' ), 1.1, true);
   wp_enqueue_script( 'organization-chart');
@@ -57,6 +56,9 @@ function add_script()
       'partners_list' => get_query_var( 'tab' ) && get_query_var( 'tab' ) == 'partners-list' ? fetchPartnerLists() : [],
     ];
   }else{
+    wp_register_script('clockComponent', get_template_directory_uri() . '/assets/js/clockComponent.js',array ( 'jquery' ), 1.1, true);
+    wp_enqueue_script( 'clockComponent');
+    
     wp_register_script('vue-main', get_template_directory_uri() . '/assets/js/landing_main.js',array ( 'jquery' ), 1.1, true);
     $office = get_query_var( 'office' ) ? fetchOffices(get_query_var( 'office' ),get_query_var( 'searched' )) : null;
     $barangay = get_query_var( 'barangay' ) ? fetchBarangays(get_query_var( 'barangay' ),false,get_query_var( 'searched' )) : null;

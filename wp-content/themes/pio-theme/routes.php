@@ -355,3 +355,11 @@ add_action( 'rest_api_init', function () {
     },
   ) );
 } );
+
+add_action( 'rest_api_init', function () {
+  register_rest_route( 'myplugin/v1', '/fetch-posts', array(
+    'methods' => 'POST',
+    'callback' => 'getPosts',
+  ) );
+} );
+
