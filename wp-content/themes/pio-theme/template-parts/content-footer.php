@@ -132,11 +132,11 @@
       </q-list>
     </div>
   </div>
-  <q-toolbar class="bg-blue-10 text-white q-px-lg" v-if="$q.screen.gt.sm">
+  <q-toolbar class="bg-blue-10 text-white q-px-lg relative-position" v-if="$q.screen.gt.sm">
     <q-toolbar-title class="text-body2 text-italic text-center">
       Ⓒ 2022. City Government of Butuan. All Rights Reserved.
     </q-toolbar-title>
-    <span class="text-body2">
+    <span class="text-body2 absolute-right row items-center q-px-sm">
       Version 1.0.0
     </span>
   </q-toolbar>
