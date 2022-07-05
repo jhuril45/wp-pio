@@ -44,7 +44,7 @@
                   :style="{backgroundColor:flip.bg_color,color:flip.text_color}">
                 </div>
               </q-img>
-              <div class="text-h6 absolute-center text-white">
+              <div class="text-h6 absolute-center" :style="{color:flip.text_color}">
                 <q-icon
                   :name="'img:'+flip.icon_path"
                   color="white"
@@ -57,7 +57,7 @@
             </div>
             <div class="flip-card-back rounded-borders" :style="{backgroundColor:flip.bg_color,color:flip.text_color}">
               <div class="fit row items-center">
-                <div class="text-white text-center q-px-sm">
+                <div class="text-center q-px-sm">
                   <p>{{flip.description}}</p>
                   <q-btn
                     v-if="false"
@@ -159,9 +159,10 @@
         <q-input
           filled
           v-model="form_flip_cards.text_color"
-          placeholder="Text Color"
+          label="Text Color"
           readonly
-          :rules="[val => (!!val && val.length > 0) || 'Color is required']">
+          :rules="[val => (!!val && val.length > 0) || 'Color is required']"
+          :input-style="{color:form_flip_cards.text_color}">
           <template v-slot:append>
             <q-icon name="colorize" class="cursor-pointer">
               <q-popup-proxy transition-show="scale" transition-hide="scale">
@@ -173,9 +174,10 @@
         <q-input
           filled
           v-model="form_flip_cards.bg_color"
-          placeholder="Background Color"
+          label="Background Color"
           readonly
-          :rules="[val => (!!val && val.length > 0) || 'Background color is required']">
+          :rules="[val => (!!val && val.length > 0) || 'Background color is required']"
+          :input-style="{color:form_flip_cards.bg_color}">
           <template v-slot:append>
             <q-icon name="colorize" class="cursor-pointer">
               <q-popup-proxy transition-show="scale" transition-hide="scale">

@@ -1,5 +1,5 @@
 var settings = {
-  API_BASE_PATH: "/vue_wp/wp-json/"
+  API_BASE_PATH: Main.home_url+"/wp-json/"
 }
 window.Quasar.plugins.LoadingBar.setDefaults({ color: 'white' });
 
@@ -284,7 +284,8 @@ window.vue = new Vue({
       ],
       newsPagination: {
         page: 1,
-        rowsPerPage: 2
+        rowsPerPage: 5,
+        rowsNumber: 0
       },
     }
   },
@@ -367,33 +368,37 @@ window.vue = new Vue({
       immediate: true,
       handler(val){
         if(val == 'news'){
-          this.getPosts();
+          this.getPosts({pagination:this.newsPagination});
         }
       }
-    }
+    },
   },
   created(){
     if(this.page_name == 'procurement-monitoring-reports') this.transparency_quarter = 0
     document.getElementById("q-app").style.display = "block"
   },
   mounted(){
-    console.log('Landing Main')
     console.log(Main)
     if(this.barangay){
       this.page_tab = 'information'
     }
   },
   methods: {
-    getPosts(){
+    getPosts(props){
       if(this.loading) return
+      const { page, rowsPerPage } = props.pagination
       this.loading = true
       const formData = new FormData()
-      formData.append('page',this.newsPagination.page)
-      formData.append('rows',this.newsPagination.rowsPerPage)
+      formData.append('page',page)
+      formData.append('rows',rowsPerPage)
       window.axios.post(settings.API_BASE_PATH+'myplugin/v1/fetch-posts',formData)
       .then((response) => {
         this.paginate_posts = response.data.posts
-        console.log(this.posts)
+        this.newsPagination = {
+          page: page,
+          rowsPerPage: rowsPerPage,
+          rowsNumber: response.data.count,
+        },
         this.loading = false
       })
       .catch((error) => {

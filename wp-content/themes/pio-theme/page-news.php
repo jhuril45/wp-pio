@@ -7,8 +7,10 @@
         :columns="columns_news"
         row-key="name"
         :filter="filter"
+        :loading="loading"
         hide-header
-        :pagination="newsPagination">
+        :pagination.sync="newsPagination"
+        @request="getPosts">
         <template v-slot:top-right>
           <div class="q-gutter-x-sm row">
             <q-input
@@ -52,9 +54,6 @@
             </q-item>
             <q-separator></q-separator>
           </q-tr>
-        </template>
-        <template v-slot:bottom v-if="false">
-          Bottom
         </template>
       </q-table>
     </div>

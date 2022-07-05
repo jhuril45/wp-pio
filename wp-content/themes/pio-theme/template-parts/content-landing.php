@@ -69,7 +69,7 @@
               :style="{backgroundColor:flip.bg_color,color:flip.text_color}">
             </div>
           </q-img>
-          <div class="text-h6 absolute-center text-white">
+          <div class="text-h6 absolute-center" :style="{color:flip.text_color}">
             <q-icon
               :name="'img:'+flip.icon_path"
               color="white"
@@ -84,7 +84,7 @@
           class="flip-card-back rounded-borders"
           :style="{backgroundColor:flip.bg_color,color:flip.text_color}">
           <div class="fit row items-center">
-            <div class="text-white text-center q-px-sm">
+            <div class="text-center q-px-sm" :style="{color:flip.text_color}">
               <p>{{flip.description}}</p>
               <q-btn
                 v-if="false"
@@ -99,46 +99,6 @@
         </div>
       </div>
     </div> 
-  </div>
-  <div
-    class="col-12 col-md-3 col-sm-6 q-pa-xs q-pt-md"
-    v-for="(flip,index) in []"
-    :key="'flip-card-'+index">
-    <div class="flip-card">
-      <div class="flip-card-inner">
-        <div class="flip-card-front rounded-borders relative-position" >
-          <q-img
-            cover
-            height="100%"
-            :src="'<?php echo get_template_directory_uri().'/assets/images/'; ?>'+flip.image">
-            <div class="absolute-full flex flex-center" style="opacity: 0.7;" :class="flip.class_front ? flip.class_front : ''">
-              
-            </div>
-          </q-img>
-          <div class="text-h6 absolute-center text-white">
-            <q-icon :name="flip.icon" size="60px"></q-icon>
-            <p class="text-h6">
-              {{flip.title}}
-            </p>
-          </div>
-        </div>
-        <div class="flip-card-back rounded-borders" :class="flip.class_back ? flip.class_back : ''">
-          <div class="fit row items-center">
-            <div class="text-white text-center q-px-sm">
-              <p>{{flip.description}}</p>
-              <q-btn
-                v-if="false"
-                rounded
-                color="primary"
-                label="View More"
-                @click="page_dialog.data=flip;tab='description';page_dialog.open=true"
-                text-color="white"
-                outline></q-btn>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 </div>
 
@@ -262,7 +222,7 @@
   </div>
   <div class="col-12 row q-gutter-y-lg justify-center">
     <div
-      class="q-py-xs col-12 col-md-4 q-px-md"
+      class="q-py-xs col-12 col-md-3 q-px-md"
       v-for="quick_link in quick_links"
       :key="'link-'+quick_link.id">
       <q-card class="news-card" style="max-height:200px">

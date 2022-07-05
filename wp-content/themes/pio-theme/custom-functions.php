@@ -381,7 +381,7 @@ function restrict_admin() {
 function searchContents($data=null){
   $post_array = get_posts(array(
     'post_status' => 'publish',
-    'numberposts' => 5,
+    'numberposts' => -1,
     's' => $data ? $data : $_POST['search'],
   ));
 

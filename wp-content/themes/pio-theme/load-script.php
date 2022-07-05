@@ -30,7 +30,7 @@ function add_script()
       'page_name' => $pagename,
       'query_tab' => get_query_var( 'tab' ),
       'query_id' => get_query_var( 'id' ) ? get_query_var( 'id' ) : null,
-      
+      'user' => wp_get_current_user(),
       // 'reports' => get_query_var( 'tab' ) && get_query_var( 'tab' ) == 'reports' ? fetchReports() : [],
       // 'report' => get_query_var( 'tab' ) && get_query_var( 'id' ) && get_query_var( 'tab' ) == 'add-report' ? getReport(get_query_var( 'id' )) : '',
       
@@ -46,7 +46,7 @@ function add_script()
       // 'city_tourism' => get_query_var( 'tab' ) && get_query_var( 'tab' ) == 'tourism' ? fetchTourism(false,0,true) : [],
       // 'tourism' => get_query_var( 'tab' ) && get_query_var( 'id' ) && get_query_var( 'tab' ) == 'add-tourism' ? fetchTourism(true,get_query_var( 'id' )) : '',
       // 'procurement_monitorings' => fetchProcurementMonitoring(),
-      'posts' => get_query_var( 'tab' ) == null || get_query_var( 'tab' ) == 'posts' ? getRecentPosts() : [],
+      // 'posts' => get_query_var( 'tab' ) == null || get_query_var( 'tab' ) == 'posts' ? getRecentPosts(-1) : [],
       
       'dashboard_drawer_menu' => getDashboardDrawerMenu(),
       'carousel_images' => get_query_var( 'tab' ) && get_query_var( 'tab' ) == 'carousel' ? fetchCarouselImages() : [],

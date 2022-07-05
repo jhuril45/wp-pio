@@ -92,6 +92,13 @@
                 </q-card-section>
               </q-card>
             </q-expansion-item>
+            <q-item v-if="office.services.length == 0">
+              <q-item-section>
+                <q-item-label lines="1" class="text-grey-7 text-weight-bold">
+                  Empty
+                </q-item-label>
+              </q-item-section>
+            </q-item>
           </q-list>
         </q-tab-panel>
 
@@ -173,6 +180,13 @@
                       size="sm"
                       target="_blank"
                       :href="form.path"></q-btn>
+                  </q-item-section>
+                </q-item>
+                <q-item v-if="office.forms.length == 0">
+                  <q-item-section>
+                    <q-item-label lines="1" class="text-grey-7 text-weight-bold">
+                      Empty
+                    </q-item-label>
                   </q-item-section>
                 </q-item>
               </q-list>

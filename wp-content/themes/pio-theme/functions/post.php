@@ -19,19 +19,18 @@
   function getPosts() {
     try{
       $term = get_term_by('name', 'News', 'category');
-      // $args = array( 
-      //   'numberposts'	=> $_POST['rows'],
-      //   'orderby' => 'date',
-      //   'category__and' => $term->term_id,
-      //   'order' => 'DESC',
-      //   'paged' => $_POST['page'],
-      // );
       $args = array(
         'post_type'=>'post',
         'posts_per_page' => $_POST['rows'],
         'paged' => $_POST['page'],
         'cat' => $term->term_id,
       );
+      if($_POST['user_id']){
+        $args['author'] = intval($_POST['user_id']);
+      }
+      if($_POST['search']){
+        $args['s'] = $_POST['search'];
+      }
       $query = new WP_Query($args);
       // $data = get_posts($args);
       $data = $query->posts;
@@ -50,6 +49,8 @@
         'posts' => $posts,
         'max_num_pages' => $query->max_num_pages,
         'count' => $query->found_posts,
+        'page_number' => $query->query['paged'],
+        'query' => $query,
       );
 
     }catch(Exception $error){

@@ -1,7 +1,7 @@
 var settings = {
-  API_BASE_PATH: "/vue_wp/wp-json/"
+  API_BASE_PATH: Main.home_url+"/wp-json/"
 }
-window.Quasar.plugins.LoadingBar.setDefaults({ color: 'white' });
+window.Quasar.plugins.LoadingBar.setDefaults({ color: 'primary' });
 axios.defaults.headers.common['X-WP-Nonce'] = Main.nonce
 
 window.vue = new Vue({
@@ -161,6 +161,11 @@ window.vue = new Vue({
       transparency_quarter: 1,
       pagination: {
         rowsPerPage: 10
+      },
+      postPagination: {
+        page: 1,
+        rowsPerPage: 3,
+        rowsNumber: 0
       },
       filter: '',
       columns_report: [
@@ -695,35 +700,38 @@ window.vue = new Vue({
   },
   created(){
     document.getElementById("q-app").style.display = "block"
-    if(this.query_tab.includes('office')){
+    if(this.query_tab.length == 0 || this.query_tab == 'posts'){
+      this.getPosts({pagination:this.postPagination})
+    }
+    else if(this.query_tab.includes('office')){
       this.getOffices(this.query_id)
     }
-    if(this.query_tab.includes('barangay')){
+    else if(this.query_tab.includes('barangay')){
       this.getBarangays(this.query_id,this.query_id ? 1 : 0)
     }
-    if(this.query_tab == 'bid-reports'){
+    else if(this.query_tab == 'bid-reports'){
       this.getBidReports()
     }
-    if(this.query_tab == 'reports'){
+    else if(this.query_tab == 'reports'){
       this.getReports()
     }
-    if(this.query_tab == 'add-bid-report' && this.query_id){
+    else if(this.query_tab == 'add-bid-report' && this.query_id){
       this.fetchReport(this.query_id,1)
     }
-    if(this.query_tab == 'add-report' && this.query_id){
+    else if(this.query_tab == 'add-report' && this.query_id){
       this.fetchReport(this.query_id,0)
     }
-    if(this.query_tab == 'tourism'){
+    else if(this.query_tab == 'tourism'){
       this.getTourism(null,1)
     }
-    if(this.query_tab == 'add-tourism' && this.query_id){
+    else if(this.query_tab == 'add-tourism' && this.query_id){
       this.getTourism(this.query_id,0)
     }
-    if(this.query_tab == 'procurement-monitoring-reports'){
+    else if(this.query_tab == 'procurement-monitoring-reports'){
       this.transparency_quarter = 0
       this.getProcurementMonitoring()
     }
-    if(this.query_tab == 'add-procurement-monitoring-report' && this.query_id){
+    else if(this.query_tab == 'add-procurement-monitoring-report' && this.query_id){
       this.getProcurementMonitoring(this.query_id)
     }
   },
@@ -754,6 +762,29 @@ window.vue = new Vue({
     }
   },
   methods: {
+    getPosts(props){
+      if(this.loading) return
+      const { page, rowsPerPage } = props.pagination
+      this.loading = true
+      const formData = new FormData()
+      formData.append('page',page)
+      formData.append('rows',rowsPerPage)
+      formData.append('user_id',this.user.ID)
+      formData.append('search',this.filter)
+      window.axios.post(settings.API_BASE_PATH+'myplugin/v1/fetch-posts',formData)
+      .then((response) => {
+        this.posts = response.data.posts
+        this.postPagination = {
+          page: page,
+          rowsPerPage: rowsPerPage,
+          rowsNumber: response.data.count,
+        },
+        this.loading = false
+      })
+      .catch((error) => {
+        this.loading = false
+      })
+    },
     getTourism(id=null,is_all){
       window.axios.get(settings.API_BASE_PATH+'myplugin/v1/get-tourism-list?id='+id+'&is_all='+is_all)
       .then((response) => {

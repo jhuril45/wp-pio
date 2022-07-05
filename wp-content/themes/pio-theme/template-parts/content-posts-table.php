@@ -10,10 +10,12 @@
           row-key="title"
           :filter="filter"
           hide-header
-        >
+          :loading="loading"
+          :pagination.sync="postPagination"
+          @request="getPosts">
           <template v-slot:top-right>
             <div class="row q-gutter-x-sm">
-              <q-input outlined dense debounce="300" v-model="filter" placeholder="Search">
+              <q-input outlined dense debounce="500" v-model="filter" placeholder="Search">
                 <template v-slot:append>
                   <q-icon name="search"></q-icon>
                 </template>
@@ -49,6 +51,7 @@
                 </q-btn>
               </q-item-section>
             </q-item>
+            <q-separator></q-separator>
           </template>
         </q-table>
         <q-separator></q-separator>
