@@ -30,16 +30,16 @@ function getDashboardDrawerMenu(){
   if(checkUser('pio')){
     array_push($arr,
       array(
-        'title' => 'Carousel',
-        'url' => get_home_url().'/dashboard?tab=carousel',
-        'icon' => 'collections',
-        'is_page' => $pagename == 'dashboard' && (get_query_var( 'tab' ) == 'carousel'),
-      ),
-      array(
         'title' => 'Posts',
         'url' => get_home_url().'/dashboard?tab=posts',
         'icon' => 'rss_feed',
         'is_page' => $pagename == 'dashboard' && (get_query_var( 'tab' ) == 'post' || get_query_var( 'tab' ) == 'posts' || get_query_var( 'tab' ) == ''),
+      ),
+      array(
+        'title' => 'Carousel',
+        'url' => get_home_url().'/dashboard?tab=carousel',
+        'icon' => 'collections',
+        'is_page' => $pagename == 'dashboard' && (get_query_var( 'tab' ) == 'carousel'),
       ),
       array(
         'title' => 'Offices',
@@ -71,12 +71,6 @@ function getDashboardDrawerMenu(){
         'icon' => 'handshake',
         'is_page' => $pagename == 'dashboard' && (get_query_var( 'tab' ) == 'partners-list'),
       ),
-      array(
-        'title' => 'Procurement Monitoring Reports',
-        'url' => get_home_url().'/dashboard?tab=procurement-monitoring-reports',
-        'icon' => 'summarize',
-        'is_page' => $pagename == 'dashboard' && (get_query_var( 'tab' ) == 'procurement-monitoring-reports' || get_query_var( 'tab' ) == 'add-procurement-monitoring-report'),
-      ),
     );
   }else if(checkUser('bac')){
     array_push($arr,
@@ -84,7 +78,7 @@ function getDashboardDrawerMenu(){
         'title' => 'Reports',
         'url' => get_home_url().'/dashboard?tab=reports',
         'icon' => 'summarize',
-        'is_page' => $pagename == 'dashboard' && (get_query_var( 'tab' ) == 'reports' || get_query_var( 'tab' ) == 'add-report'),
+        'is_page' => $pagename == 'dashboard' && (get_query_var( 'tab' ) == 'reports' || get_query_var( 'tab' ) == 'add-report' || get_query_var( 'tab' ) == ''),
       ),
       array(
         'title' => 'Bid Reports',
@@ -101,6 +95,12 @@ function getDashboardDrawerMenu(){
           ),
         ]
       ),
+      array(
+        'title' => 'Procurement Monitoring Reports',
+        'url' => get_home_url().'/dashboard?tab=procurement-monitoring-reports',
+        'icon' => 'summarize',
+        'is_page' => $pagename == 'dashboard' && (get_query_var( 'tab' ) == 'procurement-monitoring-reports' || get_query_var( 'tab' ) == 'add-procurement-monitoring-report'),
+      ),
     );
   }else if(checkUser('tourism')){
     array_push($arr,
@@ -108,7 +108,7 @@ function getDashboardDrawerMenu(){
         'title' => 'Tourism',
         'url' => get_home_url().'/dashboard?tab=tourism',
         'icon' => 'tour',
-        'is_page' => $pagename == 'dashboard' && (get_query_var( 'tab' ) == 'tourism' || get_query_var( 'tab' ) == 'add-tourism'),
+        'is_page' => $pagename == 'dashboard' && (get_query_var( 'tab' ) == 'tourism' || get_query_var( 'tab' ) == 'add-tourism' || get_query_var( 'tab' ) == ''),
       ),
     );
   }
@@ -195,6 +195,9 @@ function add_query_vars( $vars ){
   $vars[] = "search";
   $vars[] = "barangay";
   $vars[] = "office";
+  $vars[] = "report";
+  $vars[] = "bid";
+  $vars[] = "monitoring_report";
   $vars[] = "id";
   $vars[] = "tab";
   $vars[] = "searched";

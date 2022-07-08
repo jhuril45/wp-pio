@@ -79,11 +79,58 @@
 
   function getReport($id,$is_bid=false,$is_post=false) {
     global $wpdb;
-    $table_name = $wpdb->prefix . ($is_bid  ? 'bid_reports' : 'reports');
-    $report = $is_post ? $wpdb->get_row("SELECT * FROM $table_name WHERE post_id = $id") : $wpdb->get_row("SELECT * FROM $table_name WHERE id = $id");
-    
-    if(empty($report)){
+    $id = is_numeric($id) ? intval($id) : null;
+    if($id){
+      $table_name = $wpdb->prefix . ($is_bid  ? 'bid_reports' : 'reports');
+      $report = $is_post ? $wpdb->get_row("SELECT * FROM $table_name WHERE post_id = $id") : $wpdb->get_row("SELECT * FROM $table_name WHERE id = $id");
+      
+      if(empty($report)){
+        return null;
+      }
+      return $report;
+    }else{
       return null;
     }
-    return $report;
+  }
+
+  function paginateReports() {
+    try{
+      // $term = get_term_by('name', 'News', 'category');
+      // $args = array(
+      //   'post_type'=>'post',
+      //   'posts_per_page' => $_POST['rows'],
+      //   'paged' => $_POST['page'],
+      //   'cat' => $term->term_id,
+      // );
+      // if($_POST['user_id']){
+      //   $args['author'] = intval($_POST['user_id']);
+      // }
+      // if($_POST['search']){
+      //   $args['s'] = $_POST['search'];
+      // }
+      // $query = new WP_Query($args);
+      // // $data = get_posts($args);
+      // $data = $query->posts;
+      // $posts = [];
+      // foreach ($data as $key => $value) {
+      //   $post_thumbnail_id = get_post_thumbnail_id($value->ID);
+      //   if ( $post_thumbnail_id ) {
+      //     $recent_src = wp_get_attachment_url( $post_thumbnail_id, 'full');
+      //     $value->fimg_url = $recent_src;
+      //   }else{
+      //     $value->fimg_url = get_template_directory_uri().'/assets/images/Butuan_Logo_Transparent.png';
+      //   }
+      //   array_push($posts,$value);
+      // }
+      return array(
+        'posts' => $posts,
+        'max_num_pages' => $query->max_num_pages,
+        'count' => $query->found_posts,
+        'page_number' => $query->query['paged'],
+        'query' => $query,
+      );
+
+    }catch(Exception $error){
+      return $error;
+    }
   }

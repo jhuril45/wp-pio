@@ -51,7 +51,7 @@
 </div>
 
 <!-- Plans and Programs must be dynamic -->
-<div class="full-width row justify-start q-my-md" :class="$q.screen.lt.sm ? 'q-px-md' : 'q-pa-xl'">
+<div class="full-width row justify-center q-my-md" :class="$q.screen.lt.sm ? 'q-px-md' : 'q-pa-xl'">
   <div class="col-12 text-center q-my-md text-bold" :class="$q.screen.lt.sm ? 'text-h5' : 'text-h4'">
     PLANS AND PROGRAMS
   </div>

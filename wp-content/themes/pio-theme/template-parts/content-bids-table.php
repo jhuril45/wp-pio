@@ -104,43 +104,16 @@
                     :href="'<?php echo get_home_url();?>/dashboard?tab=add-bid-report&id='+props.row.id">  
                   </q-btn>
                 <?php }?>
-                <q-btn
-                  round
-                  color="primary"
-                  size="sm"
-                  icon="download"
-                  :href="props.row.path"
-                  :target="'_blank'">
-                </q-btn>
+                  <q-btn
+                    size="sm"
+                    round
+                    color="primary"
+                    icon="navigate_next"
+                    :href="'<?php echo get_home_url();?>/bids?bid='+props.row.id">
+                  </q-btn>
               </q-td>
               
             </q-tr>
-            <q-item :props="props" clickable v-if="false">
-              <q-item-section side top>
-                <q-icon
-                  size="sm"
-                  color="primary"
-                  name="description"></q-icon>
-              </q-item-section>
-              <q-item-section :props="props">
-                <q-item-label>
-                  {{ props.row.title }} ({{ props.row.year }})
-                </q-item-label>
-              </q-item-section>
-              <q-item-section
-                side
-                top
-                :props="props">
-                <q-btn
-                  round
-                  color="primary"
-                  size="sm"
-                  icon="download"
-                  :href="props.row.path"
-                  :target="'_blank'">
-                </q-btn>
-              </q-item-section>
-            </q-item>
           </template>
         </q-table>
         <q-separator></q-separator>

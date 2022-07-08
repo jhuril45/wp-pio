@@ -24,6 +24,7 @@ function add_script()
   if($pagename == 'dashboard'){
     wp_register_script('vue-main', get_template_directory_uri() . '/assets/js/dashboard_main.js',array ( 'jquery' ), 1.1, true);
     $page_data = [
+      'user' => wp_get_current_user(),
       'home_url' => get_home_url(),
       'nonce' => wp_create_nonce('wp_rest'),
       'template_dir' => get_template_directory_uri(),
@@ -31,6 +32,7 @@ function add_script()
       'query_tab' => get_query_var( 'tab' ),
       'query_id' => get_query_var( 'id' ) ? get_query_var( 'id' ) : null,
       'user' => wp_get_current_user(),
+      'reports' => fetchReports(),
       // 'reports' => get_query_var( 'tab' ) && get_query_var( 'tab' ) == 'reports' ? fetchReports() : [],
       // 'report' => get_query_var( 'tab' ) && get_query_var( 'id' ) && get_query_var( 'tab' ) == 'add-report' ? getReport(get_query_var( 'id' )) : '',
       
@@ -43,9 +45,10 @@ function add_script()
       // 'city_barangays' => get_query_var( 'tab' ) && get_query_var( 'tab' ) == 'barangays' ? fetchBarangays() : [],
       // 'barangay' => get_query_var( 'tab' ) && get_query_var( 'id' ) && get_query_var( 'tab' ) == 'add-barangay' ? fetchBarangays(get_query_var( 'id' ),true) : '',
       
-      // 'city_tourism' => get_query_var( 'tab' ) && get_query_var( 'tab' ) == 'tourism' ? fetchTourism(false,0,true) : [],
+      // 'city_tourism' => get_query_var( 'tab' ) && get_query_var( 'tab' ) == 'tourism' || checkUser('tourism') && get_query_var( 'tab' ) == 'tourism' ? fetchTourism(false,0,true) : [],
+      'city_tourism' => fetchTourism(false,0,true),
       // 'tourism' => get_query_var( 'tab' ) && get_query_var( 'id' ) && get_query_var( 'tab' ) == 'add-tourism' ? fetchTourism(true,get_query_var( 'id' )) : '',
-      // 'procurement_monitorings' => fetchProcurementMonitoring(),
+      'procurement_monitorings' => fetchProcurementMonitoring(),
       // 'posts' => get_query_var( 'tab' ) == null || get_query_var( 'tab' ) == 'posts' ? getRecentPosts(-1) : [],
       
       'dashboard_drawer_menu' => getDashboardDrawerMenu(),
@@ -60,8 +63,6 @@ function add_script()
     wp_enqueue_script( 'clockComponent');
     
     wp_register_script('vue-main', get_template_directory_uri() . '/assets/js/landing_main.js',array ( 'jquery' ), 1.1, true);
-    $office = get_query_var( 'office' ) ? fetchOffices(get_query_var( 'office' ),get_query_var( 'searched' )) : null;
-    $barangay = get_query_var( 'barangay' ) ? fetchBarangays(get_query_var( 'barangay' ),false,get_query_var( 'searched' )) : null;
     
 
     $page_data = [
@@ -80,8 +81,11 @@ function add_script()
       'offices' => $pagename == 'offices' ? fetchOffices() : [],
       'reports' => $pagename == 'transparency' ? fetchReports() : [],
       'bids' => $pagename == 'bids' ? fetchBids() : [],
-      'office' => $office,
-      'barangay' => $barangay,
+      'bid' => get_query_var( 'bid' ) && $pagename == 'bids' ? getReport(get_query_var( 'bid' ),true) : null,
+      'monitoring_report' => get_query_var( 'monitoring_report' ) && $pagename == 'procurement-monitoring-reports' ? fetchProcurementMonitoring(get_query_var( 'monitoring_report' ),false) : null,
+      'report' => get_query_var( 'report' ) ? getReport(get_query_var( 'report' )) : null,
+      'office' => get_query_var( 'office' ) ? fetchOffices(get_query_var( 'office' ),get_query_var( 'searched' )) : null,
+      'barangay' => get_query_var( 'barangay' ) ? fetchBarangays(get_query_var( 'barangay' ),false,get_query_var( 'searched' )) : null,
       'city_officials' => $pagename == 'city-officials' ? fetchCityOfficials() : '',
       'city_barangays' => $pagename == 'barangays' ? fetchBarangays() : '',
       'places_to_stay' => $pagename == 'tourism' ? fetchTourism() : [],

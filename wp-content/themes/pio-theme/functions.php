@@ -307,6 +307,9 @@ function cgb_create_pages(){
     array(
       'title' => 'News',
     ),
+    array(
+      'title' => 'Reports',
+    ),
   ];
   
   foreach ($arr as $key => $value) {

@@ -42,7 +42,7 @@ add_action( 'rest_api_init', function () {
     'methods' => 'POST',
     'callback' => 'submitReport',
     'permission_callback' => function($request){
-      return checkUser('pio');
+      return checkUser('bac');
     },
   ) );
 } );
@@ -52,7 +52,7 @@ add_action( 'rest_api_init', function () {
     'methods' => 'POST',
     'callback' => 'deleteReport',
     'permission_callback' => function($request){
-      return checkUser('pio');
+      return checkUser('bac');
     },
   ) );
 } );
@@ -62,7 +62,7 @@ add_action( 'rest_api_init', function () {
     'methods' => 'POST',
     'callback' => 'deleteBidReport',
     'permission_callback' => function($request){
-      return checkUser('pio');
+      return checkUser('bac');
     },
   ) );
 } );
@@ -110,7 +110,7 @@ add_action( 'rest_api_init', function () {
     'methods' => 'POST',
     'callback' => 'submitBidReport',
     'permission_callback' => function($request){
-      return checkUser('pio');
+      return checkUser('bac');
     },
   ) );
 } );
@@ -140,7 +140,7 @@ add_action( 'rest_api_init', function () {
     'methods' => 'POST',
     'callback' => 'submitTourism',
     'permission_callback' => function($request){
-      return checkUser('pio');
+      return checkUser('tourism');
     },
   ) );
 } );
@@ -150,7 +150,7 @@ add_action( 'rest_api_init', function () {
     'methods' => 'POST',
     'callback' => 'removeTourism',
     'permission_callback' => function($request){
-      return checkUser('pio');
+      return checkUser('tourism');
     },
   ) );
 } );
@@ -332,7 +332,7 @@ add_action( 'rest_api_init', function () {
     'methods' => 'POST',
     'callback' => 'submitProcurementMonitoring',
     'permission_callback' => function($request){
-      return checkUser('pio');
+      return checkUser('bac');
     },
   ) );
 } );
@@ -351,7 +351,7 @@ add_action( 'rest_api_init', function () {
     'methods' => 'POST',
     'callback' => 'removeProcurementMonitoringAttachment',
     'permission_callback' => function($request){
-      return checkUser('pio');
+      return checkUser('bac');
     },
   ) );
 } );
@@ -360,6 +360,13 @@ add_action( 'rest_api_init', function () {
   register_rest_route( 'myplugin/v1', '/fetch-posts', array(
     'methods' => 'POST',
     'callback' => 'getPosts',
+  ) );
+} );
+
+add_action( 'rest_api_init', function () {
+  register_rest_route( 'myplugin/v1', '/paginate-reports', array(
+    'methods' => 'POST',
+    'callback' => 'paginateReports',
   ) );
 } );
 

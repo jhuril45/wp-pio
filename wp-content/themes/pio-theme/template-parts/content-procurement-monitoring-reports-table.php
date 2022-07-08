@@ -94,7 +94,7 @@
 
               <q-td key="quarter" :props="props" class="text-primary text-weight-bold">
                 <span class="q-pl-sm">
-                  {{ props.row.quarter }}
+                  {{ getQuarter(props.row.quarter) }}
                 </span>
               </q-td>
               
@@ -103,12 +103,20 @@
                   <q-btn v-if="page_name == 'dashboard'" size="sm" round color="primary" icon="edit" :href="'<?php echo get_home_url();?>/dashboard?tab=add-procurement-monitoring-report&id='+props.row.id">  
                   </q-btn>
                 <?php }?>
-                <q-btn
+                <!-- <q-btn
                   round
                   color="primary"
                   size="sm"
                   icon="view_list"
                   @click="reportSource=props.row;procurements_report_dialog=true">
+                </q-btn> -->
+
+                <q-btn
+                  size="sm"
+                  round
+                  color="primary"
+                  icon="navigate_next"
+                  :href="'<?php echo get_home_url();?>/procurement-monitoring-reports?monitoring_report='+props.row.id">
                 </q-btn>
               </q-td>
             </q-tr>

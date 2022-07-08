@@ -92,12 +92,11 @@
                     </q-btn>
                   <?php }?>
                   <q-btn
+                    size="sm"
                     round
                     color="primary"
-                    size="sm"
-                    icon="download"
-                    :href="props.row.path"
-                    :target="'_blank'">
+                    icon="navigate_next"
+                    :href="'<?php echo get_home_url();?>/reports?report='+props.row.id">
                   </q-btn>
                 </q-td>
               

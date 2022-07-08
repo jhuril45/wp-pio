@@ -762,6 +762,18 @@ window.vue = new Vue({
     }
   },
   methods: {
+    getMonth(value){
+      var index = this.month_options.findIndex(x => x.value == value)
+      return index >=0 ? this.month_options[index].label : ''
+    },
+    getBidType(value){
+      var index = this.bid_report_options.findIndex(x => x.value == value)
+      return index >=0 ? this.bid_report_options[index].label : ''
+    },
+    getQuarter(value){
+      var index = this.quarter_options.findIndex(x => x.value == value)
+      return index >=0 ? this.quarter_options[index].label : ''
+    },
     getPosts(props){
       if(this.loading) return
       const { page, rowsPerPage } = props.pagination

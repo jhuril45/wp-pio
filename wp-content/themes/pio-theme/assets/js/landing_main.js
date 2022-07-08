@@ -17,6 +17,9 @@ window.vue = new Vue({
       procurement_monitoring: null,
       recent_posts: [],
       paginate_posts: [],
+      reports: [],
+      report: null,
+      monitoring_report : null,
       ...Main,
       office_dialog: false,
       search: '',
@@ -287,6 +290,11 @@ window.vue = new Vue({
         rowsPerPage: 5,
         rowsNumber: 0
       },
+      reportsPagination: {
+        page: 1,
+        rowsPerPage: 5,
+        rowsNumber: 0
+      },
     }
   },
   computed:{
@@ -384,6 +392,18 @@ window.vue = new Vue({
     }
   },
   methods: {
+    getMonth(value){
+      var index = this.month_options.findIndex(x => x.value == value)
+      return index >=0 ? this.month_options[index].label : ''
+    },
+    getBidType(value){
+      var index = this.bid_report_options.findIndex(x => x.value == value)
+      return index >=0 ? this.bid_report_options[index].label : ''
+    },
+    getQuarter(value){
+      var index = this.quarter_options.findIndex(x => x.value == value)
+      return index >=0 ? this.quarter_options[index].label : ''
+    },
     getPosts(props){
       if(this.loading) return
       const { page, rowsPerPage } = props.pagination
@@ -392,6 +412,27 @@ window.vue = new Vue({
       formData.append('page',page)
       formData.append('rows',rowsPerPage)
       window.axios.post(settings.API_BASE_PATH+'myplugin/v1/fetch-posts',formData)
+      .then((response) => {
+        this.paginate_posts = response.data.posts
+        this.newsPagination = {
+          page: page,
+          rowsPerPage: rowsPerPage,
+          rowsNumber: response.data.count,
+        },
+        this.loading = false
+      })
+      .catch((error) => {
+        this.loading = false
+      })
+    },
+    getReports(props){
+      if(this.loading) return
+      const { page, rowsPerPage } = props.pagination
+      this.loading = true
+      const formData = new FormData()
+      formData.append('page',page)
+      formData.append('rows',rowsPerPage)
+      window.axios.post(settings.API_BASE_PATH+'myplugin/v1/paginate-reports',formData)
       .then((response) => {
         this.paginate_posts = response.data.posts
         this.newsPagination = {

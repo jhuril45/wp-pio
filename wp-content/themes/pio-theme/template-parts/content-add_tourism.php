@@ -3,7 +3,7 @@
     <q-card class="add-post-card col-10 col-md-4">
       <q-card-section class="text-bold text-h5">
         <span>
-          Add Tourism
+          Add Tourist Spot
         </span>
       </q-card-section>
       <q-card-section>
