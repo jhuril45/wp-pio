@@ -96,7 +96,7 @@
                     round
                     color="primary"
                     icon="navigate_next"
-                    :href="'<?php echo get_home_url();?>/reports?report='+props.row.id">
+                    :href="'<?php echo get_home_url();?>/?p='+props.row.post_id">
                   </q-btn>
                 </q-td>
               

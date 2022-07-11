@@ -38,16 +38,10 @@
           }
         }
       }else{
-        // $term = get_term_by('name', 'Reports', 'category');
-        // $post = wp_insert_post(
-        //   array(
-        //     'post_title' => $_POST['title'],
-        //     'post_content' => $_POST['title'],
-        //     'post_status' => 'publish',
-        //     'post_category' => array($term->term_id),
-        //   )
-        // );
-        // $data['post_id'] = $post;
+        $term = get_term_by('name', 'Bids', 'category');
+        $post = insertCustomPost($data,$term->term_id);
+        $data['post_id'] = $post;
+
         $report = $wpdb->insert($table_name,$data);
       }
       return $report;
@@ -66,6 +60,9 @@
         $wpdb->delete( $table_name, array( 'id' => $id ) );
         if(isset($report)){
           wp_delete_file($report->url);
+        }
+        if(isset($report->post_id)){
+          wp_delete_post($report->post_id);
         }
       }
       return array( 'success' => true);

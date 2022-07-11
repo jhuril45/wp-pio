@@ -272,7 +272,8 @@ function cgb_create_tables(){
     dbDelta( $sql );
   }
 
-function cgb_create_pages(){
+
+  function cgb_create_pages(){
   $arr = [
     array(
       'title' => 'Offices',

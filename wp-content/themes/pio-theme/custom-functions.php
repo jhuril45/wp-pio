@@ -96,7 +96,7 @@ function getDashboardDrawerMenu(){
         ]
       ),
       array(
-        'title' => 'Procurement Monitoring Reports',
+        'title' => 'Procurement Monitoring',
         'url' => get_home_url().'/dashboard?tab=procurement-monitoring-reports',
         'icon' => 'summarize',
         'is_page' => $pagename == 'dashboard' && (get_query_var( 'tab' ) == 'procurement-monitoring-reports' || get_query_var( 'tab' ) == 'add-procurement-monitoring-report'),
@@ -202,6 +202,24 @@ function add_query_vars( $vars ){
   $vars[] = "tab";
   $vars[] = "searched";
   return $vars;
+}
+
+function insertCustomPost($data,$term_id){
+  $content = '';
+  foreach($data as $x => $value){
+    if($value != 'null' && $x != 'path' && $x != 'url'){
+      $content = $content. $x .' : ' . $value . ', ';
+    }
+  }
+  $post = wp_insert_post(
+    array(
+      'post_title' => $_POST['title'],
+      'post_content' => $content,
+      'post_status' => 'publish',
+      'post_category' => array($term_id),
+    )
+  );
+  return $post;
 }
 
 function myInit() {
@@ -388,13 +406,13 @@ function searchContents($data=null){
     's' => $data ? $data : $_POST['search'],
   ));
 
-  foreach ($post_array as $key => $value) {
-    if(has_category('Offices',$value->ID)){
-      $value->guid = get_home_url().'/offices?office='.$value->ID.'&searched=1';
-    }else if(has_category('Barangay',$value->ID)){
-      $value->guid = get_home_url().'/barangays?barangay='.$value->ID.'&searched=1';
-    }
-  }
+  // foreach ($post_array as $key => $value) {
+  //   if(has_category('Offices',$value->ID)){
+  //     $value->guid = get_home_url().'/offices?office='.$value->ID.'&searched=1';
+  //   }else if(has_category('Barangay',$value->ID)){
+  //     $value->guid = get_home_url().'/barangays?barangay='.$value->ID.'&searched=1';
+  //   }
+  // }
 
   return $post_array;
 }

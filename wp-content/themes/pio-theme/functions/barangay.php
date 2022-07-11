@@ -85,15 +85,9 @@ function submitBarangay() {
       $data['landmark_img_url'] = $landmark_image ? $landmark_image['file'] : null;
 
       $term = get_term_by('name', 'Barangay', 'category');
-      $post = wp_insert_post(
-        array(
-          'post_title' => $_POST['title'],
-          'post_content' => $_POST['title'],
-          'post_status' => 'publish',
-          'post_category' => array($term->term_id),
-        )
-      );
+      $post = insertCustomPost($data,$term->term_id);
       $data['post_id'] = $post;
+      
       $wpdb->insert($table_name, $data);
     }
 
@@ -168,6 +162,9 @@ function removeBarangay() {
       }
       foreach ($officials as $key => $value) {
         wp_delete_file($value->url);
+      }
+      if(isset($prev->post_id)){
+        wp_delete_post($prev->post_id);
       }
     }
 

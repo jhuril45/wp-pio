@@ -12,7 +12,7 @@
           color="red"
           icon="delete"
           v-if="form_procurement_monitoring.id"
-          @click="deleteReport(report)"></q-btn>
+          @click="deleteProcurementMonitoringReport(form_procurement_monitoring)"></q-btn>
       </q-card-section>
       <q-card-section>
         <q-form

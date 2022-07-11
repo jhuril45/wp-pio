@@ -64,7 +64,7 @@ function add_script()
     
     wp_register_script('vue-main', get_template_directory_uri() . '/assets/js/landing_main.js',array ( 'jquery' ), 1.1, true);
     
-
+    global $post;
     $page_data = [
       'home_url' => get_home_url(),
       'nonce' => wp_create_nonce('wp_rest'),
@@ -92,6 +92,9 @@ function add_script()
       'places_to_go' => $pagename == 'tourism' ? fetchTourism(false) : [],
       'header_logo' => get_template_directory_uri().'/assets/images/Butuan_Logo_Transparent.png',
       'searched_contents' => $pagename == 'contents' ? searchContents(get_query_var( 'search' )) : [],
+      'post' => is_front_page() ? null : $post,
+      'post_categories' => $post ? wp_get_post_categories($post->ID,array('fields' => 'names')) : null,
+      'front_page' => is_front_page(),
     ];
   }
   wp_enqueue_script( 'vue-main');

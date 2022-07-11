@@ -40,16 +40,10 @@
           }
         }
       }else{
-        // $term = get_term_by('name', 'Reports', 'category');
-        // $post = wp_insert_post(
-        //   array(
-        //     'post_title' => $_POST['title'],
-        //     'post_content' => $_POST['title'],
-        //     'post_status' => 'publish',
-        //     'post_category' => array($term->term_id),
-        //   )
-        // );
-        // $data['post_id'] = $post;
+        $term = get_term_by('name', 'Reports', 'category');
+        $post = insertCustomPost($data,$term->term_id);
+        $data['post_id'] = $post;
+        
         $report = $wpdb->insert($table_name,$data);
       }
   
@@ -70,6 +64,9 @@
         if(isset($report)){
           wp_delete_file($report->url);
         }
+        if(isset($report->post_id)){
+          wp_delete_post($report->post_id);
+        }
       }
       return array( 'success' => true);
     }catch(Exception $error){
@@ -78,10 +75,11 @@
   }
 
   function getReport($id,$is_bid=false,$is_post=false) {
+    // return $is_post;
     global $wpdb;
+    $table_name = $wpdb->prefix . ($is_bid  ? 'bid_reports' : 'reports');
     $id = is_numeric($id) ? intval($id) : null;
     if($id){
-      $table_name = $wpdb->prefix . ($is_bid  ? 'bid_reports' : 'reports');
       $report = $is_post ? $wpdb->get_row("SELECT * FROM $table_name WHERE post_id = $id") : $wpdb->get_row("SELECT * FROM $table_name WHERE id = $id");
       
       if(empty($report)){

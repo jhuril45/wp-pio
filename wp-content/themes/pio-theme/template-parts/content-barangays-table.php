@@ -44,7 +44,7 @@
       <template v-slot:body="props">
         <q-tr :props="props" no-hover>
           <q-td key="title" :props="props">
-            <a :href="'<?php echo get_home_url();?>/barangays?barangay='+props.row.barangay_id" class="text-primary text-weight-bold" style="text-decoration: none;">
+            <a :href="'<?php echo get_home_url();?>/?p='+props.row.post_id" class="text-primary text-weight-bold" style="text-decoration: none;">
               {{ props.row.title }}
             </a>
           </q-td>

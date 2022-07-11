@@ -86,28 +86,22 @@ function submitProcurementMonitoring() {
 function removeProcurementMonitoring() {
   try{
     global $wpdb;
-    $table_name = $wpdb->prefix.'offices';
-    $table_name2 = $wpdb->prefix.'office_services';
-    $table_name3 = $wpdb->prefix.'office_forms';
+    $table_name = $wpdb->prefix.'procurement_monitoring_reports';
+    $table_name2 = $wpdb->prefix.'procurement_monitoring_report_attachments';
     $id = is_numeric($_POST['id']) ? intval($_POST['id']) : null;
 
     if(isset($id)){
       $prev = $wpdb->get_row("SELECT * FROM $table_name WHERE id = $id");
-      $services = $wpdb->get_results("SELECT * FROM $table_name2 WHERE office_id = $id");
-      $forms = $wpdb->get_results("SELECT * FROM $table_name3 WHERE office_id = $id");
+      $attachments = $wpdb->get_results("SELECT * FROM $table_name2 WHERE office_id = $id");
       
       $wpdb->delete( $table_name, array( 'id' => intval($id)));
-      $wpdb->delete( $table_name2, array( 'office_id' => intval($id)));
-      $wpdb->delete( $table_name3, array( 'office_id' => intval($id)));
+      $wpdb->delete( $table_name2, array( 'procurement_monitoring_report_id' => intval($id)));
 
       if(isset($prev)){
         $wpdb->delete( $table_name, array( 'id' => intval($id) ) );
         wp_delete_file($prev->url);
       }
-      foreach ($services as $key => $value) {
-        wp_delete_file($value->url);
-      }
-      foreach ($forms as $key => $value) {
+      foreach ($attachments as $key => $value) {
         wp_delete_file($value->url);
       }
     }

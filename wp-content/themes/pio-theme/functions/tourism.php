@@ -20,6 +20,16 @@
     }
     return $arr;
   }
+
+  function fetchPostTourism($id){
+    $id = is_numeric($id) ? intval($id) : null;
+    if($id){
+      global $wpdb;
+      $table_name = $wpdb->prefix . "city_tourism";
+      $tourism = $wpdb->get_row("SELECT * FROM $table_name WHERE post_id = $id");
+      return $tourism;
+    }
+  }
   
   function submitTourism() {
     try{
@@ -55,14 +65,7 @@
         $data['url'] = $tourism_image ? $tourism_image['file'] : null;
 
         $term = get_term_by('name', 'Tourism', 'category');
-        $post = wp_insert_post(
-          array(
-            'post_title' => $_POST['title'],
-            'post_content' => $_POST['title'],
-            'post_status' => 'publish',
-            'post_category' => array($term->term_id),
-          )
-        );
+        $post = insertCustomPost($data,$term->term_id);
         $data['post_id'] = $post;
 
         $wpdb->insert($table_name, $data);
@@ -89,6 +92,9 @@
         if(isset($prev)){
           $wpdb->delete( $table_name, array( 'id' => intval($id) ) );
           wp_delete_file($prev->url);
+          if(isset($prev->post_id)){
+            wp_delete_post($prev->post_id);
+          }
         }
       }
       return array( 'success' => true);

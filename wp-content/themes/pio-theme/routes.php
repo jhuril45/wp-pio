@@ -312,7 +312,7 @@ add_action( 'rest_api_init', function () {
   register_rest_route( 'myplugin/v1', '/get-report', array(
     'methods' => 'GET',
     'callback' => function () {
-      return getReport($_GET['id'],$_GET['is_bid']);
+      return getReport($_GET['id'],$_GET['is_bid'],$_GET['is_post']);
     }
   ) );
 } );
@@ -322,7 +322,6 @@ add_action('rest_api_init', function () {
     'methods' => 'GET',
     'callback' => function () {
       return fetchTourism($_GET['is_place'],$_GET['id'],$_GET['is_all']);
-      return getReport($_GET['id'],$_GET['is_bid']);
     }
   ) );
 } );
@@ -343,6 +342,16 @@ add_action( 'rest_api_init', function () {
     'callback' => function () {
       return fetchProcurementMonitoring($_GET['id'],$_GET['is_post']);
     }
+  ) );
+} );
+
+add_action( 'rest_api_init', function () {
+  register_rest_route( 'myplugin/v1', '/remove-procurement-monitoring', array(
+    'methods' => 'POST',
+    'callback' => 'removeProcurementMonitoring',
+    'permission_callback' => function($request){
+      return checkUser('bac');
+    },
   ) );
 } );
 
@@ -370,3 +379,11 @@ add_action( 'rest_api_init', function () {
   ) );
 } );
 
+add_action('rest_api_init', function () {
+  register_rest_route( 'myplugin/v1', '/get-tourism-post', array(
+    'methods' => 'GET',
+    'callback' => function () {
+      return fetchPostTourism($_GET['id']);
+    }
+  ) );
+} );

@@ -18,8 +18,14 @@ window.vue = new Vue({
       recent_posts: [],
       paginate_posts: [],
       reports: [],
+      loading_report: false,
       report: null,
+      bid: null,
       monitoring_report : null,
+      post: null,
+      tourism: null,
+      barangay: null,
+      office: null,
       ...Main,
       office_dialog: false,
       search: '',
@@ -380,6 +386,28 @@ window.vue = new Vue({
         }
       }
     },
+    post:{
+      immediate: true,
+      handler(val){
+        if(val){
+          if(this.post_categories.includes('Reports')){
+            this.fetchReport(val.ID)
+          }
+          else if(this.post_categories.includes('Bids')){
+            this.fetchReport(val.ID,1)
+          }
+          else if(this.post_categories.includes('Offices')){
+            this.getOffice(val.ID)
+          }
+          else if(this.post_categories.includes('Barangay')){
+            this.getBarangay(val.ID)
+          }
+          else if(this.post_categories.includes('Tourism')){
+            this.getTourism(val.ID)
+          }
+        }
+      }
+    }
   },
   created(){
     if(this.page_name == 'procurement-monitoring-reports') this.transparency_quarter = 0
@@ -392,6 +420,37 @@ window.vue = new Vue({
     }
   },
   methods: {
+    getTourism(id=null,is_all){
+      window.axios.get(settings.API_BASE_PATH+'myplugin/v1/get-tourism-post?id='+id)
+      .then((response) => {
+        this.tourism = response.data
+      })
+    },
+    getBarangay(id){
+      window.axios.get(settings.API_BASE_PATH+'myplugin/v1/get-barangay-list?id='+id+'&is_post='+1)
+      .then((response) => {
+        this.barangay = response.data
+      })
+    },
+    getOffice(id){
+      window.axios.get(settings.API_BASE_PATH+'myplugin/v1/get-office-list?id='+id+'&is_post='+1)
+      .then((response) => {
+        this.office = response.data
+      })
+    },
+    fetchReport(id,is_bid=0){
+      if(this.loading_report) return
+      this.loading_report = true
+      window.axios.get(settings.API_BASE_PATH+'myplugin/v1/get-report?id='+id+'&is_bid='+is_bid+'&is_post='+1)
+      .then((response) => {
+        console.log(response.data)
+        this[is_bid ? 'bid' : 'report'] = response.data
+        this.loading_report = false
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+    },
     getMonth(value){
       var index = this.month_options.findIndex(x => x.value == value)
       return index >=0 ? this.month_options[index].label : ''
