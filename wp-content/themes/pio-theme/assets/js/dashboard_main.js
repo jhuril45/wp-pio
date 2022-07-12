@@ -1553,12 +1553,12 @@ window.vue = new Vue({
       .then((response) => {
         console.log(response.data)
         this.loading = false
-        // window.Quasar.Notify.create({
-        //   type: 'positive',
-        //   message: 'Report ' + (this.form_procurement_monitoring.id ? 'updated.' : 'submitted'),
-        //   position: 'top-right'
-        // })
-        // if(!this.form_procurement_monitoring.id) this.resetForm('add_procurement_monitoring_form')
+        window.Quasar.Notify.create({
+          type: 'positive',
+          message: 'Report ' + (this.form_procurement_monitoring.id ? 'updated.' : 'submitted'),
+          position: 'top-right'
+        })
+        if(!this.form_procurement_monitoring.id) this.resetForm('add_procurement_monitoring_form')
       })
       .catch((error) => {
         this.loading = false

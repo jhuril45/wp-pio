@@ -9,6 +9,7 @@
     $offices = get_term_by('name', 'Offices', 'category');
     $barangay = get_term_by('name', 'Barangay', 'category');
     $tourism = get_term_by('name', 'Tourism', 'category');
+    $procurement_monitoring = get_term_by('name', 'Procurement Monitoring', 'category');
     if(has_category($report->term_id,$post->ID)){?>
       <div v-show="false">
         <?php echo($post->post_title);?>
@@ -53,7 +54,7 @@
         </div>
       </div>
     <?php }
-    else if(has_category($tuorism->term_id,$post->ID)){?>
+    else if(has_category($tourism->term_id,$post->ID)){?>
       <div v-show="false">
         <?php echo($post->post_title);?>
         <?php echo($post->post_content);?>
@@ -61,6 +62,17 @@
       <div class="row justify-center">
         <div class="col-12 col-md-6 " :class="$q.screen.lt.md ? 'q-pa-md' : 'q-pa-xl'" v-if="tourism">
           <?php get_template_part('template-parts/content', 'tourism_card');?>
+        </div>
+      </div>
+    <?php }
+    else if(has_category($procurement_monitoring->term_id,$post->ID)){?>
+      <div v-show="false">
+        <?php echo($post->post_title);?>
+        <?php echo($post->post_content);?>
+      </div>
+      <div class="row justify-center">
+        <div class="col-12 col-md-6 " :class="$q.screen.lt.md ? 'q-pa-md' : 'q-pa-xl'" v-if="monitoring_report">
+          <?php get_template_part('template-parts/content', 'monitoring_report_card');?>
         </div>
       </div>
     <?php }

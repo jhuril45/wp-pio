@@ -165,13 +165,13 @@ function get_rest_featured_image( $object, $field_name, $request ) {
 }
 
 function check_categories() {
-	$is_term = term_exists('News');
   wp_create_category('News');
   wp_create_category('Bids');
   wp_create_category('Tourism');
   wp_create_category('Barangay');
   wp_create_category('Offices');
   wp_create_category('Reports');
+  wp_create_category('Procurement Monitoring');
 }
 
 

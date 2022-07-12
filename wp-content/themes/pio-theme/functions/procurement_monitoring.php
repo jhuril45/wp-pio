@@ -45,6 +45,10 @@ function submitProcurementMonitoring() {
       $data_where = array('id' => $id);
       $wpdb->update($table_name , $data, $data_where);
     }else{
+      $term = get_term_by('name', 'Reports', 'category');
+      $post = insertCustomPost($data,$term->term_id);
+      $data['post_id'] = $post;
+      
       $office = $wpdb->insert(
         $table_name,
         $data,
@@ -100,7 +104,11 @@ function removeProcurementMonitoring() {
       if(isset($prev)){
         $wpdb->delete( $table_name, array( 'id' => intval($id) ) );
         wp_delete_file($prev->url);
+        if(isset($prev->post_id)){
+          wp_delete_post($prev->post_id);
+        }
       }
+      
       foreach ($attachments as $key => $value) {
         wp_delete_file($value->url);
       }

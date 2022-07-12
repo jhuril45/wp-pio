@@ -405,6 +405,9 @@ window.vue = new Vue({
           else if(this.post_categories.includes('Tourism')){
             this.getTourism(val.ID)
           }
+          else if(this.post_categories.includes('Procurement Monitoring')){
+            this.getProcurementMonitoring(val.ID)
+          }
         }
       }
     }
@@ -420,6 +423,13 @@ window.vue = new Vue({
     }
   },
   methods: {
+    getProcurementMonitoring(id){
+      window.axios.get(settings.API_BASE_PATH+'myplugin/v1/get-procurement-monitoring-list?id='+id+'&is_edit='+0+'&is_post='+1)
+      .then((response) => {
+        console.log(response.data)
+        this.monitoring_report = response.data
+      })
+    },
     getTourism(id=null,is_all){
       window.axios.get(settings.API_BASE_PATH+'myplugin/v1/get-tourism-post?id='+id)
       .then((response) => {
