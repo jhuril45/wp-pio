@@ -90,3 +90,44 @@
       return $error;
     }
   }
+
+  function addHeaderDetails() {
+    global $wpdb;
+    $id = is_numeric($_POST['id']) ? intval($_POST['id']) : null;
+    $table_name = $wpdb->prefix . 'header_details';
+    $header = $wpdb->get_row("SELECT * FROM $table_name");
+
+    $data = array(
+      'facebook_page' => $_POST['facebook_page'],
+      'twitter_page' => $_POST['twitter_page'],
+      'messenger_page' => $_POST['messenger_page'],
+    );
+    if(empty($header)){
+      $wpdb->insert(
+        $table_name,
+        $data,
+      );
+    }else{
+      $data_where = array('id' => $header->id);
+      $wpdb->update($table_name , $data, $data_where);
+    }
+    return $data;
+  }
+
+  function getLandingDetails() {
+    global $wpdb;
+    $header_details = $wpdb->prefix . 'header_details';
+    $header = $wpdb->get_row("SELECT * FROM $header_details");
+    $data = array(
+      'facebook_page' => '',
+      'twitter_page' => '',
+      'messenger_page' => '',
+    );
+    if(isset($header)){
+      $data['facebook_page'] = $header->facebook_page;
+      $data['twitter_page'] = $header->twitter_page;
+      $data['messenger_page'] = $header->messenger_page;
+    }
+
+    return $data;
+  }

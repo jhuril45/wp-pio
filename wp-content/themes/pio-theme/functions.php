@@ -270,6 +270,17 @@ function cgb_create_tables(){
       KEY file_path (path)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
     dbDelta( $sql );
+
+    $header_details = $wpdb->prefix . "header_details";  
+    $sql = "CREATE TABLE $header_details (
+      id int(10) unsigned NOT NULL AUTO_INCREMENT,
+      facebook_page varchar(255) NOT NULL,
+      twitter_page varchar(255) NOT NULL,
+      messenger_page varchar(255) NOT NULL,
+      PRIMARY KEY  (id),
+      KEY fb_key (facebook_page)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+    dbDelta( $sql );
   }
 
 

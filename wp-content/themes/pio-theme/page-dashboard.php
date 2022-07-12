@@ -4,37 +4,53 @@ if(!is_user_logged_in()){
 }else{
   get_header();
   if(get_query_var( 'tab' )){
-    if(get_query_var( 'tab' ) == 'carousel'){?>
+    if(get_query_var( 'tab' ) == 'carousel' && checkUser('pio')){?>
       <div class="row justify-center">
         <div class="col-12 col-md-10 q-py-lg">
           <?php get_template_part('template-parts/content', 'carousel-list');?>
         </div>
       </div>
     <?php }
-    else if(get_query_var( 'tab' ) == 'flip-cards'){?>
+    else if(get_query_var( 'tab' ) == 'flip-cards' && checkUser('pio')){?>
       <div class="row justify-center">
         <div class="col-12 col-md-10 q-py-lg">
           <?php get_template_part('template-parts/content', 'flip-cards-list');?>
         </div>
       </div>
     <?php }
-    else if(get_query_var( 'tab' ) == 'quick-links'){?>
+    else if(get_query_var( 'tab' ) == 'quick-links' && checkUser('pio')){?>
       <div class="row justify-center">
         <div class="col-12 col-md-10 q-py-lg">
           <?php get_template_part('template-parts/content', 'quick-links-list');?>
         </div>
       </div>
     <?php }
-    else if(get_query_var( 'tab' ) == 'partners-list'){?>
+    else if(get_query_var( 'tab' ) == 'partners-list' && checkUser('pio')){?>
       <div class="row justify-center">
         <div class="col-12 col-md-10 q-py-lg">
           <?php get_template_part('template-parts/content', 'partners-list');?>
         </div>
       </div>
     <?php }
-    else if(get_query_var( 'tab' ) == 'add-post'){
+    else if(get_query_var( 'tab' ) == 'add-post' && checkUser('pio')){
       get_template_part('template-parts/content', 'add_post');
     }
+    else if(get_query_var( 'tab' ) == 'offices' && checkUser('pio')){
+      get_template_part('template-parts/content', 'offices-table');
+    }
+    else if(get_query_var( 'tab' ) == 'add-office' && checkUser('pio')){
+      get_template_part('template-parts/content', 'add_office');
+    }
+    else if(get_query_var( 'tab' ) == 'barangays' && checkUser('pio')){
+      get_template_part('template-parts/content', 'barangays-table');
+    }
+    else if(get_query_var( 'tab' ) == 'add-barangay' && checkUser('pio')){
+      get_template_part('template-parts/content', 'add_barangay');
+    }
+    else if(get_query_var( 'tab' ) == 'landing-details' && checkUser('pio')){
+      get_template_part('template-parts/content', 'landing_details');
+    }
+
     else if(get_query_var( 'tab' ) == 'reports' && checkUser('bac')){?>
       <div class="row justify-center">
         <div class="col-12 col-md-6 q-py-lg">
@@ -64,18 +80,6 @@ if(!is_user_logged_in()){
     <?php }
     else if(get_query_var( 'tab' ) == 'add-procurement-monitoring-report' && checkUser('bac')){
       get_template_part('template-parts/content', 'add_procurment_monitoring_report');
-    }
-    else if(get_query_var( 'tab' ) == 'offices'){
-      get_template_part('template-parts/content', 'offices-table');
-    }
-    else if(get_query_var( 'tab' ) == 'add-office'){
-      get_template_part('template-parts/content', 'add_office');
-    }
-    else if(get_query_var( 'tab' ) == 'barangays'){
-      get_template_part('template-parts/content', 'barangays-table');
-    }
-    else if(get_query_var( 'tab' ) == 'add-barangay'){
-      get_template_part('template-parts/content', 'add_barangay');
     }
     else if(get_query_var( 'tab' ) == 'tourism' && checkUser('tourism')){
       get_template_part('template-parts/content', 'tourism-table');

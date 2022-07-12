@@ -8,7 +8,7 @@
     </div>
     <q-separator vertical inset color="white"></q-separator>
     <div class="q-px-sm">
-      <a href="https://www.facebook.com/butuancitypioofficial" class="footer-link text-white">
+      <a :href="landing_details.facebook_page ? landing_details.facebook_page : 'https://www.facebook.com/butuancitypioofficial'" class="footer-link text-white">
         <q-icon
           name="fab fa-facebook-f"
           color="white"
@@ -18,7 +18,7 @@
     </div>
     <q-separator vertical inset color="white"></q-separator>
     <div class="q-px-sm">
-      <a href="https://www.facebook.com/butuancitypioofficial" class="footer-link text-white">
+      <a :href="landing_details.twitter_page ? landing_details.twitter_page : 'https://www.facebook.com/butuancitypioofficial'" class="footer-link text-white">
         <q-icon
           name="fab fa-twitter"
           color="white"
@@ -28,7 +28,7 @@
     </div>
     <q-separator vertical inset color="white"></q-separator>
     <div class="q-px-sm">
-      <a href="https://www.m.me/butuancitypioofficial" class="footer-link text-white">
+      <a :href="landing_details.messenger_page ? landing_details.messenger_page : 'https://www.m.me/butuancitypioofficial'" class="footer-link text-white">
         <q-icon
           name="fab fa-facebook-messenger"
           color="white"

@@ -66,6 +66,7 @@ function add_script()
     
     global $post;
     $page_data = [
+      'landing_details' => getLandingDetails(),
       'home_url' => get_home_url(),
       'nonce' => wp_create_nonce('wp_rest'),
       'carousel_images' => is_front_page() == 1 ? fetchCarouselImages() : [],

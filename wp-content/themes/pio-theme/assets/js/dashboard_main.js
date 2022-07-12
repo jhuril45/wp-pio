@@ -32,6 +32,11 @@ window.vue = new Vue({
       biding_type: 1,
       biding_year: 'All',
       biding_month: 0,
+      landing_details:{
+        facebook_page: null,
+        twitter_page: null,
+        messenger_page: null,
+      },
       posts_columns: [
         {
           name: 'post_title',
@@ -734,6 +739,10 @@ window.vue = new Vue({
     else if(this.query_tab == 'add-procurement-monitoring-report' && this.query_id){
       this.getProcurementMonitoring(this.query_id)
     }
+    else if(this.query_tab == 'landing-details'){
+      this.transparency_quarter = 0
+      this.getLandingDetails()
+    }
   },
   mounted(){
     console.log(Main)
@@ -762,6 +771,35 @@ window.vue = new Vue({
     }
   },
   methods: {
+    getLandingDetails(){
+      window.axios.get(settings.API_BASE_PATH+'myplugin/v1/get-landing-details')
+      .then((response) => {
+        console.log(response.data)
+        this.landing_details = response.data
+      })
+    },
+    submitHeaderDetails(){
+      console.log(this.landing_details)
+      if(this.loading) return
+      this.loading = true
+      const formData = new FormData()
+      formData.append('facebook_page',this.landing_details.facebook_page)
+      formData.append('twitter_page',this.landing_details.twitter_page)
+      formData.append('messenger_page',this.landing_details.messenger_page)
+      window.axios.post(settings.API_BASE_PATH+'myplugin/v1/add-header-details',formData)
+      .then((response) => {
+        window.Quasar.Notify.create({
+          type: 'positive',
+          message: 'Success.',
+          position: 'top-right'
+        })
+        // if(!this.form_office.id) this.resetForm('office')
+        this.loading = false
+      })
+      .catch((error) => {
+        this.loading = false
+      })
+    },
     getMonth(value){
       var index = this.month_options.findIndex(x => x.value == value)
       return index >=0 ? this.month_options[index].label : ''

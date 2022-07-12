@@ -387,3 +387,20 @@ add_action('rest_api_init', function () {
     }
   ) );
 } );
+
+add_action( 'rest_api_init', function () {
+  register_rest_route( 'myplugin/v1', '/add-header-details', array(
+    'methods' => 'POST',
+    'callback' => 'addHeaderDetails',
+    'permission_callback' => function($request){
+      return checkUser('pio');
+    },
+  ) );
+} );
+
+add_action('rest_api_init', function () {
+  register_rest_route( 'myplugin/v1', '/get-landing-details', array(
+    'methods' => 'GET',
+    'callback' => 'getLandingDetails',
+  ) );
+} );

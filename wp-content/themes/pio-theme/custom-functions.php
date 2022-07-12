@@ -71,6 +71,12 @@ function getDashboardDrawerMenu(){
         'icon' => 'handshake',
         'is_page' => $pagename == 'dashboard' && (get_query_var( 'tab' ) == 'partners-list'),
       ),
+      array(
+        'title' => 'Landing Details',
+        'url' => get_home_url().'/dashboard?tab=landing-details',
+        'icon' => 'display_settings',
+        'is_page' => $pagename == 'dashboard' && (get_query_var( 'tab' ) == 'landing-details'),
+      ),
     );
   }else if(checkUser('bac')){
     array_push($arr,
