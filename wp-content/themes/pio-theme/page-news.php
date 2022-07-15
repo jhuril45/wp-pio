@@ -40,10 +40,10 @@
               class="q-px-sm"
               :href="props.row.guid">
               <q-item-section top avatar class="q-px-md">
-                <img :src="props.row.fimg_url" style="width:130px;height:80px;object-fit:cover">
+                <img :src="props.row.fimg_url" style="width:130px;height:75px;object-fit:cover">
               </q-item-section>
 
-              <q-item-section>
+              <q-item-section top>
                 <q-item-label class="text-h6">
                   {{props.row.post_title}}
                 </q-item-label>

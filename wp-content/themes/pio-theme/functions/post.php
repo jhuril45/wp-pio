@@ -219,13 +219,13 @@
     }
   }
 
-  function fetchOtherPosts($id=null,$term_id){
+  function fetchOtherPosts($id=null,$term_id,$limit=5){
     $id = is_numeric($id) ? intval($id) : null;
     $term_id = is_numeric($term_id) ? intval($term_id) : null;
     if($id && $term_id){
       $data = get_posts( array( 
         'post_type' => 'post',
-        'posts_per_page' => 5,
+        'posts_per_page' => $limit,
         'exclude' => array($id),
         'category' => $term_id,
         )

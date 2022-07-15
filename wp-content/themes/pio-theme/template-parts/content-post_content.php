@@ -1,10 +1,12 @@
 <?php
 $featured_image_url = get_the_post_thumbnail_url($post->ID);
 $post_date = date('F d Y, l  h:i A',strtotime($post->post_date));
+$term = get_term_by('name', 'News', 'category');
 
 $fetched_post = fetchPost($post->ID);
 $attachments = fetchPostCarousel($post->ID);
-$recent_posts = fetchOtherPosts($post->ID,$term->term_id); 
+$recent_posts = fetchOtherPosts($post->ID,$term->term_id,5); 
+echo (count($recent_posts));
 ?>
 
 <div class="row" :class="<?php echo(count($recent_posts))?> > 0 ? 'justify-end' : 'justify-center'">

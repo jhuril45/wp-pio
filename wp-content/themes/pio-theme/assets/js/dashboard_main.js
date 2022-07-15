@@ -36,6 +36,7 @@ window.vue = new Vue({
         facebook_page: null,
         twitter_page: null,
         messenger_page: null,
+        youtube_id: null,
       },
       posts_columns: [
         {
@@ -786,6 +787,7 @@ window.vue = new Vue({
       formData.append('facebook_page',this.landing_details.facebook_page)
       formData.append('twitter_page',this.landing_details.twitter_page)
       formData.append('messenger_page',this.landing_details.messenger_page)
+      formData.append('youtube_id',this.landing_details.youtube_id)
       window.axios.post(settings.API_BASE_PATH+'myplugin/v1/add-header-details',formData)
       .then((response) => {
         window.Quasar.Notify.create({

@@ -1,14 +1,15 @@
 <div class="row justify-center q-py-lg">
   <div class="col-12 col-md-6">
     <q-list bordered class="rounded-borders">
-      <q-expansion-item>
+      <q-expansion-item
+      default-opened>
         <template v-slot:header>
           <q-item-section avatar>
             <q-avatar icon="view_headline" color="primary" text-color="white"></q-avatar>
           </q-item-section>
 
           <q-item-section>
-            Header Details
+            Landing Details
           </q-item-section>
         </template>
 
@@ -59,11 +60,26 @@
                     size="xs"></q-icon>
                 </template>
               </q-input>
+              <q-input
+                placeholder="Youtube video id"
+                dense
+                outlined
+                v-model="landing_details.youtube_id"
+                :rules="[val => !!val || 'Invalid Youtube video id']"
+                hide-bottom-space>
+                <template v-slot:prepend>
+                  <q-icon
+                    name="fab fa-youtube"
+                    color="red"
+                    size="xs"></q-icon>
+                </template>
+              </q-input>
               <q-btn
                 class="full-width"
                 type="submit"
                 label="Submit"
-                color="primary"></q-btn>
+                color="primary"
+                :loading="loading"></q-btn>
             </q-form>
           </q-card-section>
         </q-card>

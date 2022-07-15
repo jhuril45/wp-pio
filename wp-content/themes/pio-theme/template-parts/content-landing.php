@@ -113,7 +113,7 @@
     </div>
     <q-video
       style="height:400px;"
-      src="https://www.youtube.com/embed/YmBY9yNfNos"
+      :src="'https://www.youtube.com/embed/'+(landing_details.youtube_id ? landing_details.youtube_id : 'YmBY9yNfNos')"
     />
   </div>
   <div class="col-md-4 col-12 q-py-md text-white text-center " :class="$q.screen.lt.sm ? '' : ''">
@@ -222,7 +222,7 @@
   </div>
   <div class="col-12 row q-gutter-y-lg justify-center">
     <div
-      class="q-py-xs col-12 col-md-3 q-px-md"
+      class="q-py-xs col-12 col-md-4 q-px-md"
       v-for="quick_link in quick_links"
       :key="'link-'+quick_link.id">
       <q-card class="news-card" style="max-height:200px">

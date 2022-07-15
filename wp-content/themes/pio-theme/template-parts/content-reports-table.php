@@ -23,7 +23,7 @@
                 </div>
               </div>
             <?php }?>
-            <div class="row full-width">
+            <div class="row full-width q-gutter-y-sm">
               <div class="q-px-sm" :class="transparency_type == 2 ? 'col-4' : 'col-6'">
                 <q-select
                   dense
