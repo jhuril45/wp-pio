@@ -20,43 +20,45 @@ function add_script()
 
   wp_register_script('vue-pdf-embed', get_template_directory_uri() . '/assets/js/vue-pdf-embed.js',array ( 'jquery' ), 1.1, true);
   wp_enqueue_script( 'vue-pdf-embed');
-  
+  $tab = get_query_var( 'tab' );
+  $id = get_query_var( 'id' );
   if($pagename == 'dashboard'){
     wp_register_script('vue-main', get_template_directory_uri() . '/assets/js/dashboard_main.js',array ( 'jquery' ), 1.1, true);
+    
     $page_data = [
       'user' => wp_get_current_user(),
       'home_url' => get_home_url(),
       'nonce' => wp_create_nonce('wp_rest'),
       'template_dir' => get_template_directory_uri(),
       'page_name' => $pagename,
-      'query_tab' => get_query_var( 'tab' ),
-      'query_id' => get_query_var( 'id' ) ? get_query_var( 'id' ) : null,
+      'query_tab' => $tab,
+      'query_id' => $id ? $id : null,
       'user' => wp_get_current_user(),
       'reports' => fetchReports(),
-      // 'reports' => get_query_var( 'tab' ) && get_query_var( 'tab' ) == 'reports' ? fetchReports() : [],
-      // 'report' => get_query_var( 'tab' ) && get_query_var( 'id' ) && get_query_var( 'tab' ) == 'add-report' ? getReport(get_query_var( 'id' )) : '',
+      // 'reports' => $tab && $tab == 'reports' ? fetchReports() : [],
+      // 'report' => $tab && $id && $tab == 'add-report' ? getReport($id) : '',
       
-      // 'bids' => get_query_var( 'tab' ) && get_query_var( 'tab' ) == 'bid-reports' ? fetchBids() : [],
-      // 'bid' => get_query_var( 'tab' ) && get_query_var( 'id' ) && get_query_var( 'tab' ) == 'add-bid-report' ? getReport(get_query_var( 'id' ),true) : '',
+      // 'bids' => $tab && $tab == 'bid-reports' ? fetchBids() : [],
+      // 'bid' => $tab && $id && $tab == 'add-bid-report' ? getReport($id,true) : '',
       
-      // 'offices' => get_query_var( 'tab' ) && get_query_var( 'tab' ) == 'offices' ? fetchOffices() : [],
-      // 'office' => get_query_var( 'tab' ) && get_query_var( 'id' ) && get_query_var( 'tab' ) == 'add-office' ? fetchOffices(get_query_var( 'id' )) : '',
+      // 'offices' => $tab && $tab == 'offices' ? fetchOffices() : [],
+      // 'office' => $tab && $id && $tab == 'add-office' ? fetchOffices($id) : '',
       
-      // 'city_barangays' => get_query_var( 'tab' ) && get_query_var( 'tab' ) == 'barangays' ? fetchBarangays() : [],
-      // 'barangay' => get_query_var( 'tab' ) && get_query_var( 'id' ) && get_query_var( 'tab' ) == 'add-barangay' ? fetchBarangays(get_query_var( 'id' ),true) : '',
+      // 'city_barangays' => $tab && $tab == 'barangays' ? fetchBarangays() : [],
+      // 'barangay' => $tab && $id && $tab == 'add-barangay' ? fetchBarangays($id,true) : '',
       
-      // 'city_tourism' => get_query_var( 'tab' ) && get_query_var( 'tab' ) == 'tourism' || checkUser('tourism') && get_query_var( 'tab' ) == 'tourism' ? fetchTourism(false,0,true) : [],
+      // 'city_tourism' => $tab && $tab == 'tourism' || checkUser('tourism') && $tab == 'tourism' ? fetchTourism(false,0,true) : [],
       'city_tourism' => fetchTourism(false,0,true),
-      // 'tourism' => get_query_var( 'tab' ) && get_query_var( 'id' ) && get_query_var( 'tab' ) == 'add-tourism' ? fetchTourism(true,get_query_var( 'id' )) : '',
+      // 'tourism' => $tab && $id && $tab == 'add-tourism' ? fetchTourism(true,$id) : '',
       'procurement_monitorings' => fetchProcurementMonitoring(),
-      // 'posts' => get_query_var( 'tab' ) == null || get_query_var( 'tab' ) == 'posts' ? getRecentPosts(-1) : [],
+      // 'posts' => $tab == null || $tab == 'posts' ? getRecentPosts(-1) : [],
       
       'dashboard_drawer_menu' => getDashboardDrawerMenu(),
-      'carousel_images' => get_query_var( 'tab' ) && get_query_var( 'tab' ) == 'carousel' ? fetchCarouselImages() : [],
-      'edit_post' => get_query_var( 'tab' ) && get_query_var( 'tab' ) == 'add-post' && get_query_var( 'id' ) ? fetchPost(get_query_var( 'id' )) : null, 
-      'flip_cards' => get_query_var( 'tab' ) && get_query_var( 'tab' ) == 'flip-cards' ? fetchFlipCards() : [],
-      'quick_links' => get_query_var( 'tab' ) && get_query_var( 'tab' ) == 'quick-links' ? fetchQuickLinks() : [],
-      'partners_list' => get_query_var( 'tab' ) && get_query_var( 'tab' ) == 'partners-list' ? fetchPartnerLists() : [],
+      'carousel_images' => $tab && $tab == 'carousel' ? fetchCarouselImages() : [],
+      'edit_post' => $tab && $tab == 'add-post' && $id ? fetchPost($id) : null, 
+      'flip_cards' => $tab && $tab == 'flip-cards' ? fetchFlipCards() : [],
+      'quick_links' => $tab && $tab == 'quick-links' ? fetchQuickLinks() : [],
+      'partners_list' => $tab && $tab == 'partners-list' ? fetchPartnerLists() : [],
     ];
   }else{
     wp_register_script('clockComponent', get_template_directory_uri() . '/assets/js/clockComponent.js',array ( 'jquery' ), 1.1, true);
