@@ -703,6 +703,19 @@ window.vue = new Vue({
         }
       }
     },
+    tourism:{
+      immediate: true,
+      handler(val){
+        console.log(val)
+        if(val){
+          this.form_tourism = {
+            ...val,
+            type: parseInt(val.type),
+            img_preview : val.path ? val.path : this.form_tourism.img_preview
+          }
+        }
+      }
+    },
   },
   created(){
     document.getElementById("q-app").style.display = "block"

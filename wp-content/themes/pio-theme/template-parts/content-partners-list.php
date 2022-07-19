@@ -27,12 +27,12 @@
             round
             icon="edit"
             color="primary"
-            @click="editQuickLink(image)"></q-btn>
+            @click="editPartnersList(image)"></q-btn>
           <q-btn
             round
             icon="close"
             color="red"
-            @click="deleteQuickLink(image)"></q-btn>
+            @click="deletePartnersList(image)"></q-btn>
         </div>
       </q-card-section>
       <q-separator ></q-separator>
