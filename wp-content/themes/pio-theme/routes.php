@@ -404,3 +404,13 @@ add_action('rest_api_init', function () {
     'callback' => 'getLandingDetails',
   ) );
 } );
+
+add_action( 'rest_api_init', function () {
+  register_rest_route( 'myplugin/v1', '/remove-post', array(
+    'methods' => 'POST',
+    'callback' => 'removePost',
+    'permission_callback' => function($request){
+      return checkUser('pio');
+    },
+  ) );
+} );

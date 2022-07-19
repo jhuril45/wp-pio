@@ -247,3 +247,20 @@
       return [];
     }
   }
+
+  function removePost() {
+    try{
+      global $wpdb;
+      $table_name = $wpdb->prefix.'offices';
+      $table_name2 = $wpdb->prefix.'office_services';
+      $table_name3 = $wpdb->prefix.'office_forms';
+      $id = is_numeric($_POST['id']) ? intval($_POST['id']) : null;
+  
+      if(isset($id)){
+        wp_delete_post($id);
+      }
+      return array( 'success' => true);
+    }catch(Exception $error){
+      return $error;
+    }
+  }

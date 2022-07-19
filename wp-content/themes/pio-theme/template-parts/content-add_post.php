@@ -8,10 +8,18 @@
 <div class="row q-py-lg q-gutter-y-md">
   <div class="col-12 row justify-center">
     <q-card class="add-post-card col-12 col-md-6">
-      <q-card-section class="text-bold text-h5">
+      <q-card-section class="text-bold text-h5 row">
         <span>
           {{form_post.id ? 'Edit Post' : 'Add Post'}}
         </span>
+        <q-space></q-space>
+        <q-btn
+          size="sm"
+          round
+          color="red"
+          icon="delete"
+          v-if="form_post.id"
+          @click="deletePost(form_post)"></q-btn>
       </q-card-section>
       <q-card-section>
         <q-form
