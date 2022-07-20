@@ -9,14 +9,24 @@
 
     <q-card-actions align="right">
       <div class="q-gutter-y-sm full-width">
-        <q-btn
-          class="full-width"
-          :label="attachment.title"
-          color="primary"
-          icon="download"
-          v-for="attachment in monitoring_report.attachments"
-          :href="attachment.path"
-          :target="'_blank'">
+        <q-list separator>
+          <q-item v-for="(attachment,index) in monitoring_report.attachments" :key="'attachment'+index">
+            <q-item-section top>
+              <q-item-label lines="2">
+                {{attachment.title}}
+              </q-item-label>
+            </q-item-section>
+            <q-item-section side top>
+              <q-btn
+                class="full-width"
+                color="primary"
+                icon="download"
+                size="sm"
+                :href="attachment.path"
+                :target="'_blank'">
+            </q-item-section>
+          </q-item>
+        </q-list>
       </div>
     </q-card-actions>
   </q-card>

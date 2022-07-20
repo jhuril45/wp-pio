@@ -1375,6 +1375,17 @@ window.vue = new Vue({
         this.$nextTick(() => {
           this.$refs.add_office_form.resetValidation()
         })
+      }else if(type == 'add_procurement_monitoring_form'){
+        this.form_procurement_monitoring ={
+          id: null,
+          title: '',
+          attachments: [],
+          year: null,
+          quarter: null,
+        }
+        this.$nextTick(() => {
+          this.$refs.add_procurement_monitoring_form.resetValidation()
+        })
       }
       this.form_step = 1
     },

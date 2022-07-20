@@ -40,7 +40,7 @@
           }
         }
       }else{
-        $term = get_term_by('name', 'Procurement Monitoring', 'category');
+        $term = get_term_by('name', 'Reports', 'category');
         $post = insertCustomPost($data,$term->term_id);
         $data['post_id'] = $post;
         

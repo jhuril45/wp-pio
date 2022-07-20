@@ -28,15 +28,6 @@
                         height="150px"
                         :src="city_officials.mayor.image"
                       >
-                        <q-btn
-                          round
-                          size="sm"
-                          color="primary"
-                          icon="more_horiz"
-                          class="absolute-bottom-right q-mb-sm"
-                          style="right: 12px;"
-                        >
-                        </q-btn>
                       </q-img>
 
                       <q-card-section class="q-px-sm">
@@ -63,15 +54,6 @@
                         height="150px"
                         :src="city_officials.vice_mayor.image"
                       >
-                        <q-btn
-                          round
-                          size="sm"
-                          color="primary"
-                          icon="more_horiz"
-                          class="absolute-bottom-right q-mb-sm"
-                          style="right: 12px;"
-                        >
-                        </q-btn>
                       </q-img>
 
                       <q-card-section>

@@ -116,7 +116,7 @@
                   round
                   color="primary"
                   icon="navigate_next"
-                  :href="'<?php echo get_home_url();?>/procurement-monitoring-reports?monitoring_report='+props.row.id">
+                  :href="'<?php echo get_home_url();?>/?p='+props.row.post_id">
                 </q-btn>
               </q-td>
             </q-tr>

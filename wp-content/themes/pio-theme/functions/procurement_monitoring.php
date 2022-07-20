@@ -45,7 +45,7 @@ function submitProcurementMonitoring() {
       $data_where = array('id' => $id);
       $wpdb->update($table_name , $data, $data_where);
     }else{
-      $term = get_term_by('name', 'Reports', 'category');
+      $term = get_term_by('name', 'Procurement Monitoring', 'category');
       $post = insertCustomPost($data,$term->term_id);
       $data['post_id'] = $post;
       

@@ -245,7 +245,7 @@
   <div class="col-12 row justify-center q-mt-lg" :class="$q.screen.lt.sm ? 'q-gutter-y-xl' : 'q-gutter-x-xl'">
     <div
       class=""
-      :class="$q.screen.lt.sm ? 'col-12 row justify-center' : 'col-grow'"
+      :class="$q.screen.lt.sm ? 'col-12 row justify-center' : 'col-shrink'"
       v-for="partner in partners_list" 
       :key="'partner-'+partner.id">
       <a :href="partner.link.charAt(0) == '/' ? home_url+partner.link : partner.link">

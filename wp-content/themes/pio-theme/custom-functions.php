@@ -254,6 +254,18 @@ function getHeaderMenus() {
       "is_menu" => true,
       "sub_menu" => [
         array(
+          "title" => "Transparency",
+          "url" => get_home_url()."/transparency",
+          "slug" => "offices",
+          "parent_slug" => "government"
+        ),
+        array(
+          "title" => "Procurement Reports",
+          "url" => get_home_url()."/procurement-monitoring-reports",
+          "slug" => "offices",
+          "parent_slug" => "government"
+        ),
+        array(
           "title" => "City Officials",
           "url" => get_home_url()."/city-officials",
           "slug" => "offices",

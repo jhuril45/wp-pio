@@ -5,8 +5,7 @@ $term = get_term_by('name', 'News', 'category');
 
 $fetched_post = fetchPost($post->ID);
 $attachments = fetchPostCarousel($post->ID);
-$recent_posts = fetchOtherPosts($post->ID,$term->term_id,5); 
-echo (count($recent_posts));
+$recent_posts = fetchOtherPosts($post->ID,$term->term_id,5);
 ?>
 
 <div class="row" :class="<?php echo(count($recent_posts))?> > 0 ? 'justify-end' : 'justify-center'">
